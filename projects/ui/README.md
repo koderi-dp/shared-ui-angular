@@ -37,7 +37,9 @@ too; nothing needs zoneless.
 3. Install the library and the packages it needs:
 
    ```sh
-   npm i @koderi-dp/ui @angular/cdk @ng-icons/core @ng-icons/lucide ngx-sonner      class-variance-authority clsx tailwind-merge tw-animate-css      @fontsource/ibm-plex-sans @fontsource/ibm-plex-mono
+   npm i @koderi-dp/ui @angular/cdk @ng-icons/core @ng-icons/lucide ngx-sonner \
+     class-variance-authority clsx tailwind-merge tw-animate-css \
+     @fontsource/ibm-plex-sans @fontsource/ibm-plex-mono
    ```
 
    The entry points beyond the main one are optional, and so are their packages. Install the
@@ -135,8 +137,8 @@ too; nothing needs zoneless.
 
 Follow steps 2 to 4 above, with these differences:
 
-- **The theme is the whole base layer:** fonts, the Tailwind import, the colour tokens and the
-  base styles. Keep your own rules in `src/styles.css` below the two imports.
+- **The two imports are your whole base layer:** fonts, the colour tokens and the base styles.
+  Keep your own rules below them.
 - **SCSS projects:** add the same two `@import` lines to a `.css` file and list it in `styles`
   in `angular.json`, next to `styles.scss`.
 - **Wire the two things the shell needs:** `provideRouter(routes)` in `app.config.ts` (apps
