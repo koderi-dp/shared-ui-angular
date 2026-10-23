@@ -169,8 +169,12 @@ describe("overlay primitives", () => {
       expect(panel.getAttribute("role")).toBe("tabpanel");
       expect(panel.getAttribute("aria-labelledby")).toBe(one.id);
       expect(panel.hidden).toBe(false);
+      expect(panel.classList.contains("block")).toBe(true);
+      expect(panel.classList.contains("mt-4")).toBe(true);
       const other = document.getElementById(two.getAttribute("aria-controls")!)!;
       expect(other.hidden).toBe(true);
+      expect(other.classList.contains("hidden")).toBe(true);
+      expect(other.classList.contains("block")).toBe(false);
     });
 
     it("ArrowRight moves to and activates the next tab, wrapping", async () => {
@@ -243,6 +247,17 @@ describe("overlay primitives", () => {
       await settle();
       expect(host.popOpen()).toBe(false);
       expect(el("#pop-body")).toBeNull();
+    });
+
+    it("opens once the trigger registers when initially open", async () => {
+      fixture.destroy();
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({ providers: [provideZonelessChangeDetection()] });
+      fixture = TestBed.createComponent(HostComponent);
+      fixture.componentInstance.popOpen.set(true);
+      document.body.appendChild(fixture.nativeElement);
+      await settle();
+      expect(el("#pop-body")).not.toBeNull();
     });
 
     it("closes on Escape and refocuses the trigger", async () => {

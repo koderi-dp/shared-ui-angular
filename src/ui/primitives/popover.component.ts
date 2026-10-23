@@ -16,6 +16,7 @@ import {
   input,
   model,
   PLATFORM_ID,
+  signal,
   TemplateRef,
   untracked,
   viewChild,
@@ -42,7 +43,7 @@ export class KoPopoverTrigger {
 
   constructor() {
     const element = inject<ElementRef<HTMLElement>>(ElementRef);
-    effect(() => (this.popover().anchor = element.nativeElement));
+    effect(() => this.popover().anchor.set(element.nativeElement));
   }
 }
 
@@ -70,7 +71,7 @@ export class KoPopoverTrigger {
 export class KoPopover {
   readonly open = model(false);
   /** Set by `koPopoverTrigger`. */
-  anchor?: HTMLElement;
+  readonly anchor = signal<HTMLElement | undefined>(undefined);
 
   protected readonly content = contentChild(KoPopoverContent);
   private readonly shell = viewChild.required<TemplateRef<unknown>>("shell");
@@ -83,14 +84,14 @@ export class KoPopover {
   constructor() {
     effect(() => {
       const open = this.open();
-      untracked(() => (open ? this.show() : this.hide()));
+      const anchor = this.anchor();
+      untracked(() => (open ? this.show(anchor) : this.hide()));
     });
     inject(DestroyRef).onDestroy(() => this.ref?.dispose());
   }
 
-  private show(): void {
-    if (!this.browser || this.ref || !this.anchor) return;
-    const anchor = this.anchor;
+  private show(anchor: HTMLElement | undefined): void {
+    if (!this.browser || this.ref || !anchor) return;
     const ref = this.overlay.create({
       positionStrategy: this.overlay
         .position()
@@ -122,7 +123,7 @@ export class KoPopover {
     const ref = this.ref;
     if (!ref) return;
     this.ref = undefined;
-    if (ref.overlayElement.contains(document.activeElement)) this.anchor?.focus();
+    if (ref.overlayElement.contains(document.activeElement)) this.anchor()?.focus();
     ref.dispose();
   }
 }

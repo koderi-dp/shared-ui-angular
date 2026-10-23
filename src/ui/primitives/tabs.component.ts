@@ -121,5 +121,7 @@ export class KoTabsContent {
   protected readonly selected = computed(() => this.tabs.value() === this.value());
   protected readonly id = computed(() => panelId(this.tabs, this.value()));
   protected readonly labelledBy = computed(() => triggerId(this.tabs, this.value()));
-  protected readonly classes = computed(() => cn("mt-4", this.class()));
+  protected readonly classes = computed(() =>
+    cn(this.selected() ? "block" : "hidden", "mt-4", this.class()),
+  );
 }
