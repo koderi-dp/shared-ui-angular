@@ -8,15 +8,12 @@ import { cn } from "@/ui/utils";
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "block" },
   template: `<div class="w-full overflow-x-auto">
-    <table [class]="classes()">
+    <table class="w-full text-left text-sm">
       <ng-content />
     </table>
   </div>`,
 })
-export class KoTable {
-  readonly class = input<string>("");
-  protected readonly classes = computed(() => cn("w-full text-left text-sm", this.class()));
-}
+export class KoTable {}
 
 @Directive({ selector: "thead[koTableHeader]", host: { "[class]": "classes()" } })
 export class KoTableHeader {

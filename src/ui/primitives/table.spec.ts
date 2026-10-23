@@ -14,7 +14,7 @@ import {
   imports: [KoTable, KoTableHeader, KoTableBody, KoTableRow, KoTableHead, KoTableCell],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ko-table class="min-w-[40rem]">
+    <ko-table class="mt-4">
       <thead koTableHeader>
         <tr koTableRow>
           <th koTableHead>Name</th>
@@ -47,9 +47,11 @@ describe("KoTable", () => {
     expect(wrapper.querySelector(":scope > table")).not.toBeNull();
   });
 
-  it("merges the consumer class onto the inner table with the defaults", () => {
+  it("keeps a consumer class on the host and the fixed classes on the table", () => {
+    expect(root.querySelector("ko-table")!.classList.contains("mt-4")).toBe(true);
     const table = root.querySelector("table")!;
-    for (const name of ["w-full", "text-left", "text-sm", "min-w-[40rem]"]) {
+    expect(table.classList.contains("mt-4")).toBe(false);
+    for (const name of ["w-full", "text-left", "text-sm"]) {
       expect(table.classList.contains(name)).toBe(true);
     }
   });
