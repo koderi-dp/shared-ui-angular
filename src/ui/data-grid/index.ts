@@ -20,7 +20,7 @@ export {
 export { KoProgressCell } from "@/ui/data-grid/columns/progress-cell.component";
 export type { ProgressVariant } from "@/ui/data-grid/columns/progress-level";
 export {
-  KoStatusBadge,
+  KoToneBadge,
   KoStatusCell,
   KoStatusDotLabel,
 } from "@/ui/data-grid/columns/status-cell.component";

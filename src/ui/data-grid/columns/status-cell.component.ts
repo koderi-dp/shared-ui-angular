@@ -5,13 +5,13 @@ import { BADGE_VARIANT, DOT_CLASS, TEXT_CLASS, type StatusTone } from "./tones";
 
 /** A status as a badge in its tone's variant; the label is the projected content. */
 @Component({
-  selector: "ko-status-badge",
+  selector: "ko-tone-badge",
   imports: [KoBadge],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "contents" },
   template: `<ko-badge [variant]="variant()"><ng-content /></ko-badge>`,
 })
-export class KoStatusBadge {
+export class KoToneBadge {
   readonly tone = input.required<StatusTone>();
   protected readonly variant = computed(() => BADGE_VARIANT[this.tone()]);
 }
@@ -35,12 +35,12 @@ export class KoStatusDotLabel {
 /** The `statusColumn` cell: `label` as a badge or a dot label, in `tone`. */
 @Component({
   selector: "ko-status-cell",
-  imports: [KoStatusBadge, KoStatusDotLabel],
+  imports: [KoToneBadge, KoStatusDotLabel],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "contents" },
   template: `
     @if (style() === "badge") {
-      <ko-status-badge [tone]="tone()">{{ label() }}</ko-status-badge>
+      <ko-tone-badge [tone]="tone()">{{ label() }}</ko-tone-badge>
     } @else {
       <ko-status-dot-label [tone]="tone()">{{ label() }}</ko-status-dot-label>
     }
