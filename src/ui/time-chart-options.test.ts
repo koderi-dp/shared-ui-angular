@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { ChartRow, ChartSeries } from "@/ui/chart-types";
+import { timeTicks } from "@/ui/chart-format";
 import {
   buildTimeChartOption,
   hasChartData,
@@ -10,9 +11,7 @@ import {
 const theme: TimeChartTheme = {
   text: "#8b909c",
   grid: "rgba(236,238,242,0.08)",
-  tooltipBg: "#16181f",
   tooltipText: "#eceef2",
-  tooltipMuted: "#8b909c",
 };
 const series: ChartSeries[] = [
   { id: "cpu", name: "CPU", color: "#3987e5" },
@@ -144,5 +143,18 @@ describe("chart hover styling", () => {
     expect(tip().position([100, 40], null, null, null, size)).toEqual([110, 50]);
     expect(tip().position([300, 40], null, null, null, size)).toEqual([190, 50]);
     expect(tip().position([100, 190], null, null, null, size)).toEqual([110, 150]);
+  });
+});
+
+describe("x axis ticks", () => {
+  it("uses the explicit React ticks for labels and tick marks", () => {
+    const from = 1_700_000_000_000;
+    const to = from + 15 * 60_000;
+    const option = buildTimeChartOption({ ...base, from, to }) as unknown as {
+      xAxis: { axisLabel: { customValues: number[] }; axisTick: { customValues: number[] } };
+    };
+    const { ticks } = timeTicks(from, to);
+    expect(option.xAxis.axisLabel.customValues).toEqual(ticks);
+    expect(option.xAxis.axisTick.customValues).toEqual(ticks);
   });
 });

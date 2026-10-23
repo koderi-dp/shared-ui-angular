@@ -6,9 +6,7 @@ import type { ChartRow, ChartSeries } from "@/ui/chart-types";
 export type TimeChartTheme = {
   text: string;
   grid: string;
-  tooltipBg: string;
   tooltipText: string;
-  tooltipMuted: string;
 };
 
 export type TimeChartInput = {
@@ -131,7 +129,7 @@ export function buildTimeChartOption(input: TimeChartInput): EChartsCoreOption {
       min: from,
       max: to,
       axisLine: { lineStyle: { color: theme.grid } },
-      axisTick: { show: false },
+      axisTick: { show: false, customValues: axis.ticks },
       splitLine: { show: false },
       axisLabel: {
         color: theme.text,

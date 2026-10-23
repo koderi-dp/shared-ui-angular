@@ -144,9 +144,7 @@ export class KoTimeChart {
       this.theme.set({
         text: read("--color-muted-foreground"),
         grid: read("--color-border"),
-        tooltipBg: read("--color-popover"),
         tooltipText: read("--color-popover-foreground"),
-        tooltipMuted: read("--color-muted-foreground"),
       });
     });
   }
