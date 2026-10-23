@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 import { lucidePlus, lucideRefreshCw, lucideSave } from "@ng-icons/lucide";
 import { KoBadge } from "@/ui/primitives/badge.component";
 import { KoButton, KoIconButton } from "@/ui/primitives/button.component";
@@ -10,11 +10,28 @@ import {
   KoCardTitle,
 } from "@/ui/primitives/card.component";
 import { KoCheckbox } from "@/ui/primitives/checkbox.component";
+import {
+  KoDialog,
+  KoDialogClose,
+  KoDialogContent,
+  KoDialogDescription,
+  KoDialogFooter,
+  KoDialogHeader,
+  KoDialogTitle,
+  KoDialogTrigger,
+} from "@/ui/primitives/dialog.component";
 import { KoInput } from "@/ui/primitives/input.directive";
 import { KoLabel } from "@/ui/primitives/label.directive";
 import { KoScrollArea } from "@/ui/primitives/scroll-area.directive";
 import { KoSelect } from "@/ui/primitives/select.component";
 import { KoSeparator } from "@/ui/primitives/separator.component";
+import {
+  KoSheet,
+  KoSheetContent,
+  KoSheetDescription,
+  KoSheetTitle,
+  KoSheetTrigger,
+} from "@/ui/primitives/sheet.component";
 import { KoSkeleton } from "@/ui/primitives/skeleton.component";
 import { KoSwitch } from "@/ui/primitives/switch.component";
 import { KoTable, KoTableBody, KoTableCell, KoTableRow } from "@/ui/primitives/table.directive";
@@ -39,6 +56,19 @@ import { KoTextarea } from "@/ui/primitives/textarea.directive";
     KoSelect,
     KoLabel,
     KoSeparator,
+    KoDialog,
+    KoDialogContent,
+    KoDialogHeader,
+    KoDialogTitle,
+    KoDialogDescription,
+    KoDialogFooter,
+    KoDialogClose,
+    KoDialogTrigger,
+    KoSheet,
+    KoSheetContent,
+    KoSheetTitle,
+    KoSheetDescription,
+    KoSheetTrigger,
     KoSkeleton,
     KoScrollArea,
     KoTable,
@@ -170,10 +200,43 @@ import { KoTextarea } from "@/ui/primitives/textarea.directive";
           </div>
         </ko-card-content>
       </ko-card>
+
+      <ko-card>
+        <ko-card-header>
+          <ko-card-title>Dialog and sheet</ko-card-title>
+          <ko-card-description>Focus is trapped, Escape closes, focus returns.</ko-card-description>
+        </ko-card-header>
+        <ko-card-content class="flex flex-wrap items-center gap-2">
+          <button koButton variant="outline" [koDialogTrigger]="dialog">Open dialog</button>
+          <ko-dialog #dialog [(open)]="dialogOpen">
+            <ng-template koDialogContent>
+              <ko-dialog-header>
+                <ko-dialog-title>Delete connection</ko-dialog-title>
+                <ko-dialog-description>This cannot be undone.</ko-dialog-description>
+              </ko-dialog-header>
+              <ko-dialog-footer>
+                <button koButton variant="ghost" koDialogClose>Cancel</button>
+                <button koButton variant="destructive" koDialogClose>Delete</button>
+              </ko-dialog-footer>
+            </ng-template>
+          </ko-dialog>
+          <button koButton variant="outline" [koSheetTrigger]="sheet">Open sheet</button>
+          <ko-sheet #sheet [(open)]="sheetOpen" side="right">
+            <ng-template koSheetContent>
+              <div class="grid gap-1 p-4 pr-12">
+                <ko-sheet-title>Filters</ko-sheet-title>
+                <ko-sheet-description>Narrow the list.</ko-sheet-description>
+              </div>
+            </ng-template>
+          </ko-sheet>
+        </ko-card-content>
+      </ko-card>
     </div>
   `,
 })
 export class KoPrimitivesPage {
+  protected readonly dialogOpen = signal(false);
+  protected readonly sheetOpen = signal(false);
   protected readonly variants = [
     "default",
     "secondary",
