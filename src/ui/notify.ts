@@ -1,4 +1,4 @@
-import { toast } from "sonner";
+import { toast } from "ngx-sonner";
 
 function message(err: unknown, fallback: string) {
   return err instanceof Error ? err.message : fallback;
