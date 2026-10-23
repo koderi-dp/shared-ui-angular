@@ -19,13 +19,9 @@ import {
 import type { ItemInstance } from "@headless-tree/core";
 import { NgIcon } from "@ng-icons/core";
 import { lucideChevronDown, lucideChevronRight, lucideMinus, lucidePlus } from "@ng-icons/lucide";
-import type { KoTreeHandle } from "@/ui/primitives/tree-adapter";
-import {
-  styleEntriesOf,
-  TreePropsApplier,
-  type TreeElementProps,
-} from "@/ui/primitives/tree-props";
-import { selectOnClick } from "@/ui/primitives/tree-select";
+import type { KoTreeHandle } from "./tree-adapter";
+import { styleEntriesOf, TreePropsApplier, type TreeElementProps } from "./tree-props";
+import { selectOnClick } from "./tree-select";
 import { cn } from "@koderi-dp/ui";
 
 /** The item of the row an item template is rendered in. */

@@ -16,7 +16,7 @@ import {
   type TreeInstance,
   type TreeState,
 } from "@headless-tree/core";
-import { buildTreeConfig, type TreeControllerOptions } from "@/ui/tree-controller";
+import { buildTreeConfig, type TreeControllerOptions } from "./tree-controller";
 
 /** A headless-tree instance with its visible items as a signal. */
 export type KoTreeHandle<T> = {

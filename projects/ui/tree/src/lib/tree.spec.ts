@@ -5,9 +5,9 @@ import {
   signal,
 } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { injectTreeController } from "@/ui/primitives/tree-adapter";
-import { KoTree, KoTreeItem, KoTreeItemLabel } from "@/ui/primitives/tree.component";
-import { TREE_ROOT } from "@/ui/tree-controller";
+import { injectTreeController } from "./tree-adapter";
+import { KoTree, KoTreeItem, KoTreeItemLabel } from "./tree.component";
+import { TREE_ROOT } from "./tree-controller";
 
 type Node = { id: string; parentId: string | null; name: string; folder: boolean };
 

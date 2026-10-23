@@ -6,7 +6,7 @@ import {
   type FeatureImplementation,
   type TreeConfig,
 } from "@headless-tree/core";
-import { preventScrollFocusFeature } from "@/ui/primitives/tree-focus";
+import { preventScrollFocusFeature } from "./tree-focus";
 
 /** The id the root of a tree is expected to carry when it is not passed explicitly. */
 export const TREE_ROOT = "__root__";

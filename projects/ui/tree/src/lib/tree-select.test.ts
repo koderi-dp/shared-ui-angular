@@ -1,6 +1,6 @@
 import { createTree, type TreeInstance } from "@headless-tree/core";
 import { expect, it } from "vitest";
-import { buildTreeConfig, TREE_ROOT } from "@/ui/tree-controller";
+import { buildTreeConfig, TREE_ROOT } from "./tree-controller";
 import { selectOnClick } from "./tree-select";
 
 type Node = { id: string; parentId: string | null; folder: boolean };

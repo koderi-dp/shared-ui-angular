@@ -26,14 +26,14 @@ import {
   KoLabel,
   KoSwitch,
 } from "@koderi-dp/ui";
-import { injectTreeController } from "@/ui/primitives/tree-adapter";
 import {
+  injectTreeController,
   KoTree,
   KoTreeDragHandle,
   KoTreeItem,
   KoTreeItemLabel,
-} from "@/ui/primitives/tree.component";
-import { TREE_ROOT } from "@/ui/tree-controller";
+  TREE_ROOT,
+} from "@koderi-dp/ui/tree";
 import { isAncestor, moveNodes } from "@/demo/file-tree";
 
 type Node = { id: string; parentId: string | null; name: string; kind: "root" | "folder" | "file" };
