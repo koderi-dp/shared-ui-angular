@@ -540,6 +540,11 @@
           "path": "src/ui/list-filter-bar.component.ts",
           "type": "registry:file",
           "target": "src/ui/list-filter-bar.component.ts"
+        },
+        {
+          "path": "src/ui/list-filter-bar.spec.ts",
+          "type": "registry:file",
+          "target": "src/ui/list-filter-bar.spec.ts"
         }
       ]
     },
@@ -665,6 +670,11 @@
           "path": "src/ui/chart-format.test.ts",
           "type": "registry:file",
           "target": "src/ui/chart-format.test.ts"
+        },
+        {
+          "path": "src/ui/charts.spec.ts",
+          "type": "registry:file",
+          "target": "src/ui/charts.spec.ts"
         }
       ]
     },
