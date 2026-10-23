@@ -153,3 +153,33 @@ Each gets a small spike at the start of the plan:
 
 No component or behaviour changes; no light theme; no SSR work; no Angular range beyond
 `^22.2.0`; no second npm package; no changelog tooling (release notes are written by hand).
+
+## Spike results
+
+Run 2026-10-24 in a throwaway workspace (Angular CLI 22.2.4, ng-packagr 22.2.5, TypeScript 6.0.3,
+Tailwind 4.3.3, Node 24, npm 12).
+
+1. Theme export: works. ng-packagr copies `theme.css` (listed under `assets`) and keeps the hand-written
+   `"./theme.css"` entry, merged with the entries it generates. A consumer's Tailwind resolves
+   `@import "<pkg>/theme.css"` and the built CSS has `--color-spike` and `.bg-spike`. Pack with
+   `npm pack ./dist/ui`: npm 12 reads `dist/ui` without `./` as a GitHub shorthand and refuses it.
+2. Library specs in the app's test target: works with `include` paths relative to the app's sourceRoot.
+   `@angular/build:unit-test` resolves `include` from the sourceRoot (`src`), so `projects/ui/**/*.spec.ts`
+   silently matches nothing; `"../projects/ui/**/*.spec.ts"` runs the library specs. Widening
+   `tsconfig.spec.json` `include` is not needed for the run, only for type-checking.
+3. Cross-entry imports: works. With `paths` pointing at the sources, `ng build`, `ng serve` and `ng test`
+   resolve the secondary → primary import from source, and `ng build ui` emits the bare package specifier
+   (`import { SpikeService } from "@koderi-dp/ui"` in `fesm2022/koderi-dp-ui-extra.mjs`), not a relative path.
+
+`exports` ng-packagr produced (scoped name `@koderi-dp/ui`, one secondary entry `extra`):
+
+```json
+{
+  "./theme.css": { "default": "./theme.css" },
+  "./package.json": { "default": "./package.json" },
+  ".": { "types": "./types/koderi-dp-ui.d.ts", "default": "./fesm2022/koderi-dp-ui.mjs" },
+  "./extra": { "types": "./types/koderi-dp-ui-extra.d.ts", "default": "./fesm2022/koderi-dp-ui-extra.mjs" }
+}
+```
+
+No post-build `exports` script is needed.
