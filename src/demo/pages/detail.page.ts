@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal } from "@angular/core";
+import { toSignal } from "@angular/core/rxjs-interop";
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import {
@@ -25,7 +26,7 @@ import { KoButton } from "@/ui/primitives/button.component";
 import { KoStatusBadge } from "@/ui/status.component";
 import { statusLabel } from "@/ui/status-text";
 import { formatBytes, formatDuration } from "@/ui/utils";
-import { demoItems } from "@/demo/items";
+import { demoItems } from "@/demo/data";
 
 type TabId = "overview" | "settings" | "jobs";
 
@@ -54,11 +55,13 @@ const TABS: readonly DetailTabDefinition<TabId>[] = [
     FormsModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // The shell's main is a fixed-height column for this page; it scrolls its own panes.
+  host: { class: "flex min-h-0 flex-1 flex-col" },
   template: `
     <ko-detail-shell
-      class="h-dvh"
+      class="min-h-0 flex-1"
       [icon]="boxes"
-      [title]="item.name"
+      [title]="item().name"
       [tabs]="tabs"
       [actions]="actions()"
       [(activeTab)]="tab"
@@ -66,7 +69,7 @@ const TABS: readonly DetailTabDefinition<TabId>[] = [
       (refresh)="refresh()"
     >
       <span koSubtitle
-        >{{ item.owner }} · <span class="font-mono">{{ item.id }}</span></span
+        >{{ item().owner }} · <span class="font-mono">{{ item().id }}</span></span
       >
       <ko-status-badge koBadge [state]="state()" />
 
@@ -76,10 +79,10 @@ const TABS: readonly DetailTabDefinition<TabId>[] = [
             <ko-detail-section title="Summary">
               <ko-overview-panel>
                 <ko-overview-row label="State" [value]="stateLabel()" />
-                <ko-overview-row label="Owner" [value]="item.owner" />
+                <ko-overview-row label="Owner" [value]="item().owner" />
                 <ko-overview-row label="Uptime" [value]="uptime()" />
-                <ko-overview-row label="Stored" [value]="stored" />
-                <ko-overview-row label="Reference" mono [copy]="item.id" [value]="item.id" />
+                <ko-overview-row label="Stored" [value]="stored()" />
+                <ko-overview-row label="Reference" mono [copy]="item().id" [value]="item().id" />
               </ko-overview-panel>
             </ko-detail-section>
             <ko-detail-section title="Recent events">
@@ -121,26 +124,36 @@ const TABS: readonly DetailTabDefinition<TabId>[] = [
       }
 
       <span koFooter>Created 12 days ago</span>
-      <span koFooter class="font-mono">{{ stored }} stored</span>
+      <span koFooter class="font-mono">{{ stored() }} stored</span>
     </ko-detail-shell>
   `,
 })
 export class KoDetailPage {
-  // `:id` picks the item; anything unknown falls back to the first.
-  protected readonly item =
-    demoItems.find((row) => row.id === inject(ActivatedRoute).snapshot.paramMap.get("id")) ??
-    demoItems[0];
+  // `:id` picks the item; anything unknown falls back to the first. Followed, so moving to
+  // another item starts its tabs and settings afresh, as the React page's key did.
+  private readonly params = toSignal(inject(ActivatedRoute).paramMap, {
+    requireSync: true,
+  });
+  protected readonly item = computed(
+    () => demoItems.find((row) => row.id === this.params().get("id")) ?? demoItems[0],
+  );
 
   protected readonly boxes = lucideBoxes;
   protected readonly tabs = TABS;
-  protected readonly stored = formatBytes(this.item.bytes);
-  protected readonly tab = signal<TabId>("overview");
-  protected readonly workers = signal(this.item.id === "itm-01" ? 4 : 2);
-  protected readonly paused = signal(false);
-  protected readonly state = computed(() => (this.paused() ? "stopped" : this.item.state));
+  protected readonly stored = computed(() => formatBytes(this.item().bytes));
+  protected readonly tab = linkedSignal<TabId>(() => {
+    this.item();
+    return "overview";
+  });
+  protected readonly workers = linkedSignal(() => (this.item().id === "itm-01" ? 4 : 2));
+  protected readonly paused = linkedSignal(() => {
+    this.item();
+    return false;
+  });
+  protected readonly state = computed(() => (this.paused() ? "stopped" : this.item().state));
   protected readonly stateLabel = computed(() => statusLabel(this.state()));
   protected readonly uptime = computed(() =>
-    !this.paused() && this.item.uptimeMs ? formatDuration(this.item.uptimeMs) : "—",
+    !this.paused() && this.item().uptimeMs ? formatDuration(this.item().uptimeMs) : "—",
   );
 
   protected readonly actions = computed<DetailAction[]>(() => [

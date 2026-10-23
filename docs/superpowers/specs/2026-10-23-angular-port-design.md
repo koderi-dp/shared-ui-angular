@@ -124,6 +124,25 @@ registry entry is removed. Consumer setup is one tsconfig line: `"paths": { "@/*
 - Visual parity: each showcase page is compared side by side with the React showcase.
   Differences are fixed or recorded as intentional (e.g. ECharts' tooltip versus Recharts').
 
+## Known differences
+
+Intentional differences between the Angular showcase and the React one, found by reading the
+code. Visual findings from the side-by-side pass are added below.
+
+- Chart tooltips are ECharts' (axis tooltip, its own styling), not Recharts'.
+- Dialogs and sheets have no exit animation: the CDK overlay detaches on close, so only the
+  enter animation plays (React's Radix content fades out).
+- The number input keeps the typed text while editing and clamps to `min` on blur, so a value
+  below the minimum shows until the field loses focus (React clamped as it was typed).
+- The sheet is a fixed `18rem` wide (React's primitives page asked for `w-80`); the CDK
+  dialog config sets the width, not a class.
+- Primitives page: the popover, checkbox and tab demos that the Angular port had added before
+  are gone, so the page mirrors React's sections exactly.
+- An unknown path shows a bare "Not Found" paragraph, as TanStack Router's default does.
+- Tables sit in an `overflow-hidden` wrapper without React's inner `overflow-x-auto` div (a
+  directive cannot add a wrapper), so a very narrow viewport clips a wide table instead of
+  scrolling it, unless it is put in a `koScrollArea`.
+
 ## Definition of done
 
 Per item:

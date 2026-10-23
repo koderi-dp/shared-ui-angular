@@ -17,7 +17,7 @@ import {
 } from "@/ui/primitives/table.directive";
 import { KoStatusBadge } from "@/ui/status.component";
 import { formatBytes } from "@/ui/utils";
-import { demoItems } from "@/demo/items";
+import { demoItems } from "@/demo/data";
 
 /** The furniture around a list page: header, filter bar, selection toolbar, confirm step. */
 @Component({
@@ -39,6 +39,7 @@ import { demoItems } from "@/demo/items";
     KoTableCell,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: "block" },
   template: `
     <ko-page-shell gap="loose">
       <ko-page-header

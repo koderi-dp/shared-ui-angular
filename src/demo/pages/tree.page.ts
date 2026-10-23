@@ -77,6 +77,7 @@ const isFolder = (node: Node) => node.kind !== "file";
     NgIcon,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: "block" },
   template: `
     <ko-page-shell gap="loose">
       <ko-page-header

@@ -62,6 +62,7 @@ const INITIAL: Form = {
     FormsModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: "block" },
   template: `
     <ko-page-shell gap="loose">
       <ko-page-header
