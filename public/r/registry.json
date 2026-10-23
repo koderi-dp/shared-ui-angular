@@ -147,6 +147,16 @@
           "target": "src/ui/primitives/dialog.service.ts"
         },
         {
+          "path": "src/ui/primitives/dialog-exit.ts",
+          "type": "registry:file",
+          "target": "src/ui/primitives/dialog-exit.ts"
+        },
+        {
+          "path": "src/ui/primitives/dialog-exit.test.ts",
+          "type": "registry:file",
+          "target": "src/ui/primitives/dialog-exit.test.ts"
+        },
+        {
           "path": "src/ui/primitives/dialog-panel.ts",
           "type": "registry:file",
           "target": "src/ui/primitives/dialog-panel.ts"
