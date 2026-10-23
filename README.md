@@ -192,14 +192,6 @@ There is nothing to register.
 - `ko-dialog` takes `disableClose` to ignore Escape and backdrop clicks; `ko-confirm-dialog`
   sets it while `pending`. `ko-sheet` takes `width` (default `18rem`).
 
-### Known differences from the React originals
-
-- The number input keeps the typed text while editing and clamps to `min` on blur.
-- Charts are drawn by ECharts, styled to match Recharts' crosshair, hover dot and tooltip. The
-  x-axis gets the same tick list, but ECharts thins overlapping labels differently from
-  Recharts' `minTickGap`, so a narrow chart can show a different subset. The y-axis uses
-  round steps (0, 50, 100, …) where Recharts split the range into five equal ticks.
-
 ## Developing
 
 ```sh
