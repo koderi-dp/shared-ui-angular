@@ -94,7 +94,7 @@ export class KoSettingsSectionLayout<Id extends string = string> {
     <div class="flex items-center justify-between gap-3">
       <span class="min-w-0 text-xs text-muted-foreground" aria-live="polite">{{ message() }}</span>
       <div class="flex shrink-0 items-center gap-2">
-        @if (dirty()) {
+        @if (discardable() && dirty()) {
           <button
             koButton
             size="sm"
@@ -123,6 +123,8 @@ export class KoSettingsSectionLayout<Id extends string = string> {
 export class KoSettingsSaveFooter {
   readonly dirty = input.required({ transform: booleanAttribute });
   readonly isSaving = input(false, { transform: booleanAttribute });
+  /** Show a Discard button while dirty; wire `(cancel)` when you turn it on. */
+  readonly discardable = input(false, { transform: booleanAttribute });
   readonly submitLabel = input("Save");
   /** What saving will do beyond storing the change, such as restarting a service. */
   readonly note = input<string>();

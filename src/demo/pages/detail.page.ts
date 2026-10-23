@@ -62,6 +62,7 @@ const TABS: readonly DetailTabDefinition<TabId>[] = [
       [tabs]="tabs"
       [actions]="actions()"
       [(activeTab)]="tab"
+      refreshable
       (refresh)="refresh()"
     >
       <span koSubtitle

@@ -57,14 +57,16 @@ export type DetailTabDefinition<Id extends string> = { id: Id; label: string; co
           <ng-content select="[koSubtitle]" />
         </p>
       </div>
-      <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
-      <button
-        koIconButton
-        class="shrink-0"
-        label="Refresh"
-        [icon]="refreshIcon"
-        (click)="refresh.emit()"
-      ></button>
+      @if (refreshable()) {
+        <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
+        <button
+          koIconButton
+          class="shrink-0"
+          label="Refresh"
+          [icon]="refreshIcon"
+          (click)="refresh.emit()"
+        ></button>
+      }
     </div>
 
     @if (actions().length > 0) {
@@ -102,7 +104,7 @@ export type DetailTabDefinition<Id extends string> = { id: Id; label: string; co
           (click)="activeTab.set(tab.id)"
         >
           {{ tab.label }}
-          @if (tab.count !== undefined) {
+          @if (tab.count !== undefined && tab.count !== null) {
             <span
               class="rounded-full bg-secondary px-1.5 text-[10px] tabular-nums text-muted-foreground"
             >
@@ -158,6 +160,8 @@ export class KoDetailShell<Id extends string = string> {
   readonly activeTab = model.required<Id>();
   readonly actions = input<readonly DetailAction[]>([]);
   readonly class = input<string>("");
+  /** Show the Refresh button; wire `(refresh)` when you turn it on. */
+  readonly refreshable = input(false, { transform: booleanAttribute });
   readonly refresh = output<void>();
 
   protected readonly refreshIcon = lucideRefreshCcw;
@@ -241,7 +245,7 @@ export class KoOverviewRow {
   protected copyValue(): void {
     const text = this.copy();
     if (!text || !isPlatformBrowser(this.platformId)) return;
-    void navigator.clipboard?.writeText(text);
+    navigator.clipboard?.writeText(text).catch(() => undefined);
   }
 }
 

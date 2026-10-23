@@ -60,12 +60,33 @@ describe("form composites", () => {
       expect(host.workers.value).toBe(9);
     });
 
-    it("clamps a typed value above max to max on blur", async () => {
+    it("reports a value above max as max while typing, and puts the text in line on blur", async () => {
+      host.workers.setValue(16);
+      await settle();
       type("99");
-      input().dispatchEvent(new Event("blur"));
       await settle();
       expect(host.workers.value).toBe(16);
+      expect(input().value).toBe("99");
+      input().dispatchEvent(new Event("blur"));
+      await settle();
       expect(input().value).toBe("16");
+      expect(host.workers.value).toBe(16);
+    });
+
+    it("raises a value below min to min on blur", async () => {
+      type("0");
+      await settle();
+      expect(input().value).toBe("0");
+      input().dispatchEvent(new Event("blur"));
+      await settle();
+      expect(host.workers.value).toBe(1);
+      expect(input().value).toBe("1");
+    });
+
+    it("writes null as min", async () => {
+      host.workers.setValue(null as unknown as number);
+      await settle();
+      expect(input().value).toBe("1");
     });
 
     it("keeps an emptied field empty until blur, then returns to min", async () => {

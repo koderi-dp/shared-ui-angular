@@ -139,6 +139,7 @@ const INITIAL: Form = {
         <ko-settings-save-footer
           submitLabel="Save settings"
           note="Saving restarts the workers."
+          discardable
           [dirty]="dirty()"
           [isSaving]="isSaving()"
           (cancel)="form.set(saved())"

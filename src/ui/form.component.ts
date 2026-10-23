@@ -117,7 +117,7 @@ export class KoNumberInput implements ControlValueAccessor {
   private onTouched: () => void = () => undefined;
 
   writeValue(value: number | null): void {
-    const next = value ?? 0;
+    const next = value ?? this.min() ?? 0;
     this.value.set(next);
     const current = this.text();
     this.text.set(Number(current) === next && current !== "" ? current : String(next));
@@ -144,13 +144,14 @@ export class KoNumberInput implements ControlValueAccessor {
 
   protected onInput(event: Event): void {
     const field = event.target as HTMLInputElement;
-    let text = field.value.replace(/[^\d]/g, "");
+    const text = field.value.replace(/[^\d]/g, "");
     const max = this.max();
-    if (text !== "" && max != null && Number(text) > max) text = String(max);
     // The input keeps what the browser put in it unless told otherwise, so write the text back.
     if (field.value !== text) field.value = text;
     this.text.set(text);
-    if (text !== "") this.commit(Number(text));
+    // The typed text stays as typed so it can be edited; the value reported is already in range
+    // above, and blur puts the text in line with it.
+    if (text !== "") this.commit(max == null ? Number(text) : Math.min(Number(text), max));
   }
 
   protected onBlur(): void {
