@@ -145,6 +145,16 @@
           "path": "src/ui/primitives/dialog.service.ts",
           "type": "registry:file",
           "target": "src/ui/primitives/dialog.service.ts"
+        },
+        {
+          "path": "src/ui/primitives/dialog-panel.ts",
+          "type": "registry:file",
+          "target": "src/ui/primitives/dialog-panel.ts"
+        },
+        {
+          "path": "src/ui/primitives/dialog-panel.spec.ts",
+          "type": "registry:file",
+          "target": "src/ui/primitives/dialog-panel.spec.ts"
         }
       ]
     },
