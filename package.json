@@ -11,9 +11,7 @@
     "test:watch": "vitest",
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "registry:build": "shadcn build",
-    "registry:serve": "node scripts/serve-registry.mjs"
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@angular/cdk": "^22.2.0",
@@ -54,7 +52,6 @@
     "postcss": "^8.5.6",
     "prettier": "^3.9.10",
     "publint": "^0.3.25",
-    "shadcn": "^4.21.4",
     "tailwindcss": "^4.1.14",
     "typescript": "~6.0.0",
     "typescript-eslint": "^8.71.1",

@@ -19,7 +19,7 @@
             "browser": "src/main.ts",
             "index": "src/index.html",
             "tsConfig": "tsconfig.app.json",
-            "outputPath": "dist",
+            "outputPath": "dist/showcase",
             "assets": [
               {
                 "glob": "**/*",
