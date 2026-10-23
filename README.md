@@ -189,12 +189,15 @@ There is nothing to register.
 
 - Give a bare `ko-checkbox`, `ko-switch` or `ko-select` a name with `aria-label="..."`; it is
   forwarded to the inner control.
+- `ko-dialog` takes `disableClose` to ignore Escape and backdrop clicks; `ko-confirm-dialog`
+  sets it while `pending`. `ko-sheet` takes `width` (default `18rem`).
 
 ### Known differences from the React originals
 
 - The number input keeps the typed text while editing and clamps to `min` on blur.
-- Chart tooltips are ECharts', not Recharts'.
-- Tables clip, rather than scroll, on a very narrow viewport unless wrapped in a `koScrollArea`.
+- Charts are drawn by ECharts, styled to match Recharts' crosshair, hover dot and tooltip. The
+  x-axis gets the same tick list, but ECharts thins overlapping labels differently from
+  Recharts' `minTickGap`, so a narrow chart can show a different subset.
 
 ## Developing
 
