@@ -22,7 +22,7 @@ import {
 } from "@angular/core";
 import { NgIcon } from "@ng-icons/core";
 import { lucideX } from "@ng-icons/lucide";
-import { linkToPanel } from "@/ui/primitives/dialog.component";
+import { linkToPanel } from "@/ui/primitives/dialog-panel";
 import { KO_DIALOG_BACKDROP_CLASS } from "@/ui/primitives/dialog.service";
 import { cn } from "@/ui/utils";
 
