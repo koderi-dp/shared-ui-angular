@@ -35,6 +35,16 @@ export default tseslint.config(
       ],
     },
   },
+  // `button[koButton]` is a component on a native element, so it takes an attribute selector.
+  {
+    files: ['src/ui/primitives/button.component.ts'],
+    rules: {
+      '@angular-eslint/component-selector': [
+        'error',
+        { type: ['element', 'attribute'], prefix: 'ko', style: 'camelCase' },
+      ],
+    },
+  },
   {
     files: ['**/*.html'],
     extends: [

@@ -1,5 +1,4 @@
 // Adapted from Zard UI 1.1.1 (MIT) — https://github.com/zard-ui/zardui
-/* eslint-disable @angular-eslint/component-selector -- attribute selectors on native button/a (koButton) are the design */
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
@@ -30,7 +29,7 @@ type ButtonVariants = VariantProps<typeof buttonVariants>;
     "[attr.disabled]": "isButton && inactive() ? '' : null",
     "[attr.aria-busy]": "loading() ? 'true' : null",
     "[attr.aria-disabled]": "inactive() ? 'true' : null",
-    "[attr.tabindex]": "!isButton && inactive() ? -1 : null",
+    "[attr.tabindex]": "!isButton && inactive() ? -1 : tabindex()",
     "(click)": "onClick($event)",
   },
   template: `
@@ -66,6 +65,8 @@ export class KoButton {
   readonly loading = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly class = input<string>("");
+  /** Re-reads a static `tabindex` so the host binding never strips it from an enabled control. */
+  readonly tabindex = input<string | number | null>(null);
 
   protected readonly spinner = lucideLoaderCircle;
   protected readonly isButton =
@@ -96,17 +97,36 @@ export class KoButton {
     "[class]": "classes()",
     "[attr.aria-label]": "label()",
     "[attr.title]": "label()",
+    "[attr.disabled]": "inactive() ? '' : null",
+    "[attr.aria-busy]": "loading() ? 'true' : null",
+    "[attr.aria-disabled]": "inactive() ? 'true' : null",
   },
-  template: `<ng-icon aria-hidden="true" size="1rem" [svg]="icon()" />`,
+  template: `
+    <ng-icon
+      aria-hidden="true"
+      size="1rem"
+      [svg]="loading() ? spinner : icon()"
+      [class.animate-spin]="loading()"
+      [class.motion-reduce:animate-none]="loading()"
+    />
+  `,
 })
 export class KoIconButton {
   readonly icon = input.required<string>();
   readonly label = input.required<string>();
   readonly variant = input<ButtonVariants["variant"]>("ghost");
   readonly size = input<"icon" | "icon-sm">("icon-sm");
+  readonly loading = input(false, { transform: booleanAttribute });
+  readonly disabled = input(false, { transform: booleanAttribute });
   readonly class = input<string>("");
 
+  protected readonly spinner = lucideLoaderCircle;
+  protected readonly inactive = computed(() => this.disabled() || this.loading());
   protected readonly classes = computed(() =>
-    cn(buttonVariants({ variant: this.variant(), size: this.size() }), this.class()),
+    cn(
+      buttonVariants({ variant: this.variant(), size: this.size() }),
+      this.loading() && "disabled:!opacity-100",
+      this.class(),
+    ),
   );
 }

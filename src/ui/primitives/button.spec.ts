@@ -19,6 +19,12 @@ import { KoButton, KoIconButton } from "@/ui/primitives/button.component";
     <button id="refresh" koIconButton [icon]="refresh" label="Refresh connections"></button>
     <a id="assets" koButton href="/assets" [disabled]="true">Assets</a>
     <button id="plain" koButton class="h-12">Plain</button>
+    <button id="tabbed" koButton tabindex="3">Tabbed</button>
+    <a id="tabbed-link" koButton href="/x" tabindex="2">Tabbed link</a>
+    <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
+    <button id="busy-icon" koIconButton label="Sync" [icon]="refresh" [loading]="true"></button>
+    <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
+    <button id="off-icon" koIconButton label="Stop" [icon]="refresh" [disabled]="true"></button>
   `,
 })
 class HostComponent {
@@ -75,5 +81,21 @@ describe("KoButton", () => {
     const button = el("plain");
     expect(button.classList).toContain("h-12");
     expect(button.classList).not.toContain("h-9");
+  });
+
+  it("keeps a consumer tabindex when enabled, and drops the tab stop on a disabled anchor", () => {
+    expect(el("tabbed").getAttribute("tabindex")).toBe("3");
+    expect(el("tabbed-link").getAttribute("tabindex")).toBe("2");
+    expect(el("assets").getAttribute("tabindex")).toBe("-1");
+  });
+
+  it("gives an icon button loading and disabled states", () => {
+    const busy = el("busy-icon");
+    expect(busy.getAttribute("aria-busy")).toBe("true");
+    expect(busy.hasAttribute("disabled")).toBe(true);
+    expect(busy.innerHTML).toContain("animate-spin");
+    expect(busy.querySelectorAll("svg")).toHaveLength(1);
+    expect(el("off-icon").hasAttribute("disabled")).toBe(true);
+    expect(el("refresh").hasAttribute("disabled")).toBe(false);
   });
 });
