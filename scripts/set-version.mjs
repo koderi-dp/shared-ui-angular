@@ -3,7 +3,10 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 
 const [tag = '', file = 'dist/ui/package.json'] = process.argv.slice(2)
-const match = /^v(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)$/.exec(tag)
+const match =
+  /^v((?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?)$/.exec(
+    tag
+  )
 
 if (!match) {
   console.error(`Not a release tag: ${tag}`)

@@ -33,11 +33,20 @@ describe("set-version", () => {
     expect(JSON.parse(readFileSync(file, "utf8")).version).toBe("1.2.3-beta.1");
   });
 
-  it.each(["release-1", "1.0.0"])("rejects %s and leaves the file unchanged", (tag) => {
+  it("accepts a dotted prerelease tag", () => {
     const file = tempPackageJson();
-    const result = run(tag, file);
-    expect(result.status).toBe(1);
-    expect(result.stderr).toContain(`Not a release tag: ${tag}`);
-    expect(readFileSync(file, "utf8")).toBe(original);
+    const out = execFileSync("node", [script, "v1.2.3-rc.1", file], { encoding: "utf8" });
+    expect(out.trim()).toBe("1.2.3-rc.1");
   });
+
+  it.each(["release-1", "1.0.0", "v01.2.3", "v1.2.3-."])(
+    "rejects %s and leaves the file unchanged",
+    (tag) => {
+      const file = tempPackageJson();
+      const result = run(tag, file);
+      expect(result.status).toBe(1);
+      expect(result.stderr).toContain(`Not a release tag: ${tag}`);
+      expect(readFileSync(file, "utf8")).toBe(original);
+    },
+  );
 });
