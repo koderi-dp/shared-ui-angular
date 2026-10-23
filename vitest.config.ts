@@ -6,14 +6,21 @@ import { defineConfig } from "vitest/config";
 // run under `ng test` instead.
 export default defineConfig({
   resolve: {
-    alias: {
-      "@koderi-dp/ui": fileURLToPath(new URL("./projects/ui/src/public-api.ts", import.meta.url)),
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
-    },
+    alias: [
+      {
+        find: /^@koderi-dp\/ui$/,
+        replacement: fileURLToPath(new URL("./projects/ui/src/public-api.ts", import.meta.url)),
+      },
+      {
+        find: /^@koderi-dp\/ui\/(.+)$/,
+        replacement: fileURLToPath(new URL("./projects/ui/$1/src/public-api.ts", import.meta.url)),
+      },
+      { find: "@", replacement: fileURLToPath(new URL("./src", import.meta.url)) },
+    ],
   },
-  // A logic file outside the library (the chart options) imports helpers from the
-  // `@koderi-dp/ui` barrel, which loads the Angular classes too. They need legacy decorators
-  // and, for the partially compiled Angular packages, the JIT compiler.
+  // The chart options live inside the library, and node tests that import the `@koderi-dp/ui`
+  // barrel load its Angular classes too. They need legacy decorators and, for the partially
+  // compiled Angular packages, the JIT compiler.
   oxc: { decorator: { legacy: true } },
   test: {
     environment: "node",
