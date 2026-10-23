@@ -420,14 +420,19 @@
       "name": "table",
       "type": "registry:ui",
       "title": "Table",
-      "description": "Table directives for a dense table that scrolls sideways instead of squeezing its columns.",
+      "description": "A dense table that scrolls sideways instead of squeezing its columns.",
       "dependencies": [],
       "registryDependencies": ["@koderi/utils"],
       "files": [
         {
-          "path": "src/ui/primitives/table.directive.ts",
+          "path": "src/ui/primitives/table.component.ts",
           "type": "registry:file",
-          "target": "src/ui/primitives/table.directive.ts"
+          "target": "src/ui/primitives/table.component.ts"
+        },
+        {
+          "path": "src/ui/primitives/table.spec.ts",
+          "type": "registry:file",
+          "target": "src/ui/primitives/table.spec.ts"
         }
       ]
     },

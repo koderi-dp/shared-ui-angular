@@ -14,7 +14,7 @@ import {
   KoTableHead,
   KoTableHeader,
   KoTableRow,
-} from "@/ui/primitives/table.directive";
+} from "@/ui/primitives/table.component";
 import { KoStatusBadge } from "@/ui/status.component";
 import { formatBytes } from "@/ui/utils";
 import { demoItems } from "@/demo/data";
@@ -78,7 +78,7 @@ import { demoItems } from "@/demo/data";
         </ko-selection-toolbar>
 
         <div class="overflow-hidden rounded-xl bg-card shadow-[var(--shadow-border)]">
-          <table koTable>
+          <ko-table>
             <thead koTableHeader>
               <tr koTableRow>
                 <th koTableHead class="w-10">
@@ -110,7 +110,7 @@ import { demoItems } from "@/demo/data";
                 </tr>
               }
             </tbody>
-          </table>
+          </ko-table>
           @if (rows().length === 0) {
             <div class="grid place-items-center gap-2 px-4 py-12 text-center">
               @if (items().length === 0) {

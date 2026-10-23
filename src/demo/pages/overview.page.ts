@@ -27,7 +27,7 @@ import {
   KoTableHead,
   KoTableHeader,
   KoTableRow,
-} from "@/ui/primitives/table.directive";
+} from "@/ui/primitives/table.component";
 import { KoSparkline } from "@/ui/sparkline.component";
 import { KoStateTimeline } from "@/ui/state-timeline.component";
 import { KoStatusBadge } from "@/ui/status.component";
@@ -124,7 +124,7 @@ const TIMELINE_ROWS = timelineRows();
       <section class="grid gap-4">
         <ko-list-filter-bar placeholder="Filter by name, owner or state…" [(value)]="filter" />
         <div class="overflow-hidden rounded-xl bg-card shadow-[var(--shadow-border)]">
-          <table koTable>
+          <ko-table>
             <thead koTableHeader>
               <tr koTableRow>
                 <th koTableHead>Name</th>
@@ -169,7 +169,7 @@ const TIMELINE_ROWS = timelineRows();
                 </tr>
               }
             </tbody>
-          </table>
+          </ko-table>
           @if (rows().length === 0) {
             <p class="px-4 py-8 text-center text-sm text-muted-foreground">
               @if (items().length === 0) {

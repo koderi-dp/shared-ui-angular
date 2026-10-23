@@ -1,12 +1,18 @@
 // Adapted from Zard UI 1.1.1 (MIT) — https://github.com/zard-ui/zardui
-import { computed, Directive, input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, computed, Directive, input } from "@angular/core";
 import { cn } from "@/ui/utils";
 
-/**
- * A dense table. React wrapped it in an `overflow-x-auto` div; a directive cannot add a wrapper,
- * so put the table in a `div[koScrollArea]` (or any `overflow-x-auto` div) to scroll when narrow.
- */
-@Directive({ selector: "table[koTable]", host: { "[class]": "classes()" } })
+/** A dense table inside an `overflow-x-auto` wrapper, so a wide table scrolls instead of clipping. */
+@Component({
+  selector: "ko-table",
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: "block" },
+  template: `<div class="w-full overflow-x-auto">
+    <table [class]="classes()">
+      <ng-content />
+    </table>
+  </div>`,
+})
 export class KoTable {
   readonly class = input<string>("");
   protected readonly classes = computed(() => cn("w-full text-left text-sm", this.class()));

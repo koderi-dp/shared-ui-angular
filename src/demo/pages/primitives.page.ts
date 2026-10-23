@@ -64,7 +64,7 @@ import {
 } from "@/ui/primitives/sheet.component";
 import { KoSkeleton } from "@/ui/primitives/skeleton.component";
 import { KoSwitch } from "@/ui/primitives/switch.component";
-import { KoTable, KoTableBody, KoTableCell, KoTableRow } from "@/ui/primitives/table.directive";
+import { KoTable, KoTableBody, KoTableCell, KoTableRow } from "@/ui/primitives/table.component";
 import { KoTabs, KoTabsContent, KoTabsList, KoTabsTrigger } from "@/ui/primitives/tabs.component";
 import { KoTextarea } from "@/ui/primitives/textarea.directive";
 import { KoTooltip } from "@/ui/primitives/tooltip.directive";
@@ -370,7 +370,7 @@ type Mode = "single" | "bulk";
                 <button koTabsTrigger value="history">History</button>
               </ko-tabs-list>
               <ko-tabs-content value="details">
-                <table koTable>
+                <ko-table>
                   <tbody koTableBody>
                     <tr koTableRow>
                       <td koTableCell class="w-40 text-muted-foreground">Region</td>
@@ -381,7 +381,7 @@ type Mode = "single" | "bulk";
                       <td koTableCell>Platform</td>
                     </tr>
                   </tbody>
-                </table>
+                </ko-table>
               </ko-tabs-content>
               <ko-tabs-content value="history">
                 <div class="grid gap-2">
