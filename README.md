@@ -192,8 +192,6 @@ There is nothing to register.
 
 ### Known differences from the React originals
 
-- A dialog closes on Escape or a backdrop click even while a confirm is pending (there is no
-  `disableClose`).
 - Dialogs and sheets have no exit animation.
 - The sheet is a fixed `18rem` wide; the overlay config sets it, not a class.
 - The number input keeps the typed text while editing and clamps to `min` on blur.

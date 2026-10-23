@@ -17,7 +17,7 @@ import {
 } from "@/ui/primitives/dialog.component";
 
 /**
- * A confirm step. `[(open)]` closes it on Cancel, Escape and a backdrop click; `(confirm)` leaves
+ * A confirm step. `[(open)]` closes it on Cancel, Escape and a backdrop click (the last two are ignored while `pending`); `(confirm)` leaves
  * closing to the caller, so the dialog can stay up with `pending` while the work runs. Extra body
  * content goes between the description and the buttons.
  */
@@ -34,7 +34,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { "[attr.title]": "null", class: "contents" },
   template: `
-    <ko-dialog [open]="open()" (openChange)="open.set($event)">
+    <ko-dialog [open]="open()" [disableClose]="pending()" (openChange)="open.set($event)">
       <ng-template koDialogContent>
         <ko-dialog-header>
           <ko-dialog-title>{{ title() }}</ko-dialog-title>

@@ -26,6 +26,8 @@ export const KO_DIALOG_BACKDROP_CLASS = ["bg-background/70", "animate-in", "fade
 export interface KoDialogConfig<D = unknown> {
   data?: D;
   ariaLabel?: string;
+  /** Ignore Escape and backdrop clicks; `ref.close()` still closes. Also settable on the ref. */
+  disableClose?: boolean;
 }
 
 /**
@@ -43,6 +45,7 @@ export class KoDialogService {
     return this.dialog.open<R, D, C>(component, {
       data: config.data,
       ariaLabel: config.ariaLabel,
+      disableClose: config.disableClose,
       role: "dialog",
       ariaModal: true,
       ...KO_DIALOG_SIZE,

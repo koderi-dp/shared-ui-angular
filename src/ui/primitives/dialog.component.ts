@@ -3,6 +3,7 @@ import { Dialog, DialogRef } from "@angular/cdk/dialog";
 import { NgTemplateOutlet } from "@angular/common";
 import {
   afterNextRender,
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   computed,
@@ -95,6 +96,11 @@ export class KoDialog {
   readonly maxWidth = input<string>(KO_DIALOG_SIZE.maxWidth);
   /** Classes merged onto the padded wrapper around the content, such as `p-0 gap-0`. */
   readonly contentClass = input<string>("");
+  /**
+   * Ignore Escape and backdrop clicks while true (for example during a pending save).
+   * `koDialogClose` and `open.set(false)` still close. Changes apply to an open dialog.
+   */
+  readonly disableClose = input(false, { transform: booleanAttribute });
 
   protected readonly close = lucideX;
   protected readonly content = contentChild(KoDialogContent);
@@ -111,6 +117,12 @@ export class KoDialog {
       const open = this.open();
       untracked(() => (open ? this.show() : this.ref?.close()));
     });
+    // The CDK reads `disableClose` when a key or backdrop click arrives, so setting it on the ref
+    // is enough to make a change apply to a dialog that is already open.
+    effect(() => {
+      const disableClose = this.disableClose();
+      if (this.ref) this.ref.disableClose = disableClose;
+    });
     inject(DestroyRef).onDestroy(() => this.ref?.close());
   }
 
@@ -121,6 +133,7 @@ export class KoDialog {
       ariaModal: true,
       ...KO_DIALOG_SIZE,
       maxWidth: this.maxWidth(),
+      disableClose: this.disableClose(),
       viewContainerRef: this.viewContainerRef,
       panelClass: KO_DIALOG_PANEL_CLASS,
       backdropClass: KO_DIALOG_BACKDROP_CLASS,

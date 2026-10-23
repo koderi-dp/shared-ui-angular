@@ -91,6 +91,26 @@ describe("KoConfirmDialog", () => {
     expect(button("Cancel").disabled).toBe(true);
   });
 
+  it("stays open on Escape while pending and closes on Escape once it is not", async () => {
+    const escape = () =>
+      document
+        .querySelector('[role="dialog"]')!
+        .dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", keyCode: 27, bubbles: true }));
+    host.pending.set(true);
+    await fixture.whenStable();
+    escape();
+    await settle();
+    expect(host.open()).toBe(true);
+    expect(document.querySelector('[role="dialog"]')).not.toBeNull();
+
+    host.pending.set(false);
+    await fixture.whenStable();
+    escape();
+    await settle();
+    expect(host.open()).toBe(false);
+    expect(document.querySelector('[role="dialog"]')).toBeNull();
+  });
+
   it("uses the destructive variant when destructive", async () => {
     expect(button("Delete").className).not.toContain("bg-destructive");
     host.destructive.set(true);

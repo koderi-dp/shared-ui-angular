@@ -46,7 +46,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button id="open-dialog" [koDialogTrigger]="dialog">Open dialog</button>
-    <ko-dialog #dialog [(open)]="dialogOpen">
+    <ko-dialog #dialog [(open)]="dialogOpen" [disableClose]="locked()">
       <ng-template koDialogContent>
         <ko-dialog-header>
           <ko-dialog-title>Delete item</ko-dialog-title>
@@ -72,6 +72,7 @@ import {
 class HostComponent {
   readonly dialogOpen = signal(false);
   readonly sheetOpen = signal(false);
+  readonly locked = signal(false);
 }
 
 @Component({
@@ -178,6 +179,51 @@ describe("KoDialog and KoSheet", () => {
       await settle();
       expect(panel()).toBeNull();
       expect(host.dialogOpen()).toBe(false);
+    });
+
+    it("ignores Escape and a backdrop click while disableClose, but koDialogClose still closes", async () => {
+      host.locked.set(true);
+      host.dialogOpen.set(true);
+      await settle();
+      press(panel()!, "Escape");
+      el(".cdk-overlay-backdrop")!.click();
+      await settle();
+      expect(panel()).not.toBeNull();
+      expect(host.dialogOpen()).toBe(true);
+      el("#cancel")!.click();
+      await settle();
+      expect(panel()).toBeNull();
+      expect(host.dialogOpen()).toBe(false);
+    });
+
+    it("honours disableClose changing while the dialog is open", async () => {
+      host.dialogOpen.set(true);
+      await settle();
+      host.locked.set(true);
+      await settle();
+      press(panel()!, "Escape");
+      await settle();
+      expect(panel()).not.toBeNull();
+      host.locked.set(false);
+      await settle();
+      press(panel()!, "Escape");
+      await settle();
+      expect(panel()).toBeNull();
+    });
+
+    it("lets a service dialog refuse to close, while ref.close() still works", async () => {
+      const ref = TestBed.inject(KoDialogService).open(ServiceContentComponent, {
+        ariaLabel: "x",
+        disableClose: true,
+      });
+      await settle();
+      press(panel()!, "Escape");
+      el(".cdk-overlay-backdrop")!.click();
+      await settle();
+      expect(panel()).not.toBeNull();
+      ref.close();
+      await settle();
+      expect(panel()).toBeNull();
     });
 
     it("closes from outside with open.set(false), and from koDialogClose", async () => {
