@@ -39,6 +39,9 @@ consumes it through tsconfig paths, exactly as a consumer would.
 - Never size `.cdk-overlay-pane` with Tailwind (the CDK injects unlayered CSS that wins); use the overlay config or an inner element.
 - The app is zoneless: render from signals, not from mutated fields.
 
+- Unit-test `include` paths resolve from the app's `sourceRoot`, hence `../projects/ui/**/*.spec.ts`.
+- The theme's `@source "./"` is what makes Tailwind generate the library's classes, so a consumer needs no `@source` line.
+
 ## Releasing
 
 Tag `vX.Y.Z` on `main` and push the tag; `release.yml` checks, builds, stamps the version
