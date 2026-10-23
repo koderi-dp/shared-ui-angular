@@ -54,6 +54,28 @@ npx shadcn add @koderi/starter   # everything
 npx shadcn add @koderi/app-shell # one item, with the items it needs
 ```
 
+### Setup the items assume
+
+- `@koderi/theme` writes `src/styles.css`. `shadcn add` asks before overwriting an existing
+  file, even with `-y`, so add it with `-o`: `npx shadcn add @koderi/theme -o`.
+- `app-shell` and `command-palette` use the router: put `provideRouter(routes)` in
+  `app.config.ts`.
+- Mount `<ko-toaster />` once, in the root component, so `notify` has somewhere to render.
+- Give a bare `ko-checkbox`, `ko-switch` or `ko-select` a name with `aria-label="..."`; it is
+  forwarded to the inner control.
+
+### Known differences from the React originals
+
+The full list is in `docs/superpowers/specs/2026-10-23-angular-port-design.md`. The ones you
+are most likely to meet:
+
+- A dialog closes on Escape or a backdrop click even while a confirm is pending (there is no
+  `disableClose`).
+- Dialogs and sheets have no exit animation.
+- The number input keeps the typed text while editing and clamps to `min` on blur.
+- Chart tooltips are ECharts', not Recharts'.
+- Tables clip, rather than scroll, on a very narrow viewport unless wrapped in a `koScrollArea`.
+
 ## Developing
 
 ```sh

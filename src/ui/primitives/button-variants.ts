@@ -1,8 +1,8 @@
 import { cva } from "class-variance-authority";
 
 /**
- * The button's shapes. Kept beside `button.tsx` rather than inside it, so a test can
- * read the classes without rendering, and so the .tsx exports only components.
+ * The button's shapes. Kept beside `button.component.ts` rather than inside it, so a test can
+ * read the classes without rendering, and so the component file exports only components.
  */
 export const buttonVariants = cva(
   "relative inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,background-color,box-shadow,opacity] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40 aria-disabled:pointer-events-none aria-disabled:opacity-40 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",

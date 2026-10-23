@@ -27,7 +27,8 @@ lists the items and points at those same files.
 
 ## Rules
 
-- A `*.component.ts` / `*.directive.ts` exports only its class. Logic lives in a plain `.ts`
+- A `*.component.ts` / `*.directive.ts` exports components and directives, plus the tokens and
+  constants tied to them (`KO_TREE_ITEM`, `KO_TOOLTIP_DELAY`). Logic lives in a plain `.ts`
   with its test beside it (`name.test.ts`, run by Vitest in node). TestBed tests are
   `name.spec.ts`. This is why `button-variants.ts` is separate from `button.component.ts`.
 - Every registry item declares its npm `dependencies` and its `registryDependencies`.

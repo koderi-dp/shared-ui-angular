@@ -139,6 +139,8 @@ code. Visual findings from the side-by-side pass are added below.
 - Primitives page: the popover, checkbox and tab demos that the Angular port had added before
   are gone, so the page mirrors React's sections exactly.
 - An unknown path shows a bare "Not Found" paragraph, as TanStack Router's default does.
+- A dialog closes on Escape or a backdrop click even while a confirm is pending: there is no
+  `disableClose` (React kept it open while the action ran).
 - Tables sit in an `overflow-hidden` wrapper without React's inner `overflow-x-auto` div (a
   directive cannot add a wrapper), so a very narrow viewport clips a wide table instead of
   scrolling it, unless it is put in a `koScrollArea`.
