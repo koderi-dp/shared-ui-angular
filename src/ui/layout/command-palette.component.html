@@ -1,0 +1,82 @@
+<ko-dialog maxWidth="36rem" contentClass="gap-0 overflow-hidden rounded-xl p-0" [(open)]="open">
+  <ng-template koDialogContent>
+    <ko-dialog-title class="sr-only">Command palette</ko-dialog-title>
+    <ko-dialog-description class="sr-only">Search pages and actions.</ko-dialog-description>
+    <div class="flex min-w-0 flex-col overflow-hidden bg-transparent">
+      <div class="flex h-14 shrink-0 items-center gap-3 border-b border-border pl-4 pr-14">
+        <ng-icon
+          aria-hidden="true"
+          size="1rem"
+          class="shrink-0 text-muted-foreground"
+          [svg]="searchIcon"
+        />
+        <input
+          cdkFocusInitial
+          type="text"
+          role="combobox"
+          aria-autocomplete="list"
+          aria-expanded="true"
+          aria-label="Search pages and actions"
+          autocomplete="off"
+          spellcheck="false"
+          class="h-full min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+          [attr.aria-controls]="listId"
+          [attr.aria-activedescendant]="activeId()"
+          [placeholder]="placeholder()"
+          [value]="query()"
+          (input)="onInput($event)"
+          (keydown)="onKeydown($event)"
+        />
+      </div>
+      <div
+        role="listbox"
+        aria-label="Pages and actions"
+        class="max-h-[min(28rem,70dvh)] min-w-0 overflow-y-auto overflow-x-hidden overscroll-contain p-2"
+        [id]="listId"
+      >
+        @if (!options().length) {
+          <div role="presentation" class="px-3 py-6 text-center text-sm text-muted-foreground">
+            Nothing matches.
+          </div>
+        }
+        @for (group of groups(); track group.heading; let groupIndex = $index) {
+          <div
+            role="group"
+            [class]="groupClasses(groupIndex)"
+            [attr.aria-labelledby]="headingId(groupIndex)"
+          >
+            <div class="px-2.5 py-2 font-medium" [id]="headingId(groupIndex)">
+              {{ group.heading }}
+            </div>
+            @for (option of group.options; track option.key) {
+              <!-- Focus stays in the input: the option is pointed at with aria-activedescendant. -->
+              <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
+              <div
+                role="option"
+                [id]="optionId(option.index)"
+                [class]="itemClass"
+                [attr.aria-selected]="option.index === active()"
+                (pointermove)="active.set(option.index)"
+                (mousedown)="$event.preventDefault()"
+                (click)="choose(option)"
+              >
+                <ng-icon
+                  aria-hidden="true"
+                  size="1rem"
+                  class="shrink-0 text-muted-foreground"
+                  [svg]="option.icon ?? enterIcon"
+                />
+                <span class="truncate">{{ option.label }}</span>
+                @if (option.description) {
+                  <span class="ml-auto truncate text-xs text-muted-foreground">
+                    {{ option.description }}
+                  </span>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </ng-template>
+</ko-dialog>

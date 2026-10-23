@@ -1,0 +1,141 @@
+<ng-template #navList let-items let-collapsed="collapsed" let-mobile="mobile">
+  <nav class="flex flex-col gap-0.5">
+    @for (item of items; track item.to) {
+      <a
+        koTooltipSide="right"
+        [routerLink]="item.to"
+        [koTooltip]="collapsed ? item.label : ''"
+        [attr.aria-current]="isActive(item.to) ? 'page' : null"
+        [attr.aria-label]="collapsed ? item.label : null"
+        [class]="linkClasses(isActive(item.to), collapsed)"
+        (click)="navigated(mobile)"
+      >
+        <ng-icon aria-hidden="true" size="1rem" class="shrink-0" [svg]="item.icon" />
+        @if (!collapsed) {
+          <span class="truncate">{{ item.label }}</span>
+        }
+      </a>
+    }
+  </nav>
+</ng-template>
+
+<ng-template #sidebar let-collapsed="collapsed" let-mobile="mobile">
+  <div class="flex h-full flex-col">
+    <div
+      class="flex h-14 shrink-0 items-center"
+      [class.justify-center]="collapsed"
+      [class.px-2]="collapsed"
+      [class.px-3]="!collapsed"
+    >
+      <a
+        routerLink="/"
+        [title]="brand().name"
+        [attr.aria-label]="collapsed ? brand().name : null"
+        (click)="navigated(mobile)"
+      >
+        <span class="flex items-center gap-2.5" [class.justify-center]="collapsed">
+          <span
+            class="inline-flex size-8 items-center justify-center rounded-md bg-secondary text-muted-foreground shadow-[var(--shadow-border)]"
+          >
+            <ng-icon aria-hidden="true" size="1rem" [svg]="brand().icon" />
+          </span>
+          @if (!collapsed) {
+            <span class="grid leading-tight">
+              <span class="text-sm font-semibold tracking-tight">{{ brand().name }}</span>
+              @if (brand().tagline) {
+                <span class="text-[11px] text-muted-foreground">{{ brand().tagline }}</span>
+              }
+            </span>
+          }
+        </span>
+      </a>
+    </div>
+    <div class="min-h-0 flex-1 overflow-y-auto px-2 py-2">
+      <ng-container
+        [ngTemplateOutlet]="navList"
+        [ngTemplateOutletContext]="{ $implicit: nav().primary, collapsed, mobile }"
+      />
+      @if (nav().secondary?.length) {
+        <div class="mx-2.5 my-2 h-px bg-border"></div>
+        <ng-container
+          [ngTemplateOutlet]="navList"
+          [ngTemplateOutletContext]="{ $implicit: nav().secondary, collapsed, mobile }"
+        />
+      }
+    </div>
+    @if (footer(); as footer) {
+      <div
+        [class]="
+          collapsed
+            ? 'shrink-0 border-t border-border px-2 py-3 text-center'
+            : 'shrink-0 border-t border-border px-3 py-3'
+        "
+      >
+        <ng-container
+          [ngTemplateOutlet]="footer.template"
+          [ngTemplateOutletContext]="{ $implicit: collapsed }"
+        />
+      </div>
+    }
+  </div>
+</ng-template>
+
+<aside [class]="asideClasses()">
+  <div class="w-full">
+    <ng-container
+      [ngTemplateOutlet]="sidebar"
+      [ngTemplateOutletContext]="{ collapsed: collapsed(), mobile: false }"
+    />
+  </div>
+</aside>
+<div class="flex min-w-0 flex-1 flex-col">
+  <header class="flex h-14 shrink-0 items-center gap-2 border-b border-border px-3">
+    <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
+    <button
+      koIconButton
+      class="lg:hidden"
+      label="Open navigation"
+      aria-haspopup="dialog"
+      [icon]="menuIcon"
+      [attr.aria-expanded]="menu()"
+      (click)="menu.set(true)"
+    ></button>
+    <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
+    <button
+      koIconButton
+      class="hidden lg:inline-flex"
+      [label]="collapsed() ? 'Expand navigation' : 'Collapse navigation'"
+      [icon]="collapsed() ? expandIcon : collapseIcon"
+      (click)="toggleCollapsed()"
+    ></button>
+    <button
+      type="button"
+      aria-haspopup="dialog"
+      class="mr-auto flex h-10 min-w-0 flex-1 items-center gap-2 rounded-md bg-inset px-3 text-sm text-muted-foreground shadow-[var(--shadow-border)] transition-shadow hover:shadow-[var(--shadow-border-hover)] focus-visible:ring-2 focus-visible:ring-ring lg:max-w-md"
+      [attr.aria-expanded]="palette()"
+      (click)="palette.set(true)"
+    >
+      <ng-icon aria-hidden="true" size="1rem" class="shrink-0" [svg]="searchIcon" />
+      <span class="min-w-0 flex-1 truncate text-left">Search…</span>
+      <kbd
+        class="hidden rounded bg-secondary px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground shadow-[var(--shadow-border)] sm:inline"
+        >{{ shortcut }}</kbd
+      >
+    </button>
+    <ng-content select="[koHeaderEnd]" />
+  </header>
+  <main [class]="mainClasses()">
+    <ng-content />
+  </main>
+</div>
+<ko-sheet side="left" [(open)]="menu">
+  <ng-template koSheetContent>
+    <ko-sheet-title class="sr-only">Navigation</ko-sheet-title>
+    <ko-sheet-description class="sr-only">Pages of {{ brand().name }}.</ko-sheet-description>
+    <ng-container
+      [ngTemplateOutlet]="sidebar"
+      [ngTemplateOutletContext]="{ collapsed: false, mobile: true }"
+    />
+  </ng-template>
+</ko-sheet>
+<ko-command-palette [nav]="nav()" [commands]="commands()" [(open)]="palette" />

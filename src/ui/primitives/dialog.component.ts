@@ -84,7 +84,7 @@ export class KoDialogTrigger {
   host: { class: "contents" },
   template: `
     <ng-template #shell>
-      <div class="relative grid gap-4 p-5">
+      <div [class]="shellClasses()">
         <ng-container [ngTemplateOutlet]="content()?.template ?? null" />
         <button
           koDialogClose
@@ -99,9 +99,16 @@ export class KoDialogTrigger {
 })
 export class KoDialog {
   readonly open = model(false);
+  /** The panel's max width, set through the overlay config (the CDK pane ignores `max-w-*`). */
+  readonly maxWidth = input<string>(KO_DIALOG_SIZE.maxWidth);
+  /** Classes merged onto the padded wrapper around the content, such as `p-0 gap-0`. */
+  readonly contentClass = input<string>("");
 
   protected readonly close = lucideX;
   protected readonly content = contentChild(KoDialogContent);
+  protected readonly shellClasses = computed(() =>
+    cn("relative grid gap-4 p-5", this.contentClass()),
+  );
   private readonly shell = viewChild.required<TemplateRef<unknown>>("shell");
   private readonly dialog = inject(Dialog);
   private readonly viewContainerRef = inject(ViewContainerRef);
@@ -121,6 +128,7 @@ export class KoDialog {
       role: "dialog",
       ariaModal: true,
       ...KO_DIALOG_SIZE,
+      maxWidth: this.maxWidth(),
       viewContainerRef: this.viewContainerRef,
       panelClass: KO_DIALOG_PANEL_CLASS,
       backdropClass: KO_DIALOG_BACKDROP_CLASS,
