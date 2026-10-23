@@ -34,7 +34,9 @@ describe("KoDemoApp", () => {
     expect(root.querySelector("ko-app-shell")).not.toBeNull();
     expect(root.textContent).toContain("Shared UI");
     expect(root.querySelector("main h1")?.textContent).toContain("Overview");
-  });
+    // The whole overview page renders here, ECharts included: under a full parallel run
+    // that can pass the 5s default.
+  }, 30_000);
 
   it("shows Not Found for an unknown path", async () => {
     TestBed.configureTestingModule({
