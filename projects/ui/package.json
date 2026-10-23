@@ -8,7 +8,9 @@
     "url": "git+https://github.com/koderi-dp/shared-ui-angular.git"
   },
   "homepage": "https://github.com/koderi-dp/shared-ui-angular#readme",
-  "sideEffects": false,
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
     "./theme.css": {
       "default": "./theme.css"

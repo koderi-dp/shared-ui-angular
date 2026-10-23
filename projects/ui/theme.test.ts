@@ -18,6 +18,11 @@ describe("theme.css", () => {
     expect(theme).toContain('@import "tw-animate-css"');
   });
 
+  // Resolved relative to theme.css, so importing the theme also scans the package's bundles.
+  it("scans its own package for classes", () => {
+    expect(theme).toContain('@source "./";');
+  });
+
   it("loads both font families", () => {
     expect(theme).toContain("@fontsource/ibm-plex-sans");
     expect(theme).toContain("@fontsource/ibm-plex-mono");
