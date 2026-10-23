@@ -84,7 +84,6 @@ export class KoTooltipContent {
 @Directive({
   selector: "[koTooltip]",
   host: {
-    "[attr.aria-describedby]": "visible() ? id : null",
     "(mouseenter)": "scheduleShow()",
     "(mouseleave)": "hide()",
     "(focus)": "show()",
@@ -98,7 +97,9 @@ export class KoTooltip {
   readonly koTooltipSide = input<KoTooltipSide>("top");
 
   protected readonly id = `ko-tooltip-${nextId++}`;
-  protected readonly visible = signal(false);
+  /** The consumer's own `aria-describedby`, captured when the tooltip shows and restored on hide. */
+  private original: string | null = null;
+  private shown = false;
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
   private readonly overlay = inject(Overlay);
   private readonly browser = isPlatformBrowser(inject(PLATFORM_ID));
@@ -131,14 +132,20 @@ export class KoTooltip {
     content.instance.text.set(text);
     content.instance.id.set(this.id);
     this.ref = ref;
-    this.visible.set(true);
+    this.shown = true;
+    this.original = this.host.getAttribute("aria-describedby");
+    this.host.setAttribute("aria-describedby", `${this.original ?? ""} ${this.id}`.trim());
   }
 
   protected hide(): void {
     this.cancel();
     this.ref?.dispose();
     this.ref = undefined;
-    this.visible.set(false);
+    if (this.shown) {
+      this.shown = false;
+      if (this.original === null) this.host.removeAttribute("aria-describedby");
+      else this.host.setAttribute("aria-describedby", this.original);
+    }
   }
 
   private cancel(): void {

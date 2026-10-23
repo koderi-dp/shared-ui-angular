@@ -54,6 +54,7 @@ import { KoTooltip } from "@/ui/primitives/tooltip.directive";
     </ko-tabs>
 
     <button id="tip" koTooltip="Helpful text" koTooltipSide="right">Hover</button>
+    <button id="tip-described" koTooltip="More text" aria-describedby="help">Described</button>
 
     <button id="pop-trigger" [koPopoverTrigger]="pop">Popover</button>
     <ko-popover #pop [(open)]="popOpen">
@@ -213,6 +214,27 @@ describe("overlay primitives", () => {
       trigger.blur();
       await settle();
       expect(el('[role="tooltip"]')).toBeNull();
+    });
+
+    it("keeps the consumer's aria-describedby while shown, and restores it on hide", async () => {
+      const trigger = el("#tip-described")!;
+      expect(trigger.getAttribute("aria-describedby")).toBe("help");
+      trigger.focus();
+      await settle();
+      const tip = el('[role="tooltip"]')!;
+      expect(trigger.getAttribute("aria-describedby")).toBe(`help ${tip.id}`);
+      trigger.blur();
+      await settle();
+      expect(trigger.getAttribute("aria-describedby")).toBe("help");
+    });
+
+    it("removes aria-describedby again when there was none", async () => {
+      const trigger = el("#tip")!;
+      trigger.focus();
+      await settle();
+      trigger.blur();
+      await settle();
+      expect(trigger.hasAttribute("aria-describedby")).toBe(false);
     });
 
     it("shows on hover after the delay and hides on mouseleave", async () => {
