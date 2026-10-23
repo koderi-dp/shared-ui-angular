@@ -5,9 +5,7 @@ import {
   syncDataLoaderFeature,
   type FeatureImplementation,
   type TreeConfig,
-  type TreeInstance,
 } from "@headless-tree/core";
-import { useTree } from "@headless-tree/react";
 import { preventScrollFocusFeature } from "@/ui/primitives/tree-focus";
 
 /** The id the root of a tree is expected to carry when it is not passed explicitly. */
@@ -144,7 +142,7 @@ export type TreeControllerOptions<T> = TreeAccessors<T> & {
 /**
  * The headless-tree config for a flat list: the loader built, the root resolved, the label
  * and folder test read off the item, and the usual features set. Pure, so it can be built
- * and driven without React.
+ * and driven without a framework.
  */
 export function buildTreeConfig<T>({
   items,
@@ -170,14 +168,4 @@ export function buildTreeConfig<T>({
     dataLoader: index.dataLoader,
     features: features ?? treeFeatures<T>({ selectable, draggable }),
   };
-}
-
-/**
- * The whole of a tree's wiring, in one call: the flat list in, a headless-tree instance
- * out. Render it with the `Tree` and `TreeItem` primitives, and own only the data and the
- * actions. A structural change to the items needs `tree.rebuildTree()`: the tree reads
- * through the loader, and a new loader alone does not make it re-read.
- */
-export function useTreeController<T>(options: TreeControllerOptions<T>): TreeInstance<T> {
-  return useTree<T>(buildTreeConfig(options));
 }

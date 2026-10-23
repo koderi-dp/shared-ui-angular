@@ -1,13 +1,15 @@
-import { Activity, Settings } from "lucide-react";
+import { lucideActivity, lucideSettings } from "@ng-icons/lucide";
 import { expect, it } from "vitest";
 import { isNavActive, navItems, type NavConfig } from "./nav";
 
 const nav: NavConfig = {
   primary: [
-    { to: "/", label: "Overview", icon: Activity },
-    { to: "/items", label: "Items", icon: Activity },
+    { to: "/", label: "Overview", icon: lucideActivity },
+    { to: "/items", label: "Items", icon: lucideActivity },
   ],
-  secondary: [{ to: "/settings", label: "Settings", icon: Settings, keywords: ["preferences"] }],
+  secondary: [
+    { to: "/settings", label: "Settings", icon: lucideSettings, keywords: ["preferences"] },
+  ],
 };
 
 it("lists the secondary items after the primary ones", () => {

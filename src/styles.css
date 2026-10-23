@@ -5,7 +5,6 @@
 @import "@fontsource/ibm-plex-mono/500.css";
 @import "tailwindcss" source("./");
 @import "tw-animate-css";
-@import "sonner/dist/styles.css";
 
 @theme {
   --font-sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;

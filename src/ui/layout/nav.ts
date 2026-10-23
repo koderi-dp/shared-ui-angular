@@ -1,9 +1,8 @@
-import type { LucideIcon } from "lucide-react";
-
 export type NavItem = {
   to: string;
   label: string;
-  icon: LucideIcon;
+  /** The SVG string of the icon, such as `lucideActivity` from `@ng-icons/lucide`. */
+  icon: string;
   /** Extra words the command palette matches, such as "preferences" for Settings. */
   keywords?: readonly string[];
 };
