@@ -57,6 +57,28 @@ export default tseslint.config(
       ],
     },
   },
+  // The primary entry point must never import itself or a secondary entry point: circular.
+  {
+    files: ['projects/ui/src/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              regex: '^@/',
+              message: 'Use a relative import.',
+            },
+            {
+              regex: '^@koderi-dp/ui(/|$)',
+              message:
+                'The primary entry point must not import itself or a secondary entry point.',
+            },
+          ],
+        },
+      ],
+    },
+  },
   {
     files: ['**/*.html'],
     extends: [
