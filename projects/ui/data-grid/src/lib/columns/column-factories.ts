@@ -1,5 +1,5 @@
 import { flexRenderComponent } from "@tanstack/angular-table";
-import type { Breakpoint, DataGridColumn } from "@/ui/data-grid/types";
+import type { Breakpoint, DataGridColumn } from "../types";
 import { type ChipColor, KoChipList } from "./chip-list.component";
 import { KoProgressCell } from "./progress-cell.component";
 import type { ProgressVariant } from "./progress-level";

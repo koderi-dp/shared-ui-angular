@@ -6,16 +6,11 @@ import {
 } from "@angular/core";
 import { type ComponentFixture, TestBed } from "@angular/core/testing";
 import { flexRenderComponent } from "@tanstack/angular-table";
-import { widthsStorageKey } from "@/ui/data-grid/column-widths";
-import {
-  KoDataGrid,
-  KoGridEmpty,
-  KoGridMobileCard,
-  KoGridRowDetail,
-} from "@/ui/data-grid/data-grid.component";
-import { progressColumn, statusColumn, tagsColumn } from "@/ui/data-grid/columns/column-factories";
-import { KoKeyValueTable } from "@/ui/data-grid/key-value-table.component";
-import type { DataGridColumn } from "@/ui/data-grid/types";
+import { widthsStorageKey } from "./column-widths";
+import { KoDataGrid, KoGridEmpty, KoGridMobileCard, KoGridRowDetail } from "./data-grid.component";
+import { progressColumn, statusColumn, tagsColumn } from "./columns/column-factories";
+import { KoKeyValueTable } from "./key-value-table.component";
+import type { DataGridColumn } from "./types";
 
 type Row = { id: string; name: string; score: number | null };
 

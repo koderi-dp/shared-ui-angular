@@ -14,7 +14,7 @@ import {
   type StatusTone,
   statusColumn,
   tagsColumn,
-} from "@/ui/data-grid";
+} from "@koderi-dp/ui/data-grid";
 import {
   KoPageHeader,
   KoPageShell,

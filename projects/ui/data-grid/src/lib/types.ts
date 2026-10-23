@@ -1,6 +1,6 @@
 import type { TemplateRef } from "@angular/core";
 import type { flexRenderComponent } from "@tanstack/angular-table";
-import type { Breakpoint } from "@/ui/data-grid/grid-layout";
+import type { Breakpoint } from "./grid-layout";
 
 export type { Breakpoint };
 

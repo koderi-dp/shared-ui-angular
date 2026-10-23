@@ -8,7 +8,7 @@ import {
   serializeWidths,
   setColumnWidth,
   widthsStorageKey,
-} from "@/ui/data-grid/column-widths";
+} from "./column-widths";
 
 export type ColumnWidthsState = {
   widths: Signal<ColumnWidths>;

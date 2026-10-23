@@ -31,7 +31,7 @@ import {
   type RowData,
 } from "@tanstack/angular-table";
 import { Observable, Subject } from "rxjs";
-import { columnWidthsState } from "@/ui/data-grid/column-widths-state";
+import { columnWidthsState } from "./column-widths-state";
 import {
   BREAKPOINT_PX,
   compareSortValues,
@@ -42,9 +42,9 @@ import {
   toggleAll,
   toggleSelection,
   visibleColumnIds,
-} from "@/ui/data-grid/grid-layout";
-import { KoResizeHandle } from "@/ui/data-grid/resize-handle.component";
-import type { CellContent, DataGridClassNames, DataGridColumn } from "@/ui/data-grid/types";
+} from "./grid-layout";
+import { KoResizeHandle } from "./resize-handle.component";
+import type { CellContent, DataGridClassNames, DataGridColumn } from "./types";
 import { KoCheckbox, type KoCheckedState, cn } from "@koderi-dp/ui";
 
 const DEFAULT_MIN = 48;
