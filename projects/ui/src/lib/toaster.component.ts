@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { NgxSonnerToaster } from "ngx-sonner";
 
-/** Sonner, drawn with the `app-toast` classes in styles.css. Mount once at the root. */
+/** Sonner, drawn with the `app-toast` classes in theme.css. Mount once at the root. */
 @Component({
   selector: "ko-toaster",
   imports: [NgxSonnerToaster],

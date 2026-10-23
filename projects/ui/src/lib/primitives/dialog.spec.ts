@@ -307,7 +307,7 @@ describe("KoDialog and KoSheet", () => {
     });
 
     it("no longer imports the CDK stylesheet; the CDK injects its own structural CSS", () => {
-      expect(readFileSync("src/styles.css", "utf8")).not.toContain("overlay-prebuilt");
+      expect(readFileSync("projects/ui/theme.css", "utf8")).not.toContain("overlay-prebuilt");
     });
   });
 

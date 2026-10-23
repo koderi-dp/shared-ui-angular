@@ -1,0 +1,286 @@
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+@import "tw-animate-css";
+
+@theme {
+  --font-sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --color-background: #0a0b0d;
+  --color-foreground: #eceef2;
+  --color-card: #12141a;
+  --color-card-foreground: #eceef2;
+  --color-popover: #16181f;
+  --color-popover-foreground: #eceef2;
+  --color-primary: #d7dde6;
+  --color-primary-foreground: #0a0b0d;
+  --color-secondary: #1c1e26;
+  --color-secondary-foreground: #eceef2;
+  --color-muted: #1c1e26;
+  --color-muted-foreground: #8b909c;
+  --color-accent: #1c1e26;
+  --color-accent-foreground: #eceef2;
+  --color-destructive: #c45c5c;
+  --color-border: rgb(236 238 242 / 8%);
+  --color-input: rgb(236 238 242 / 10%);
+  --color-ring: #d7dde6;
+  --color-signal: #6a8f88;
+  --color-signal-fg: #d7ece8;
+  --color-warn: #c4a35c;
+  --color-warn-fg: #f3e6c4;
+  --color-danger: #c45c5c;
+  --color-danger-fg: #f0d0d0;
+  --color-online: #6a8f88;
+  --color-degraded: #c4a35c;
+  --color-offline: #8b909c;
+  --color-info: #8aa4b0;
+  --color-elevated: #181a21;
+  --color-inset: #0d0e12;
+  /* Opaque hover for pinned data-grid cells, so scrolled cells never show through. */
+  --color-grid-pinned-hover: color-mix(
+    in oklab,
+    var(--color-secondary) 40%,
+    var(--color-background)
+  );
+
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius: 0.625rem;
+
+  --shadow-border: 0 0 0 1px rgb(255 255 255 / 8%);
+  --shadow-border-hover: 0 0 0 1px rgb(255 255 255 / 13%);
+  --shadow-elevated: 0 0 0 1px rgb(255 255 255 / 8%), 0 24px 48px -16px rgb(0 0 0 / 55%);
+
+  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    /* Thin, quiet scrollbars, so a wide table's own bar matches the dark surfaces. */
+    scrollbar-width: thin;
+    scrollbar-color: rgb(236 238 242 / 16%) transparent;
+  }
+
+  html {
+    color-scheme: dark;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100dvh;
+    /* clip (not hidden): root must not be a scroll container — Chrome scroll
+       restoration otherwise restores documentElement.scrollTop when nested
+       panes (tree + settings) both overflow, shifting the shell up. */
+    overflow: hidden;
+    overflow: clip;
+    overscroll-behavior: none;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    background-image:
+      radial-gradient(1200px 600px at 0% -10%, rgb(106 143 136 / 7%), transparent 55%),
+      radial-gradient(900px 500px at 100% 0%, rgb(215 221 230 / 4%), transparent 50%);
+    height: 100dvh;
+    overflow: hidden;
+    overflow: clip;
+    overscroll-behavior: none;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(236 238 242 / 35%);
+    outline-offset: 2px;
+  }
+
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+  }
+}
+
+@layer components {
+  .app-toaster {
+    font-family: var(--font-sans);
+    /* ngx-sonner sets --width and --gap inline and has no gap input, so win with !important. */
+    --width: 20rem !important;
+    --gap: 8px !important;
+    --border-radius: var(--radius-sm);
+    --normal-bg: var(--color-elevated);
+    --normal-border: var(--color-border);
+    --normal-text: var(--color-foreground);
+    --success-bg: var(--color-elevated);
+    --success-border: var(--color-border);
+    --success-text: var(--color-foreground);
+    --error-bg: var(--color-elevated);
+    --error-border: var(--color-border);
+    --error-text: var(--color-foreground);
+    --warning-bg: var(--color-elevated);
+    --warning-border: var(--color-border);
+    --warning-text: var(--color-foreground);
+  }
+
+  .app-toaster [data-description] {
+    color: var(--color-muted-foreground);
+  }
+
+  .app-toast {
+    display: flex;
+    width: var(--width);
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 2.25rem 0.75rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-elevated);
+    box-shadow: var(--shadow-elevated);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+
+  .app-toast__content,
+  .app-toast [data-content] {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .app-toast__title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+  }
+
+  .app-toast__description {
+    margin-top: 0.125rem;
+    color: var(--color-muted-foreground);
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+
+  .app-toast__icon,
+  .app-toast [data-icon] {
+    display: block;
+    /* ngx-sonner's own [data-icon] rule is unlayered, so size the dot with !important. */
+    width: 0.5rem !important;
+    height: 0.5rem !important;
+    flex: none;
+    margin: 0.375rem 0 0 !important;
+    overflow: hidden;
+    border-radius: 99px;
+    background: var(--color-muted-foreground);
+    box-shadow: 0 0 10px rgb(139 144 156 / 35%);
+    color: transparent;
+  }
+
+  .app-toast__icon svg,
+  .app-toast__icon img,
+  .app-toast [data-icon] svg,
+  .app-toast [data-icon] img {
+    display: none;
+  }
+
+  .app-toast__close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    left: auto;
+    display: flex;
+    width: 1.5rem;
+    height: 1.5rem;
+    transform: none;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: var(--radius-xs);
+    background: transparent;
+    color: var(--color-muted-foreground);
+    cursor: pointer;
+    transition:
+      color 150ms var(--ease-out),
+      background-color 150ms var(--ease-out);
+  }
+
+  .app-toast__close:hover {
+    background: var(--color-secondary);
+    color: var(--color-foreground);
+  }
+
+  .app-toast--success .app-toast__icon,
+  .app-toast--success [data-icon] {
+    background: var(--color-signal);
+    box-shadow: 0 0 10px rgb(106 143 136 / 50%);
+  }
+
+  .app-toast--error .app-toast__icon,
+  .app-toast--error [data-icon] {
+    background: var(--color-danger);
+    box-shadow: 0 0 10px rgb(196 92 92 / 50%);
+  }
+
+  .app-toast--warning .app-toast__icon,
+  .app-toast--warning [data-icon] {
+    background: var(--color-warn);
+    box-shadow: 0 0 10px rgb(196 163 92 / 45%);
+  }
+
+  .app-toast--info .app-toast__icon,
+  .app-toast--info [data-icon] {
+    background: var(--color-info);
+    box-shadow: 0 0 10px rgb(138 164 176 / 45%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes pulse-live {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.status-pulse {
+  animation: pulse-live 1.8s var(--ease-out) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-pulse {
+    animation: none;
+  }
+}
