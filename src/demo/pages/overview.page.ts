@@ -112,7 +112,7 @@ const TIMELINE_ROWS = timelineRows();
           </ko-card-header>
           <ko-card-content>
             <div class="flex items-center gap-2.5">
-              <ko-switch id="dense-rows" ariaLabel="Dense rows" [(checked)]="dense" />
+              <ko-switch id="dense-rows" aria-label="Dense rows" [(checked)]="dense" />
               <label for="dense-rows" class="text-sm text-muted-foreground">
                 Dense, and remembered after a reload
               </label>

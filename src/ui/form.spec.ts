@@ -15,7 +15,7 @@ import { KoInput } from "@/ui/primitives/input.directive";
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ko-field label="Workers" [error]="error()" hint="How many.">
-      <ko-number-input [formControl]="workers" [min]="1" [max]="16" ariaLabel="Workers" />
+      <ko-number-input [formControl]="workers" [min]="1" [max]="16" aria-label="Workers" />
     </ko-field>
     <ko-field label="Name" hint="What it is called.">
       <input koInput id="name" />
@@ -53,6 +53,11 @@ describe("form composites", () => {
   });
 
   describe("KoNumberInput", () => {
+    it("names the inner input from an aria-label attribute, not the host", () => {
+      expect(input().getAttribute("aria-label")).toBe("Workers");
+      expect(root().querySelector("ko-number-input")!.hasAttribute("aria-label")).toBe(false);
+    });
+
     it("shows the value and reports typed numbers", async () => {
       expect(input().value).toBe("4");
       type("9");

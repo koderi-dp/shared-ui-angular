@@ -57,7 +57,7 @@
             <th [class]="header.className" [style.left.px]="header.left">
               <ko-checkbox
                 #all
-                ariaLabel="Select all rows"
+                aria-label="Select all rows"
                 class="align-middle"
                 [disabled]="rows().length === 0"
                 [checked]="headerChecked()"
@@ -133,7 +133,7 @@
                 <ko-checkbox
                   #box
                   class="align-middle"
-                  [ariaLabel]="rowLabel(row)"
+                  [aria-label]="rowLabel(row)"
                   [checked]="row.selected"
                 />
               </td>

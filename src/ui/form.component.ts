@@ -86,7 +86,7 @@ export class KoField {
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => KoNumberInput), multi: true },
   ],
-  host: { class: "contents" },
+  host: { class: "contents", "[attr.aria-label]": "null" },
   template: `
     <input
       koInput
@@ -104,7 +104,7 @@ export class KoNumberInput implements ControlValueAccessor {
   readonly min = input<number>();
   readonly max = input<number>();
   readonly disabled = input(false, { transform: booleanAttribute });
-  readonly ariaLabel = input<string>();
+  readonly ariaLabel = input<string | undefined>(undefined, { alias: "aria-label" });
   readonly class = input<string>("");
 
   private readonly value = signal(0);
@@ -173,7 +173,7 @@ export class KoNumberInput implements ControlValueAccessor {
     <ko-switch
       class="mt-0.5"
       [id]="id"
-      [ariaLabel]="label()"
+      [aria-label]="label()"
       [disabled]="disabled()"
       [(checked)]="checked"
     />

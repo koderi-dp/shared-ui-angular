@@ -83,7 +83,7 @@ import { demoItems } from "@/demo/data";
               <tr koTableRow>
                 <th koTableHead class="w-10">
                   <ko-checkbox
-                    ariaLabel="Select all"
+                    aria-label="Select all"
                     [checked]="allState()"
                     [disabled]="rows().length === 0"
                     (checkedChange)="toggleAll($event === true)"
@@ -99,7 +99,7 @@ import { demoItems } from "@/demo/data";
                 <tr koTableRow>
                   <td koTableCell>
                     <ko-checkbox
-                      [ariaLabel]="'Select ' + item.name"
+                      [aria-label]="'Select ' + item.name"
                       [checked]="selected().includes(item.id)"
                       (checkedChange)="toggle(item.id)"
                     />

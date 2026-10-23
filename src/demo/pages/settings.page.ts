@@ -93,7 +93,7 @@ const INITIAL: Form = {
                 </ko-field>
                 <ko-field label="Workers">
                   <ko-number-input
-                    ariaLabel="Workers"
+                    aria-label="Workers"
                     [min]="1"
                     [max]="16"
                     [ngModel]="form().workers"
@@ -103,7 +103,7 @@ const INITIAL: Form = {
                 <ko-disclosure title="Advanced" [forceOpen]="form().workers > 8">
                   <ko-field label="Retention" hint="Days of history to keep.">
                     <ko-number-input
-                      ariaLabel="Retention"
+                      aria-label="Retention"
                       [min]="1"
                       [max]="365"
                       [ngModel]="form().retentionDays"

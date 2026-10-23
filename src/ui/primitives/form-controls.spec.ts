@@ -14,14 +14,16 @@ import { KoSwitch } from "@/ui/primitives/switch.component";
     <label id="switch-label" for="switch">Enabled flag</label>
     <label id="select-label" for="select">Region</label>
     <ko-checkbox id="check" [formControl]="check" />
-    <ko-checkbox id="mixed" ariaLabel="Select all" checked="indeterminate" />
+    <ko-checkbox id="mixed" aria-label="Select all" checked="indeterminate" />
     <ko-switch id="switch" [formControl]="toggle" />
+    <ko-switch id="named-switch" aria-label="Dark mode" />
+    <ko-select id="named-select" aria-label="Zone" [options]="options" />
     <ko-select
       id="select"
       name="region"
       [required]="true"
-      ariaInvalid="true"
-      ariaDescribedby="region-help"
+      aria-invalid="true"
+      aria-describedby="region-help"
       placeholder="Pick a region"
       [options]="options"
       [formControl]="region"
@@ -181,6 +183,17 @@ describe("form controls", () => {
     // jsdom does not move focus on a label click, so assert the association a browser acts on.
     it("points the label at the native select, which a label click focuses in a browser", () => {
       expect((el("select-label") as HTMLLabelElement).control).toBe(el("select"));
+    });
+
+    it("puts an aria-label written as an attribute on the inner control, not the host", () => {
+      for (const [id, name] of [
+        ["mixed", "Select all"],
+        ["named-switch", "Dark mode"],
+        ["named-select", "Zone"],
+      ]) {
+        expect(el(id).getAttribute("aria-label")).toBe(name);
+        expect(el(id).parentElement!.hasAttribute("aria-label")).toBe(false);
+      }
     });
 
     it("forwards name, required, aria-invalid and aria-describedby to the native select", () => {

@@ -100,7 +100,7 @@ const TABS: readonly DetailTabDefinition<TabId>[] = [
         @case ("settings") {
           <div class="grid max-w-2xl gap-4 p-4">
             <ko-field label="Workers" hint="How many run at once for this item.">
-              <ko-number-input ariaLabel="Workers" [min]="1" [max]="16" [(ngModel)]="workers" />
+              <ko-number-input aria-label="Workers" [min]="1" [max]="16" [(ngModel)]="workers" />
             </ko-field>
             <ko-switch-field
               label="Paused"

@@ -17,7 +17,13 @@ import { cn } from "@/ui/utils";
   selector: "ko-switch",
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => KoSwitch), multi: true }],
-  host: { class: "contents", "[attr.id]": "null" },
+  host: {
+    class: "contents",
+    "[attr.id]": "null",
+    "[attr.aria-label]": "null",
+    "[attr.aria-invalid]": "null",
+    "[attr.aria-describedby]": "null",
+  },
   template: `
     <button
       type="button"
@@ -43,11 +49,13 @@ import { cn } from "@/ui/utils";
 export class KoSwitch implements ControlValueAccessor {
   readonly checked = model(false);
   readonly disabled = input(false, { transform: booleanAttribute });
-  readonly ariaLabel = input<string>();
+  readonly ariaLabel = input<string | undefined>(undefined, { alias: "aria-label" });
   /** Lands on the inner button, so a `<label for>` reaches it; the host never keeps the `id`. */
   readonly id = input<string>();
-  readonly ariaInvalid = input<boolean | "true" | "false">();
-  readonly ariaDescribedby = input<string>();
+  readonly ariaInvalid = input<boolean | "true" | "false" | undefined>(undefined, {
+    alias: "aria-invalid",
+  });
+  readonly ariaDescribedby = input<string | undefined>(undefined, { alias: "aria-describedby" });
   readonly class = input<string>("");
 
   private readonly formDisabled = signal(false);

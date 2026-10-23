@@ -224,7 +224,7 @@ type Mode = "single" | "bulk";
                 <input koInput placeholder="Platform" />
               </ko-field>
               <ko-field label="Region">
-                <ko-select ariaLabel="Region" [options]="regions" [(value)]="region" />
+                <ko-select aria-label="Region" [options]="regions" [(value)]="region" />
               </ko-field>
               <ko-field label="Notes">
                 <textarea
@@ -252,7 +252,7 @@ type Mode = "single" | "bulk";
             <div class="grid gap-4">
               <ko-field label="Workers">
                 <ko-number-input
-                  ariaLabel="Workers"
+                  aria-label="Workers"
                   [min]="1"
                   [max]="16"
                   [ngModel]="count()"
@@ -267,7 +267,7 @@ type Mode = "single" | "bulk";
               <ko-disclosure title="Advanced">
                 <ko-field label="Buffer size">
                   <ko-number-input
-                    ariaLabel="Buffer size"
+                    aria-label="Buffer size"
                     [min]="128"
                     [max]="65536"
                     [ngModel]="advanced()"
