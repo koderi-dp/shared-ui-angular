@@ -186,3 +186,19 @@ Tailwind 4.3.3, Node 24, npm 12).
 ```
 
 No post-build `exports` script is needed.
+
+## Verified
+
+The packed tarball (`npm pack ./dist/ui`, version 0.1.0) is 178.5 kB (961.7 kB unpacked, 22 files),
+installed into two fresh `ng new` apps (Angular 22, Tailwind 4).
+
+- **App A (every peer and optional peer):** `ng build` succeeds. The stylesheet is two lines,
+  `@import "tailwindcss"; @import "@koderi-dp/ui/theme.css";`; the theme's own `@source "./"` is
+  enough. The built CSS contains `--color-popover`, `.bg-popover` and `cursor-col-resize` (used
+  only by the data grid), and `dist/app-a/browser/media` holds 28 IBM Plex `.woff2` files.
+- **App B (required peers only, no echarts, ngx-echarts, tanstack or headless-tree):** importing
+  only `@koderi-dp/ui` and `@koderi-dp/ui/layout`, `ng build` succeeds. Adding
+  `KoTimeChart` from `@koderi-dp/ui/charts` fails with `Could not resolve "echarts/renderers"` and
+  `Could not resolve "ngx-echarts"`.
+- **Deep imports:** `require.resolve('@koderi-dp/ui/lib/primitives/button.component')` and
+  `require.resolve('@koderi-dp/ui/src/public-api')` both throw `ERR_PACKAGE_PATH_NOT_EXPORTED`.
