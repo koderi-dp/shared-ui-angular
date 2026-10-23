@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "textarea",
+  "title": "Textarea",
+  "description": "A multi-line input on the same surface as Input.",
+  "registryDependencies": [
+    "@koderi/utils",
+    "@koderi/field-control"
+  ],
+  "files": [
+    {
+      "path": "src/ui/primitives/textarea.tsx",
+      "content": "import * as React from \"react\";\nimport { cn } from \"@/ui/utils\";\nimport { fieldControlClass, fieldFocusClass } from \"@/ui/primitives/field-control\";\n\nconst Textarea = React.forwardRef<HTMLTextAreaElement, React.ComponentProps<\"textarea\">>(\n  ({ className, ...props }, ref) => (\n    <textarea\n      className={cn(\n        \"flex min-h-24 w-full px-3 py-2 text-sm placeholder:text-muted-foreground/70\",\n        fieldControlClass,\n        fieldFocusClass,\n        className,\n      )}\n      ref={ref}\n      {...props}\n    />\n  ),\n);\nTextarea.displayName = \"Textarea\";\n\nexport { Textarea };\n",
+      "type": "registry:file",
+      "target": "src/ui/primitives/textarea.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

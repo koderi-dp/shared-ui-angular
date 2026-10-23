@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "switch",
+  "title": "Switch",
+  "description": "Radix switch, for a setting that takes effect on save.",
+  "dependencies": [
+    "@radix-ui/react-switch@^1.2.6"
+  ],
+  "registryDependencies": [
+    "@koderi/utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/primitives/switch.tsx",
+      "content": "import * as React from \"react\";\nimport * as SwitchPrimitives from \"@radix-ui/react-switch\";\nimport { cn } from \"@/ui/utils\";\n\nconst Switch = React.forwardRef<\n  React.ComponentRef<typeof SwitchPrimitives.Root>,\n  React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>\n>(({ className, ...props }, ref) => (\n  <SwitchPrimitives.Root\n    className={cn(\n      \"peer inline-flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full shadow-[var(--shadow-border)] transition-[background-color] duration-150 data-[state=checked]:bg-primary data-[state=unchecked]:bg-secondary\",\n      className,\n    )}\n    {...props}\n    ref={ref}\n  >\n    <SwitchPrimitives.Thumb\n      className={cn(\n        \"pointer-events-none block size-5 rounded-full bg-foreground transition-transform duration-150 data-[state=checked]:translate-x-4 data-[state=unchecked]:translate-x-0.5 data-[state=checked]:bg-primary-foreground\",\n      )}\n    />\n  </SwitchPrimitives.Root>\n));\nSwitch.displayName = SwitchPrimitives.Root.displayName;\n\nexport { Switch };\n",
+      "type": "registry:file",
+      "target": "src/ui/primitives/switch.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

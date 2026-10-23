@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-persisted",
+  "title": "usePersisted",
+  "description": "localStorage state that survives a reload and hydrates without a mismatch on a server render.",
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "src/ui/use-persisted.ts",
+      "content": "import { useCallback, useSyncExternalStore } from \"react\";\n\nconst CHANGED = \"persisted-change\";\n\n/** Holds a value for this page's lifetime when localStorage is full or blocked. */\nconst memory = new Map<string, string>();\n\nfunction read<T>(key: string, initial: T): T {\n  try {\n    const stored = memory.get(key) ?? localStorage.getItem(key);\n    return stored === null ? initial : (JSON.parse(stored) as T);\n  } catch {\n    return initial;\n  }\n}\n\nfunction subscribe(onChange: () => void) {\n  window.addEventListener(\"storage\", onChange);\n  window.addEventListener(CHANGED, onChange);\n  return () => {\n    window.removeEventListener(\"storage\", onChange);\n    window.removeEventListener(CHANGED, onChange);\n  };\n}\n\n/**\n * State kept in localStorage, so a reload keeps it. A value that cannot be read is the\n * initial one. The server render and the first client render use the initial value, so a\n * server-rendered page hydrates without a mismatch and then shows the stored value.\n * Values are compared by their JSON, so objects and arrays work too.\n */\nexport function usePersisted<T>(key: string, initial: T): [T, (next: T) => void] {\n  const initialJson = JSON.stringify(initial);\n  const json = useSyncExternalStore(\n    subscribe,\n    () => JSON.stringify(read(key, initial)),\n    () => initialJson,\n  );\n  const set = useCallback(\n    (next: T) => {\n      const json = JSON.stringify(next);\n      try {\n        localStorage.setItem(key, json);\n        memory.delete(key);\n      } catch {\n        memory.set(key, json);\n      }\n      window.dispatchEvent(new Event(CHANGED));\n    },\n    [key],\n  );\n  return [JSON.parse(json) as T, set];\n}\n",
+      "type": "registry:file",
+      "target": "src/ui/use-persisted.ts"
+    }
+  ],
+  "type": "registry:hook"
+}

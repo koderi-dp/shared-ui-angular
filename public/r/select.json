@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "select",
+  "title": "Select",
+  "description": "A native select, so it needs no portal, with the chevron drawn as a background.",
+  "registryDependencies": [
+    "@koderi/utils",
+    "@koderi/field-control"
+  ],
+  "files": [
+    {
+      "path": "src/ui/primitives/select.tsx",
+      "content": "import * as React from \"react\";\nimport { cn } from \"@/ui/utils\";\nimport { fieldControlClass, fieldFocusClass } from \"@/ui/primitives/field-control\";\n\nconst CHEVRON =\n  \"url(\\\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238b909c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\\\")\";\n\nconst Select = React.forwardRef<\n  HTMLSelectElement,\n  React.ComponentProps<\"select\"> & { fieldSize?: \"default\" | \"sm\" }\n>(({ className, style, fieldSize = \"default\", children, ...props }, ref) => (\n  <select\n    ref={ref}\n    className={cn(\n      \"flex w-full appearance-none disabled:cursor-not-allowed disabled:opacity-50\",\n      fieldControlClass,\n      fieldFocusClass,\n      fieldSize === \"sm\" ? \"h-8 py-1 pl-2 pr-8 text-xs\" : \"h-10 py-2 pl-3 pr-10 text-sm\",\n      className,\n    )}\n    style={{\n      backgroundImage: CHEVRON,\n      backgroundRepeat: \"no-repeat\",\n      backgroundPosition: fieldSize === \"sm\" ? \"right 0.5rem center\" : \"right 0.75rem center\",\n      backgroundSize: fieldSize === \"sm\" ? \"0.875rem\" : \"1rem\",\n      ...style,\n    }}\n    {...props}\n  >\n    {children}\n  </select>\n));\nSelect.displayName = \"Select\";\n\nexport { Select };\n",
+      "type": "registry:file",
+      "target": "src/ui/primitives/select.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

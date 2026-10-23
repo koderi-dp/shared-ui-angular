@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "list-filter-bar",
+  "title": "List filter bar",
+  "description": "The filter field above a list, plus the toolbar that appears when rows are selected.",
+  "dependencies": [
+    "lucide-react@^0.510.0"
+  ],
+  "registryDependencies": [
+    "@koderi/input",
+    "@koderi/button",
+    "@koderi/field-control",
+    "@koderi/utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/list-filter-bar.tsx",
+      "content": "import { X as ButtonXIcon } from \"lucide-react\";\nimport { Search, X } from \"lucide-react\";\nimport { useCallback, useRef, type ReactNode } from \"react\";\nimport { Button } from \"@/ui/primitives/button\";\nimport { Input } from \"@/ui/primitives/input\";\nimport { embeddedFieldClass, embeddedFieldFocusClass } from \"@/ui/primitives/field-control\";\nimport { cn } from \"@/ui/utils\";\n\nexport function ListFilterBar({\n  value,\n  onChange,\n  placeholder = \"Filter…\",\n  className,\n}: {\n  value: string;\n  onChange: (v: string) => void;\n  placeholder?: string;\n  className?: string;\n}) {\n  const inputRef = useRef<HTMLInputElement>(null);\n\n  const clear = useCallback(() => {\n    onChange(\"\");\n    inputRef.current?.focus();\n  }, [onChange]);\n\n  return (\n    <div\n      className={cn(\n        \"flex items-center gap-2 rounded-xl bg-card px-3 py-2 shadow-[var(--shadow-border)]\",\n        className,\n      )}\n    >\n      <Search className=\"size-3.5 shrink-0 text-muted-foreground\" />\n      <Input\n        ref={inputRef}\n        value={value}\n        onChange={(e) => onChange(e.target.value)}\n        onKeyDown={(e) => {\n          if (e.key === \"Escape\" && value) {\n            e.preventDefault();\n            clear();\n          }\n        }}\n        placeholder={placeholder}\n        className={cn(\"h-8 flex-1\", embeddedFieldClass, embeddedFieldFocusClass)}\n      />\n      {value ? (\n        <Button\n          type=\"button\"\n          size=\"icon-sm\"\n          variant=\"ghost\"\n          className=\"size-7 shrink-0\"\n          onClick={clear}\n          title=\"Clear filter (Esc)\"\n          aria-label=\"Clear filter\"\n        >\n          <X className=\"size-3.5\" />\n        </Button>\n      ) : null}\n    </div>\n  );\n}\n\nexport function SelectionToolbar({\n  count,\n  onClear,\n  children,\n  alwaysVisible = false,\n}: {\n  count: number;\n  onClear: () => void;\n  children: ReactNode;\n  /** Keep layout height when count is 0 (e.g. fixed footer). */\n  alwaysVisible?: boolean;\n}) {\n  if (!alwaysVisible && count === 0) return null;\n  return (\n    <div\n      className={cn(\n        \"flex flex-wrap items-center gap-2 rounded-xl border border-border bg-secondary/40 px-3 py-2\",\n        alwaysVisible && count === 0 && \"opacity-60\",\n      )}\n    >\n      <span className=\"text-xs text-muted-foreground\">{count} selected</span>\n      {children}\n      <Button\n        icon={ButtonXIcon}\n        size=\"sm\"\n        variant=\"ghost\"\n        className=\"h-7 px-2 text-xs\"\n        disabled={count === 0}\n        onClick={onClear}\n      >\n        Clear\n      </Button>\n    </div>\n  );\n}\n",
+      "type": "registry:file",
+      "target": "src/ui/list-filter-bar.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

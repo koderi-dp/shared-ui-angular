@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "card",
+  "title": "Card",
+  "description": "Card, CardHeader, CardTitle, CardDescription and CardContent.",
+  "registryDependencies": [
+    "@koderi/utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/primitives/card.tsx",
+      "content": "import * as React from \"react\";\nimport { cn } from \"@/ui/utils\";\n\nconst Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(\n  ({ className, ...props }, ref) => (\n    <div\n      ref={ref}\n      className={cn(\n        \"rounded-xl bg-card text-card-foreground shadow-[var(--shadow-border)]\",\n        className,\n      )}\n      {...props}\n    />\n  ),\n);\nCard.displayName = \"Card\";\n\nfunction CardHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {\n  return <div className={cn(\"flex flex-col gap-1 p-5 pb-3\", className)} {...props} />;\n}\n\nfunction CardTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {\n  return <h3 className={cn(\"text-sm font-medium tracking-tight\", className)} {...props} />;\n}\n\nfunction CardDescription({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {\n  return <p className={cn(\"text-sm text-muted-foreground\", className)} {...props} />;\n}\n\nfunction CardContent({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {\n  return <div className={cn(\"p-5 pt-0\", className)} {...props} />;\n}\n\nexport { Card, CardHeader, CardTitle, CardDescription, CardContent };\n",
+      "type": "registry:file",
+      "target": "src/ui/primitives/card.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

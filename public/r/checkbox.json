@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "checkbox",
+  "title": "Checkbox",
+  "description": "Radix checkbox with the checked and indeterminate states.",
+  "dependencies": [
+    "@radix-ui/react-checkbox@^1.4.1"
+  ],
+  "registryDependencies": [
+    "@koderi/utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/primitives/checkbox.tsx",
+      "content": "import * as React from \"react\";\nimport * as CheckboxPrimitive from \"@radix-ui/react-checkbox\";\nimport { Check, Minus } from \"lucide-react\";\nimport { cn } from \"@/ui/utils\";\n\nconst Checkbox = React.forwardRef<\n  React.ComponentRef<typeof CheckboxPrimitive.Root>,\n  React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>\n>(({ className, ...props }, ref) => (\n  <CheckboxPrimitive.Root\n    ref={ref}\n    className={cn(\n      \"peer inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-[4px] bg-inset text-primary-foreground shadow-[var(--shadow-border)] transition-[background-color] duration-150 focus-visible:shadow-[var(--shadow-border-hover)] focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=indeterminate]:bg-primary\",\n      className,\n    )}\n    {...props}\n  >\n    <CheckboxPrimitive.Indicator className=\"flex items-center justify-center\">\n      {props.checked === \"indeterminate\" ? (\n        <Minus className=\"size-3\" strokeWidth={3} />\n      ) : (\n        <Check className=\"size-3\" strokeWidth={3} />\n      )}\n    </CheckboxPrimitive.Indicator>\n  </CheckboxPrimitive.Root>\n));\nCheckbox.displayName = CheckboxPrimitive.Root.displayName;\n\nexport { Checkbox };\n",
+      "type": "registry:file",
+      "target": "src/ui/primitives/checkbox.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "table",
+  "title": "Table",
+  "description": "A dense table that scrolls sideways instead of squeezing its columns.",
+  "registryDependencies": [
+    "@koderi/utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/primitives/table.tsx",
+      "content": "import * as React from \"react\";\nimport { cn } from \"@/ui/utils\";\n\n/** A dense table. The wrapper scrolls sideways on a narrow screen instead of squeezing columns. */\nconst Table = React.forwardRef<HTMLTableElement, React.ComponentProps<\"table\">>(\n  ({ className, ...props }, ref) => (\n    <div className=\"w-full overflow-x-auto\">\n      <table ref={ref} className={cn(\"w-full text-left text-sm\", className)} {...props} />\n    </div>\n  ),\n);\nTable.displayName = \"Table\";\n\nconst TableHeader = React.forwardRef<HTMLTableSectionElement, React.ComponentProps<\"thead\">>(\n  ({ className, ...props }, ref) => (\n    <thead ref={ref} className={cn(\"text-xs text-muted-foreground\", className)} {...props} />\n  ),\n);\nTableHeader.displayName = \"TableHeader\";\n\nconst TableBody = React.forwardRef<HTMLTableSectionElement, React.ComponentProps<\"tbody\">>(\n  ({ className, ...props }, ref) => <tbody ref={ref} className={className} {...props} />,\n);\nTableBody.displayName = \"TableBody\";\n\nconst TableRow = React.forwardRef<HTMLTableRowElement, React.ComponentProps<\"tr\">>(\n  ({ className, ...props }, ref) => (\n    <tr\n      ref={ref}\n      className={cn(\n        \"group transition-colors [tbody_&]:border-t [tbody_&]:border-border [tbody_&]:hover:bg-secondary/30\",\n        className,\n      )}\n      {...props}\n    />\n  ),\n);\nTableRow.displayName = \"TableRow\";\n\nconst TableHead = React.forwardRef<HTMLTableCellElement, React.ComponentProps<\"th\">>(\n  ({ className, ...props }, ref) => (\n    <th ref={ref} className={cn(\"px-4 py-3 font-normal\", className)} {...props} />\n  ),\n);\nTableHead.displayName = \"TableHead\";\n\nconst TableCell = React.forwardRef<HTMLTableCellElement, React.ComponentProps<\"td\">>(\n  ({ className, ...props }, ref) => (\n    <td ref={ref} className={cn(\"h-12 px-4 py-2\", className)} {...props} />\n  ),\n);\nTableCell.displayName = \"TableCell\";\n\nexport { Table, TableHeader, TableBody, TableRow, TableHead, TableCell };\n",
+      "type": "registry:file",
+      "target": "src/ui/primitives/table.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

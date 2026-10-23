@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "dropdown-menu",
+  "title": "Dropdown menu",
+  "description": "Radix dropdown with item, label and separator.",
+  "dependencies": [
+    "@radix-ui/react-dropdown-menu@^2.1.25"
+  ],
+  "registryDependencies": [
+    "@koderi/utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/primitives/dropdown-menu.tsx",
+      "content": "import * as React from \"react\";\nimport * as DropdownMenuPrimitive from \"@radix-ui/react-dropdown-menu\";\nimport { cn } from \"@/ui/utils\";\n\nconst DropdownMenu = DropdownMenuPrimitive.Root;\nconst DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;\nconst DropdownMenuGroup = DropdownMenuPrimitive.Group;\n\nconst DropdownMenuContent = React.forwardRef<\n  React.ComponentRef<typeof DropdownMenuPrimitive.Content>,\n  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content>\n>(({ className, sideOffset = 6, ...props }, ref) => (\n  <DropdownMenuPrimitive.Portal>\n    <DropdownMenuPrimitive.Content\n      ref={ref}\n      sideOffset={sideOffset}\n      className={cn(\n        \"z-50 min-w-44 overflow-hidden rounded-lg bg-popover p-1 text-popover-foreground shadow-[var(--shadow-elevated)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95\",\n        className,\n      )}\n      {...props}\n    />\n  </DropdownMenuPrimitive.Portal>\n));\nDropdownMenuContent.displayName = DropdownMenuPrimitive.Content.displayName;\n\nconst DropdownMenuItem = React.forwardRef<\n  React.ComponentRef<typeof DropdownMenuPrimitive.Item>,\n  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item>\n>(({ className, ...props }, ref) => (\n  <DropdownMenuPrimitive.Item\n    ref={ref}\n    className={cn(\n      \"flex cursor-pointer select-none items-center gap-2 rounded-md px-2.5 py-2 text-sm outline-none focus:bg-secondary data-[disabled]:pointer-events-none data-[disabled]:opacity-40\",\n      className,\n    )}\n    {...props}\n  />\n));\nDropdownMenuItem.displayName = DropdownMenuPrimitive.Item.displayName;\n\nconst DropdownMenuLabel = React.forwardRef<\n  React.ComponentRef<typeof DropdownMenuPrimitive.Label>,\n  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Label>\n>(({ className, ...props }, ref) => (\n  <DropdownMenuPrimitive.Label\n    ref={ref}\n    className={cn(\"px-2.5 py-1.5 text-xs font-medium text-muted-foreground\", className)}\n    {...props}\n  />\n));\nDropdownMenuLabel.displayName = DropdownMenuPrimitive.Label.displayName;\n\nconst DropdownMenuSeparator = React.forwardRef<\n  React.ComponentRef<typeof DropdownMenuPrimitive.Separator>,\n  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Separator>\n>(({ className, ...props }, ref) => (\n  <DropdownMenuPrimitive.Separator\n    ref={ref}\n    className={cn(\"-mx-1 my-1 h-px bg-border\", className)}\n    {...props}\n  />\n));\nDropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName;\n\nexport {\n  DropdownMenu,\n  DropdownMenuTrigger,\n  DropdownMenuContent,\n  DropdownMenuItem,\n  DropdownMenuLabel,\n  DropdownMenuSeparator,\n  DropdownMenuGroup,\n};\n",
+      "type": "registry:file",
+      "target": "src/ui/primitives/dropdown-menu.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

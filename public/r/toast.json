@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "toast",
+  "title": "Toasts",
+  "description": "Sonner drawn with the app-toast classes, and the notify helpers that set the wording.",
+  "dependencies": [
+    "sonner@^2.0.7"
+  ],
+  "registryDependencies": [
+    "@koderi/theme"
+  ],
+  "files": [
+    {
+      "path": "src/ui/notify.ts",
+      "content": "import { toast } from \"sonner\";\n\nfunction message(err: unknown, fallback: string) {\n  return err instanceof Error ? err.message : fallback;\n}\n\n/** The toasts the app shows, so the wording is the same on every page. */\nexport const notify = {\n  success(text: string) {\n    toast.success(text);\n  },\n  saved(label?: string) {\n    toast.success(label ? `${label} saved` : \"Saved\");\n  },\n  created(label: string) {\n    toast.success(`${label} created`);\n  },\n  deleted(label: string) {\n    toast.success(`${label} deleted`);\n  },\n  copied(label = \"Copied to clipboard\") {\n    toast.success(label);\n  },\n  error(err: unknown, fallback = \"Something went wrong\") {\n    toast.error(message(err, fallback));\n  },\n};\n",
+      "type": "registry:file",
+      "target": "src/ui/notify.ts"
+    },
+    {
+      "path": "src/ui/toaster.tsx",
+      "content": "import { Toaster as Sonner } from \"sonner\";\n\n/** Sonner, drawn with the `app-toast` classes in styles.css. Mount once at the root. */\nexport function AppToaster() {\n  return (\n    <Sonner\n      theme=\"dark\"\n      position=\"bottom-right\"\n      closeButton\n      duration={3500}\n      gap={8}\n      offset={20}\n      visibleToasts={3}\n      className=\"app-toaster\"\n      toastOptions={{\n        unstyled: true,\n        classNames: {\n          toast: \"app-toast\",\n          content: \"app-toast__content\",\n          title: \"app-toast__title\",\n          description: \"app-toast__description\",\n          icon: \"app-toast__icon\",\n          closeButton: \"app-toast__close\",\n          success: \"app-toast--success\",\n          error: \"app-toast--error\",\n          warning: \"app-toast--warning\",\n          info: \"app-toast--info\",\n        },\n      }}\n    />\n  );\n}\n",
+      "type": "registry:file",
+      "target": "src/ui/toaster.tsx"
+    }
+  ],
+  "type": "registry:hook"
+}

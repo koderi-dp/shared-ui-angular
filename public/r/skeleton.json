@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "skeleton",
+  "title": "Skeleton",
+  "description": "The placeholder that stands in while data loads.",
+  "registryDependencies": [
+    "@koderi/utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/primitives/skeleton.tsx",
+      "content": "import { cn } from \"@/ui/utils\";\n\nfunction Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {\n  return <div className={cn(\"animate-pulse rounded-md bg-secondary\", className)} {...props} />;\n}\n\nexport { Skeleton };\n",
+      "type": "registry:file",
+      "target": "src/ui/primitives/skeleton.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

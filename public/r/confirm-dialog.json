@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "confirm-dialog",
+  "title": "Confirm dialog",
+  "description": "A dialog for a destructive step, with a pending state and an optional extra block.",
+  "dependencies": [
+    "lucide-react@^0.510.0"
+  ],
+  "registryDependencies": [
+    "@koderi/dialog",
+    "@koderi/button"
+  ],
+  "files": [
+    {
+      "path": "src/ui/confirm-dialog.tsx",
+      "content": "import {\n  Dialog,\n  DialogContent,\n  DialogDescription,\n  DialogHeader,\n  DialogTitle,\n} from \"@/ui/primitives/dialog\";\nimport { Button } from \"@/ui/primitives/button\";\nimport type { ReactNode } from \"react\";\nimport { Check, TriangleAlert } from \"lucide-react\";\n\nexport function ConfirmDialog({\n  open,\n  title,\n  description,\n  confirmLabel = \"Confirm\",\n  cancelLabel = \"Cancel\",\n  destructive = false,\n  pending = false,\n  onOpenChange,\n  onConfirm,\n  children,\n}: {\n  open: boolean;\n  title: string;\n  description: string;\n  confirmLabel?: string;\n  cancelLabel?: string;\n  destructive?: boolean;\n  pending?: boolean;\n  onOpenChange: (open: boolean) => void;\n  onConfirm: () => void;\n  children?: ReactNode;\n}) {\n  return (\n    <Dialog open={open} onOpenChange={onOpenChange}>\n      <DialogContent>\n        <DialogHeader>\n          <DialogTitle>{title}</DialogTitle>\n          <DialogDescription>{description}</DialogDescription>\n        </DialogHeader>\n        {children}\n        <div className=\"flex justify-end gap-2\">\n          <Button\n            type=\"button\"\n            variant=\"ghost\"\n            disabled={pending}\n            onClick={() => onOpenChange(false)}\n          >\n            {cancelLabel}\n          </Button>\n          <Button\n            icon={destructive ? TriangleAlert : Check}\n            loading={pending}\n            type=\"button\"\n            variant={destructive ? \"destructive\" : \"default\"}\n            disabled={pending}\n            onClick={onConfirm}\n          >\n            {confirmLabel}\n          </Button>\n        </div>\n      </DialogContent>\n    </Dialog>\n  );\n}\n",
+      "type": "registry:file",
+      "target": "src/ui/confirm-dialog.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

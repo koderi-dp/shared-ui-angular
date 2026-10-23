@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "utils",
+  "title": "Utils",
+  "description": "cn, the generic formatters (bytes, duration, relative time) and the fixed-popover clamp.",
+  "dependencies": [
+    "clsx@^2.1.1",
+    "tailwind-merge@^3.7.0"
+  ],
+  "devDependencies": [
+    "vitest@^4.1.11"
+  ],
+  "files": [
+    {
+      "path": "src/ui/utils.ts",
+      "content": "import { clsx, type ClassValue } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\n\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n\nexport function formatBytes(bytes: number): string {\n  if (bytes < 1024) return `${bytes} B`;\n  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;\n  if (bytes < 1024 * 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;\n  return `${(bytes / (1024 * 1024 * 1024)).toFixed(1)} GB`;\n}\n\nexport function formatDuration(ms: number): string {\n  const s = Math.max(0, Math.floor(ms / 1000));\n  const h = Math.floor(s / 3600);\n  const m = Math.floor((s % 3600) / 60);\n  const sec = s % 60;\n  if (h > 0) return `${h}h ${m}m`;\n  if (m > 0) return `${m}m ${sec}s`;\n  return `${sec}s`;\n}\n\nexport function formatRelative(ts: number, now = Date.now()): string {\n  const diff = Math.max(0, now - ts);\n  const m = Math.floor(diff / 60000);\n  if (m < 1) return \"just now\";\n  if (m < 60) return `${m}m ago`;\n  const h = Math.floor(m / 60);\n  if (h < 24) return `${h}h ago`;\n  const d = Math.floor(h / 24);\n  return `${d}d ago`;\n}\n\nexport type ViewportSize = { width: number; height: number };\n\n/** Keep fixed popovers/menus inside the viewport; flip above/left when near edges. */\nexport function clampFixedPopoverPosition(\n  x: number,\n  y: number,\n  width: number,\n  height: number,\n  viewport: ViewportSize = { width: window.innerWidth, height: window.innerHeight },\n  padding = 8,\n): { left: number; top: number } {\n  const maxLeft = Math.max(padding, viewport.width - width - padding);\n  const maxTop = Math.max(padding, viewport.height - height - padding);\n\n  let left = x;\n  let top = y;\n\n  if (top + height > viewport.height - padding) top = y - height;\n  if (left + width > viewport.width - padding) left = x - width;\n\n  return {\n    left: Math.min(Math.max(left, padding), maxLeft),\n    top: Math.min(Math.max(top, padding), maxTop),\n  };\n}\n",
+      "type": "registry:file",
+      "target": "src/ui/utils.ts"
+    },
+    {
+      "path": "src/ui/utils.test.ts",
+      "content": "import { expect, it } from \"vitest\";\nimport {\n  cn,\n  formatBytes,\n  formatDuration,\n  formatRelative,\n  clampFixedPopoverPosition,\n} from \"./utils\";\n\nit(\"merges conflicting Tailwind classes, keeping the last one\", () => {\n  const hidden = false as boolean;\n  expect(cn(\"px-2 py-1\", \"px-4\")).toBe(\"py-1 px-4\");\n  expect(cn(\"text-sm\", hidden && \"hidden\", undefined, \"font-medium\")).toBe(\"text-sm font-medium\");\n});\n\nit(\"formats bytes at each unit boundary\", () => {\n  expect(formatBytes(512)).toBe(\"512 B\");\n  expect(formatBytes(1024)).toBe(\"1.0 KB\");\n  expect(formatBytes(1024 * 1024)).toBe(\"1.0 MB\");\n  expect(formatBytes(3 * 1024 * 1024 * 1024)).toBe(\"3.0 GB\");\n});\n\nit(\"formats a duration in the largest two units\", () => {\n  expect(formatDuration(45_000)).toBe(\"45s\");\n  expect(formatDuration(90_000)).toBe(\"1m 30s\");\n  expect(formatDuration(3 * 3600_000 + 5 * 60_000)).toBe(\"3h 5m\");\n  // A clock that has gone backwards is shown as zero, not a negative time.\n  expect(formatDuration(-1000)).toBe(\"0s\");\n});\n\nit(\"formats a timestamp relative to now\", () => {\n  const now = Date.parse(\"2026-01-01T12:00:00Z\");\n  expect(formatRelative(now, now)).toBe(\"just now\");\n  expect(formatRelative(now - 5 * 60_000, now)).toBe(\"5m ago\");\n  expect(formatRelative(now - 3 * 3600_000, now)).toBe(\"3h ago\");\n  expect(formatRelative(now - 2 * 86_400_000, now)).toBe(\"2d ago\");\n});\n\nit(\"flips a popover above and left when it would leave the viewport\", () => {\n  const viewport = { width: 1000, height: 800 };\n  expect(clampFixedPopoverPosition(10, 10, 200, 100, viewport)).toEqual({ left: 10, top: 10 });\n  // Too near the bottom right: the box is placed above and to the left of the point.\n  expect(clampFixedPopoverPosition(980, 780, 200, 100, viewport)).toEqual({\n    left: 780,\n    top: 680,\n  });\n  // Never outside the padding, even for a box larger than the viewport.\n  expect(clampFixedPopoverPosition(0, 0, 2000, 2000, viewport)).toEqual({ left: 8, top: 8 });\n});\n",
+      "type": "registry:file",
+      "target": "src/ui/utils.test.ts"
+    }
+  ],
+  "type": "registry:lib"
+}

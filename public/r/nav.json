@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "nav",
+  "title": "Navigation",
+  "description": "The nav types, the active-route rule and the header chip class.",
+  "dependencies": [
+    "lucide-react@^0.510.0"
+  ],
+  "devDependencies": [
+    "vitest@^4.1.11"
+  ],
+  "files": [
+    {
+      "path": "src/ui/layout/nav.ts",
+      "content": "import type { LucideIcon } from \"lucide-react\";\n\nexport type NavItem = {\n  to: string;\n  label: string;\n  icon: LucideIcon;\n  /** Extra words the command palette matches, such as \"preferences\" for Settings. */\n  keywords?: readonly string[];\n};\n\n/** The sidebar: a main list, and a second list under a divider (settings, help). */\nexport type NavConfig = {\n  primary: readonly NavItem[];\n  secondary?: readonly NavItem[];\n};\n\nexport function navItems(nav: NavConfig): NavItem[] {\n  return [...nav.primary, ...(nav.secondary ?? [])];\n}\n\n/** `/` is active only on itself; any other item is active on itself and below it. */\nexport function isNavActive(pathname: string, to: string): boolean {\n  if (to === \"/\") return pathname === \"/\";\n  return pathname === to || pathname.startsWith(`${to}/`);\n}\n\n/** A chip in the header: an icon, a coloured dot and a short word. */\nexport const headerChipClass =\n  \"flex h-9 shrink-0 items-center gap-2 rounded-md px-2.5 text-xs text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring\";\n",
+      "type": "registry:file",
+      "target": "src/ui/layout/nav.ts"
+    },
+    {
+      "path": "src/ui/layout/nav.test.ts",
+      "content": "import { Activity, Settings } from \"lucide-react\";\nimport { expect, it } from \"vitest\";\nimport { isNavActive, navItems, type NavConfig } from \"./nav\";\n\nconst nav: NavConfig = {\n  primary: [\n    { to: \"/\", label: \"Overview\", icon: Activity },\n    { to: \"/items\", label: \"Items\", icon: Activity },\n  ],\n  secondary: [{ to: \"/settings\", label: \"Settings\", icon: Settings, keywords: [\"preferences\"] }],\n};\n\nit(\"lists the secondary items after the primary ones\", () => {\n  expect(navItems(nav).map((item) => item.to)).toEqual([\"/\", \"/items\", \"/settings\"]);\n  expect(navItems({ primary: nav.primary }).map((item) => item.to)).toEqual([\"/\", \"/items\"]);\n});\n\nit(\"marks `/` active only on itself\", () => {\n  expect(isNavActive(\"/\", \"/\")).toBe(true);\n  expect(isNavActive(\"/items\", \"/\")).toBe(false);\n});\n\nit(\"marks any other item active on itself and on its child pages\", () => {\n  expect(isNavActive(\"/items\", \"/items\")).toBe(true);\n  expect(isNavActive(\"/items/42\", \"/items\")).toBe(true);\n  // A sibling whose path merely starts with the same letters is not a child.\n  expect(isNavActive(\"/items-archive\", \"/items\")).toBe(false);\n});\n",
+      "type": "registry:file",
+      "target": "src/ui/layout/nav.test.ts"
+    }
+  ],
+  "type": "registry:lib"
+}

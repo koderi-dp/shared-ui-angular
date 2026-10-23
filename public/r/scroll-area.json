@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "scroll-area",
+  "title": "Scroll area",
+  "description": "Radix scroll area with a thin, themed thumb.",
+  "dependencies": [
+    "@radix-ui/react-scroll-area@^1.2.10"
+  ],
+  "registryDependencies": [
+    "@koderi/utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/primitives/scroll-area.tsx",
+      "content": "import * as React from \"react\";\nimport * as ScrollAreaPrimitive from \"@radix-ui/react-scroll-area\";\nimport { cn } from \"@/ui/utils\";\n\nconst ScrollArea = React.forwardRef<\n  React.ComponentRef<typeof ScrollAreaPrimitive.Root>,\n  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>\n>(({ className, children, ...props }, ref) => (\n  <ScrollAreaPrimitive.Root\n    ref={ref}\n    className={cn(\"relative overflow-hidden\", className)}\n    {...props}\n  >\n    <ScrollAreaPrimitive.Viewport className=\"h-full w-full rounded-[inherit]\">\n      {children}\n    </ScrollAreaPrimitive.Viewport>\n    <ScrollAreaPrimitive.ScrollAreaScrollbar\n      orientation=\"vertical\"\n      className=\"flex w-2 touch-none select-none p-0.5\"\n    >\n      <ScrollAreaPrimitive.ScrollAreaThumb className=\"relative flex-1 rounded-full bg-border\" />\n    </ScrollAreaPrimitive.ScrollAreaScrollbar>\n  </ScrollAreaPrimitive.Root>\n));\nScrollArea.displayName = ScrollAreaPrimitive.Root.displayName;\n\nexport { ScrollArea };\n",
+      "type": "registry:file",
+      "target": "src/ui/primitives/scroll-area.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

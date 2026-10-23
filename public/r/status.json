@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "status",
+  "title": "Status",
+  "description": "A state word to a tone and a label, drawn as StatusDot and StatusBadge. Colour never carries the meaning alone.",
+  "devDependencies": [
+    "vitest@^4.1.11"
+  ],
+  "registryDependencies": [
+    "@koderi/badge",
+    "@koderi/utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/status-text.ts",
+      "content": "export type Tone = \"live\" | \"warn\" | \"danger\" | \"outline\";\n\n/**\n * The tone each state word is drawn in. States that are not listed are drawn as\n * outline. Add the app's own states here, so that every badge and dot agrees.\n */\nconst TONES: Record<string, Tone> = {\n  running: \"live\",\n  online: \"live\",\n  active: \"live\",\n  healthy: \"live\",\n  starting: \"warn\",\n  stopping: \"warn\",\n  pending: \"warn\",\n  connecting: \"warn\",\n  reconnecting: \"warn\",\n  degraded: \"warn\",\n  failed: \"danger\",\n  error: \"danger\",\n  offline: \"danger\",\n  stopped: \"outline\",\n  idle: \"outline\",\n  disabled: \"outline\",\n};\n\n/** States whose word on screen is not the state name itself. */\nconst LABELS: Record<string, string> = {};\n\nexport function statusTone(state: string): Tone {\n  return TONES[state.toLowerCase()] ?? \"outline\";\n}\n\nexport function statusLabel(state: string): string {\n  const key = state.toLowerCase();\n  return LABELS[key] ?? key.charAt(0).toUpperCase() + key.slice(1);\n}\n",
+      "type": "registry:file",
+      "target": "src/ui/status-text.ts"
+    },
+    {
+      "path": "src/ui/status-text.test.ts",
+      "content": "import { expect, it } from \"vitest\";\nimport { statusLabel, statusTone } from \"./status-text\";\n\nit(\"gives every state a tone, and an unknown state the outline one\", () => {\n  expect(statusTone(\"running\")).toBe(\"live\");\n  expect(statusTone(\"degraded\")).toBe(\"warn\");\n  expect(statusTone(\"failed\")).toBe(\"danger\");\n  expect(statusTone(\"stopped\")).toBe(\"outline\");\n  expect(statusTone(\"something-new\")).toBe(\"outline\");\n});\n\nit(\"matches a state whatever its case\", () => {\n  expect(statusTone(\"RUNNING\")).toBe(\"live\");\n  expect(statusLabel(\"FAILED\")).toBe(\"Failed\");\n});\n\nit(\"shows an unlisted state under its own name, capitalised\", () => {\n  expect(statusLabel(\"running\")).toBe(\"Running\");\n  expect(statusLabel(\"warming-up\")).toBe(\"Warming-up\");\n});\n",
+      "type": "registry:file",
+      "target": "src/ui/status-text.test.ts"
+    },
+    {
+      "path": "src/ui/status.tsx",
+      "content": "import { Badge } from \"@/ui/primitives/badge\";\nimport { statusLabel, statusTone } from \"@/ui/status-text\";\nimport { cn } from \"@/ui/utils\";\n\nexport function StatusDot({ state, className }: { state: string; className?: string }) {\n  const tone = statusTone(state);\n  return (\n    <span\n      aria-hidden\n      className={cn(\n        \"inline-block size-1.5 shrink-0 rounded-full\",\n        tone === \"live\" && \"bg-online\",\n        tone === \"warn\" && \"bg-degraded\",\n        tone === \"danger\" && \"bg-danger status-pulse\",\n        tone === \"outline\" && \"bg-offline\",\n        className,\n      )}\n    />\n  );\n}\n\n/** Status is always text plus colour: the dot is decoration and the word is the name. */\nexport function StatusBadge({ state }: { state: string }) {\n  return (\n    <Badge variant={statusTone(state)} className=\"gap-1.5 whitespace-nowrap\">\n      <StatusDot state={state} />\n      {statusLabel(state)}\n    </Badge>\n  );\n}\n",
+      "type": "registry:file",
+      "target": "src/ui/status.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

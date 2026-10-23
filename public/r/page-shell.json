@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "page-shell",
+  "title": "Page shell",
+  "description": "The padding and rhythm every page starts with.",
+  "registryDependencies": [
+    "@koderi/utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/page-shell.tsx",
+      "content": "import type { ReactNode } from \"react\";\nimport { cn } from \"@/ui/utils\";\n\nexport function PageShell({\n  children,\n  className,\n  gap = \"default\",\n}: {\n  children: ReactNode;\n  className?: string;\n  /** `loose` for dashboard-style pages with more vertical rhythm. */\n  gap?: \"default\" | \"loose\";\n}) {\n  return (\n    <div\n      className={cn(\n        \"flex w-full min-w-0 flex-col px-4 py-6 lg:px-6 lg:py-8\",\n        gap === \"loose\" ? \"gap-8\" : \"gap-6\",\n        className,\n      )}\n    >\n      {children}\n    </div>\n  );\n}\n",
+      "type": "registry:file",
+      "target": "src/ui/page-shell.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

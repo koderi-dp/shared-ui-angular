@@ -1,0 +1,828 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "shared-ui",
+  "homepage": "https://github.com/koderi-dp/shared-ui",
+  "items": [
+    {
+      "name": "theme",
+      "type": "registry:file",
+      "title": "Theme",
+      "description": "The dark tokens: IBM Plex, the surface and signal colours, radii, shadows and easings, plus the base layer, toast styles and pulse keyframes.",
+      "dependencies": [
+        "tw-animate-css@^1.4.0",
+        "sonner@^2.0.7",
+        "@fontsource/ibm-plex-mono@^5.3.0",
+        "@fontsource/ibm-plex-sans@^5.3.0"
+      ],
+      "devDependencies": ["tailwindcss@^4.1.14", "@tailwindcss/vite@^4.1.14"],
+      "files": [
+        {
+          "path": "src/styles.css",
+          "type": "registry:file",
+          "target": "src/styles.css"
+        }
+      ]
+    },
+    {
+      "name": "utils",
+      "type": "registry:lib",
+      "title": "Utils",
+      "description": "cn, the generic formatters (bytes, duration, relative time) and the fixed-popover clamp.",
+      "dependencies": ["clsx@^2.1.1", "tailwind-merge@^3.7.0"],
+      "devDependencies": ["vitest@^4.1.11"],
+      "files": [
+        {
+          "path": "src/ui/utils.ts",
+          "type": "registry:file",
+          "target": "src/ui/utils.ts"
+        },
+        {
+          "path": "src/ui/utils.test.ts",
+          "type": "registry:file",
+          "target": "src/ui/utils.test.ts"
+        }
+      ]
+    },
+    {
+      "name": "field-control",
+      "type": "registry:lib",
+      "title": "Field control classes",
+      "description": "The inset field surface and the focus lift every input, select and textarea share.",
+      "files": [
+        {
+          "path": "src/ui/primitives/field-control.ts",
+          "type": "registry:file",
+          "target": "src/ui/primitives/field-control.ts"
+        }
+      ]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "Button with icon, loading and asChild, IconButton with a required accessible name, and the variant classes in their own file.",
+      "dependencies": [
+        "@radix-ui/react-slot@^1.4.0",
+        "class-variance-authority@^0.7.1",
+        "lucide-react@^0.510.0"
+      ],
+      "devDependencies": ["vitest@^4.1.11"],
+      "registryDependencies": ["@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/primitives/button.tsx",
+          "type": "registry:file",
+          "target": "src/ui/primitives/button.tsx"
+        },
+        {
+          "path": "src/ui/primitives/button-variants.ts",
+          "type": "registry:file",
+          "target": "src/ui/primitives/button-variants.ts"
+        },
+        {
+          "path": "src/ui/primitives/button.test.ts",
+          "type": "registry:file",
+          "target": "src/ui/primitives/button.test.ts"
+        }
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "Pill with default, outline, live, warn, danger and solid variants.",
+      "dependencies": ["class-variance-authority@^0.7.1"],
+      "registryDependencies": ["@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/primitives/badge.tsx",
+          "type": "registry:file",
+          "target": "src/ui/primitives/badge.tsx"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "Card, CardHeader, CardTitle, CardDescription and CardContent.",
+      "registryDependencies": ["@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/primitives/card.tsx",
+          "type": "registry:file",
+          "target": "src/ui/primitives/card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "Dialog",
+      "description": "Radix dialog with the shared overlay, close button and header parts.",
+      "dependencies": ["@radix-ui/react-dialog@^1.1.15", "lucide-react@^0.510.0"],
+      "registryDependencies": ["@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/primitives/dialog.tsx",
+          "type": "registry:file",
+          "target": "src/ui/primitives/dialog.tsx"
+        }
+      ]
+    },
+    {
+      "name": "sheet",
+      "type": "registry:ui",
+      "title": "Sheet",
+      "description": "A dialog that slides in from either edge, with a title and description.",
+      "dependencies": ["@radix-ui/react-dialog@^1.1.15", "lucide-react@^0.510.0"],
+      "registryDependencies": ["@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/primitives/sheet.tsx",
+          "type": "registry:file",
+          "target": "src/ui/primitives/sheet.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "title": "Dropdown menu",
+      "description": "Radix dropdown with item, label and separator.",
+      "dependencies": ["@radix-ui/react-dropdown-menu@^2.1.25"],
+      "registryDependencies": ["@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/primitives/dropdown-menu.tsx",
+          "type": "registry:file",
+          "target": "src/ui/primitives/dropdown-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "Radix tabs with the segmented list style.",
+      "dependencies": ["@radix-ui/react-tabs@^1.1.13"],
+      "registryDependencies": ["@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/primitives/tabs.tsx",
+          "type": "registry:file",
+          "target": "src/ui/primitives/tabs.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "Radix tooltip, used by the collapsed sidebar and the icon buttons.",
+      "dependencies": ["@radix-ui/react-tooltip@^1.3.0"],
+      "registryDependencies": ["@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/primitives/tooltip.tsx",
+          "type": "registry:file",
+          "target": "src/ui/primitives/tooltip.tsx"
+        }
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "A text input on the inset field surface.",
+      "registryDependencies": ["@koderi/utils", "@koderi/field-control"],
+      "files": [
+        {
+          "path": "src/ui/primitives/input.tsx",
+          "type": "registry:file",
+          "target": "src/ui/primitives/input.tsx"
+        }
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "A multi-line input on the same surface as Input.",
+      "registryDependencies": ["@koderi/utils", "@koderi/field-control"],
+      "files": [
+        {
+          "path": "src/ui/primitives/textarea.tsx",
+          "type": "registry:file",
+          "target": "src/ui/primitives/textarea.tsx"
+        }
+      ]
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "A native select, so it needs no portal, with the chevron drawn as a background.",
+      "registryDependencies": ["@koderi/utils", "@koderi/field-control"],
+      "files": [
+        {
+          "path": "src/ui/primitives/select.tsx",
+          "type": "registry:file",
+          "target": "src/ui/primitives/select.tsx"
+        }
+      ]
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "The small muted label that sits above a control.",
+      "dependencies": ["@radix-ui/react-label@^2.1.8"],
+      "registryDependencies": ["@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/primitives/label.tsx",
+          "type": "registry:file",
+          "target": "src/ui/primitives/label.tsx"
+        }
+      ]
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "Radix switch, for a setting that takes effect on save.",
+      "dependencies": ["@radix-ui/react-switch@^1.2.6"],
+      "registryDependencies": ["@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/primitives/switch.tsx",
+          "type": "registry:file",
+          "target": "src/ui/primitives/switch.tsx"
+        }
+      ]
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "Radix popover on the elevated surface, for small lists and menus anchored to a trigger.",
+      "dependencies": ["@radix-ui/react-popover@^1.3.1"],
+      "registryDependencies": ["@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/primitives/popover.tsx",
+          "type": "registry:file",
+          "target": "src/ui/primitives/popover.tsx"
+        }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "Radix checkbox with the checked and indeterminate states.",
+      "dependencies": ["@radix-ui/react-checkbox@^1.4.1"],
+      "registryDependencies": ["@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/primitives/checkbox.tsx",
+          "type": "registry:file",
+          "target": "src/ui/primitives/checkbox.tsx"
+        }
+      ]
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "Separator",
+      "description": "A one-pixel rule, horizontal or vertical.",
+      "dependencies": ["@radix-ui/react-separator@^1.1.8"],
+      "registryDependencies": ["@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/primitives/separator.tsx",
+          "type": "registry:file",
+          "target": "src/ui/primitives/separator.tsx"
+        }
+      ]
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:ui",
+      "title": "Scroll area",
+      "description": "Radix scroll area with a thin, themed thumb.",
+      "dependencies": ["@radix-ui/react-scroll-area@^1.2.10"],
+      "registryDependencies": ["@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/primitives/scroll-area.tsx",
+          "type": "registry:file",
+          "target": "src/ui/primitives/scroll-area.tsx"
+        }
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "The placeholder that stands in while data loads.",
+      "registryDependencies": ["@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/primitives/skeleton.tsx",
+          "type": "registry:file",
+          "target": "src/ui/primitives/skeleton.tsx"
+        }
+      ]
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "Table",
+      "description": "A dense table that scrolls sideways instead of squeezing its columns.",
+      "registryDependencies": ["@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/primitives/table.tsx",
+          "type": "registry:file",
+          "target": "src/ui/primitives/table.tsx"
+        }
+      ]
+    },
+    {
+      "name": "toast",
+      "type": "registry:hook",
+      "title": "Toasts",
+      "description": "Sonner drawn with the app-toast classes, and the notify helpers that set the wording.",
+      "dependencies": ["sonner@^2.0.7"],
+      "registryDependencies": ["@koderi/theme"],
+      "files": [
+        {
+          "path": "src/ui/notify.ts",
+          "type": "registry:file",
+          "target": "src/ui/notify.ts"
+        },
+        {
+          "path": "src/ui/toaster.tsx",
+          "type": "registry:file",
+          "target": "src/ui/toaster.tsx"
+        }
+      ]
+    },
+    {
+      "name": "status",
+      "type": "registry:component",
+      "title": "Status",
+      "description": "A state word to a tone and a label, drawn as StatusDot and StatusBadge. Colour never carries the meaning alone.",
+      "devDependencies": ["vitest@^4.1.11"],
+      "registryDependencies": ["@koderi/badge", "@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/status-text.ts",
+          "type": "registry:file",
+          "target": "src/ui/status-text.ts"
+        },
+        {
+          "path": "src/ui/status-text.test.ts",
+          "type": "registry:file",
+          "target": "src/ui/status-text.test.ts"
+        },
+        {
+          "path": "src/ui/status.tsx",
+          "type": "registry:file",
+          "target": "src/ui/status.tsx"
+        }
+      ]
+    },
+    {
+      "name": "page-shell",
+      "type": "registry:component",
+      "title": "Page shell",
+      "description": "The padding and rhythm every page starts with.",
+      "registryDependencies": ["@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/page-shell.tsx",
+          "type": "registry:file",
+          "target": "src/ui/page-shell.tsx"
+        }
+      ]
+    },
+    {
+      "name": "page-header",
+      "type": "registry:component",
+      "title": "Page header",
+      "description": "Kicker, title, description and the actions on the right.",
+      "files": [
+        {
+          "path": "src/ui/page-header.tsx",
+          "type": "registry:file",
+          "target": "src/ui/page-header.tsx"
+        }
+      ]
+    },
+    {
+      "name": "confirm-dialog",
+      "type": "registry:component",
+      "title": "Confirm dialog",
+      "description": "A dialog for a destructive step, with a pending state and an optional extra block.",
+      "dependencies": ["lucide-react@^0.510.0"],
+      "registryDependencies": ["@koderi/dialog", "@koderi/button"],
+      "files": [
+        {
+          "path": "src/ui/confirm-dialog.tsx",
+          "type": "registry:file",
+          "target": "src/ui/confirm-dialog.tsx"
+        }
+      ]
+    },
+    {
+      "name": "list-filter-bar",
+      "type": "registry:component",
+      "title": "List filter bar",
+      "description": "The filter field above a list, plus the toolbar that appears when rows are selected.",
+      "dependencies": ["lucide-react@^0.510.0"],
+      "registryDependencies": [
+        "@koderi/input",
+        "@koderi/button",
+        "@koderi/field-control",
+        "@koderi/utils"
+      ],
+      "files": [
+        {
+          "path": "src/ui/list-filter-bar.tsx",
+          "type": "registry:file",
+          "target": "src/ui/list-filter-bar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "detail-shell",
+      "type": "registry:component",
+      "title": "Detail shell",
+      "description": "The detail frame: title bar with a badge, tab strip, action rail, footer, and the overview rows that fill it.",
+      "dependencies": ["lucide-react@^0.510.0"],
+      "registryDependencies": ["@koderi/button", "@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/detail-shell.tsx",
+          "type": "registry:file",
+          "target": "src/ui/detail-shell.tsx"
+        }
+      ]
+    },
+    {
+      "name": "settings-section",
+      "type": "registry:component",
+      "title": "Settings frame",
+      "description": "A section list beside the form, and a footer that knows whether there is anything to save.",
+      "dependencies": ["lucide-react@^0.510.0"],
+      "registryDependencies": ["@koderi/button", "@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/settings-section.tsx",
+          "type": "registry:file",
+          "target": "src/ui/settings-section.tsx"
+        }
+      ]
+    },
+    {
+      "name": "form",
+      "type": "registry:component",
+      "title": "Form controls",
+      "description": "Field, NumberInput, SwitchField, Disclosure and ChoiceCards: the four controls the apps add on top of the primitives.",
+      "dependencies": ["lucide-react@^0.510.0"],
+      "registryDependencies": ["@koderi/input", "@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/form.tsx",
+          "type": "registry:file",
+          "target": "src/ui/form.tsx"
+        }
+      ]
+    },
+    {
+      "name": "charts",
+      "type": "registry:component",
+      "title": "Charts",
+      "description": "TimeChart with a crosshair tooltip and legend, Sparkline for a table cell, StateTimeline, and the series palette. Ranges are passed in as props.",
+      "dependencies": ["recharts@^2.15.4"],
+      "devDependencies": ["vitest@^4.1.11"],
+      "registryDependencies": ["@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/charts.tsx",
+          "type": "registry:file",
+          "target": "src/ui/charts.tsx"
+        },
+        {
+          "path": "src/ui/chart-format.ts",
+          "type": "registry:file",
+          "target": "src/ui/chart-format.ts"
+        },
+        {
+          "path": "src/ui/chart-format.test.ts",
+          "type": "registry:file",
+          "target": "src/ui/chart-format.test.ts"
+        }
+      ]
+    },
+    {
+      "name": "use-persisted",
+      "type": "registry:hook",
+      "title": "usePersisted",
+      "description": "localStorage state that survives a reload and hydrates without a mismatch on a server render.",
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/ui/use-persisted.ts",
+          "type": "registry:file",
+          "target": "src/ui/use-persisted.ts"
+        }
+      ]
+    },
+    {
+      "name": "nav",
+      "type": "registry:lib",
+      "title": "Navigation",
+      "description": "The nav types, the active-route rule and the header chip class.",
+      "dependencies": ["lucide-react@^0.510.0"],
+      "devDependencies": ["vitest@^4.1.11"],
+      "files": [
+        {
+          "path": "src/ui/layout/nav.ts",
+          "type": "registry:file",
+          "target": "src/ui/layout/nav.ts"
+        },
+        {
+          "path": "src/ui/layout/nav.test.ts",
+          "type": "registry:file",
+          "target": "src/ui/layout/nav.test.ts"
+        }
+      ]
+    },
+    {
+      "name": "command-palette",
+      "type": "registry:component",
+      "title": "Command palette",
+      "description": "cmdk on Ctrl+K over the same nav, with useCommands so a page can add its own actions.",
+      "dependencies": ["cmdk@^1.1.1", "lucide-react@^0.510.0", "@tanstack/react-router@^1.132.47"],
+      "devDependencies": ["vitest@^4.1.11"],
+      "registryDependencies": ["@koderi/nav", "@koderi/dialog", "@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/layout/command-palette.tsx",
+          "type": "registry:file",
+          "target": "src/ui/layout/command-palette.tsx"
+        },
+        {
+          "path": "src/ui/layout/command-palette-state.ts",
+          "type": "registry:file",
+          "target": "src/ui/layout/command-palette-state.ts"
+        },
+        {
+          "path": "src/ui/layout/command-search.ts",
+          "type": "registry:file",
+          "target": "src/ui/layout/command-search.ts"
+        },
+        {
+          "path": "src/ui/layout/command-search.test.ts",
+          "type": "registry:file",
+          "target": "src/ui/layout/command-search.test.ts"
+        }
+      ]
+    },
+    {
+      "name": "tree",
+      "type": "registry:component",
+      "title": "Tree",
+      "description": "The Tree, TreeItem and drag primitives, and useTreeController: one flat list in, a headless-tree instance out, with the data loader, the root and the usual features wired for you.",
+      "dependencies": [
+        "@headless-tree/core@^1.8.0",
+        "@headless-tree/react@^1.8.0",
+        "lucide-react@^0.510.0"
+      ],
+      "devDependencies": ["vitest@^4.1.11"],
+      "registryDependencies": ["@koderi/utils"],
+      "files": [
+        {
+          "path": "src/ui/primitives/tree.tsx",
+          "type": "registry:file",
+          "target": "src/ui/primitives/tree.tsx"
+        },
+        {
+          "path": "src/ui/primitives/tree-focus.ts",
+          "type": "registry:file",
+          "target": "src/ui/primitives/tree-focus.ts"
+        },
+        {
+          "path": "src/ui/primitives/tree-select.ts",
+          "type": "registry:file",
+          "target": "src/ui/primitives/tree-select.ts"
+        },
+        {
+          "path": "src/ui/primitives/tree-select.test.ts",
+          "type": "registry:file",
+          "target": "src/ui/primitives/tree-select.test.ts"
+        },
+        {
+          "path": "src/ui/tree-controller.ts",
+          "type": "registry:file",
+          "target": "src/ui/tree-controller.ts"
+        },
+        {
+          "path": "src/ui/tree-controller.test.ts",
+          "type": "registry:file",
+          "target": "src/ui/tree-controller.test.ts"
+        }
+      ]
+    },
+    {
+      "name": "data-grid",
+      "type": "registry:component",
+      "title": "Data grid",
+      "description": "One table component on TanStack Table: column widths remembered per grid in localStorage, pinned, sortable and breakpoint-hidden columns, row selection, mobile cards and the progress, status and tags column types, plus KeyValueTable for record layouts.",
+      "dependencies": ["@tanstack/react-table@^9.3.1", "lucide-react@^0.510.0"],
+      "devDependencies": ["vitest@^4.1.11"],
+      "registryDependencies": [
+        "@koderi/theme",
+        "@koderi/utils",
+        "@koderi/badge",
+        "@koderi/popover",
+        "@koderi/checkbox"
+      ],
+      "files": [
+        {
+          "path": "src/ui/data-grid/types.ts",
+          "type": "registry:file",
+          "target": "src/ui/data-grid/types.ts"
+        },
+        {
+          "path": "src/ui/data-grid/data-grid.tsx",
+          "type": "registry:file",
+          "target": "src/ui/data-grid/data-grid.tsx"
+        },
+        {
+          "path": "src/ui/data-grid/index.ts",
+          "type": "registry:file",
+          "target": "src/ui/data-grid/index.ts"
+        },
+        {
+          "path": "src/ui/data-grid/key-value-table.tsx",
+          "type": "registry:file",
+          "target": "src/ui/data-grid/key-value-table.tsx"
+        },
+        {
+          "path": "src/ui/data-grid/resize-handle.tsx",
+          "type": "registry:file",
+          "target": "src/ui/data-grid/resize-handle.tsx"
+        },
+        {
+          "path": "src/ui/data-grid/use-column-widths.ts",
+          "type": "registry:file",
+          "target": "src/ui/data-grid/use-column-widths.ts"
+        },
+        {
+          "path": "src/ui/data-grid/column-widths.ts",
+          "type": "registry:file",
+          "target": "src/ui/data-grid/column-widths.ts"
+        },
+        {
+          "path": "src/ui/data-grid/column-widths.test.ts",
+          "type": "registry:file",
+          "target": "src/ui/data-grid/column-widths.test.ts"
+        },
+        {
+          "path": "src/ui/data-grid/grid-layout.ts",
+          "type": "registry:file",
+          "target": "src/ui/data-grid/grid-layout.ts"
+        },
+        {
+          "path": "src/ui/data-grid/grid-layout.test.ts",
+          "type": "registry:file",
+          "target": "src/ui/data-grid/grid-layout.test.ts"
+        },
+        {
+          "path": "src/ui/data-grid/columns/column-factories.ts",
+          "type": "registry:file",
+          "target": "src/ui/data-grid/columns/column-factories.ts"
+        },
+        {
+          "path": "src/ui/data-grid/columns/progress-column.tsx",
+          "type": "registry:file",
+          "target": "src/ui/data-grid/columns/progress-column.tsx"
+        },
+        {
+          "path": "src/ui/data-grid/columns/progress-level.ts",
+          "type": "registry:file",
+          "target": "src/ui/data-grid/columns/progress-level.ts"
+        },
+        {
+          "path": "src/ui/data-grid/columns/progress-level.test.ts",
+          "type": "registry:file",
+          "target": "src/ui/data-grid/columns/progress-level.test.ts"
+        },
+        {
+          "path": "src/ui/data-grid/columns/status-column.tsx",
+          "type": "registry:file",
+          "target": "src/ui/data-grid/columns/status-column.tsx"
+        },
+        {
+          "path": "src/ui/data-grid/columns/tags-column.tsx",
+          "type": "registry:file",
+          "target": "src/ui/data-grid/columns/tags-column.tsx"
+        },
+        {
+          "path": "src/ui/data-grid/columns/chip-fit.ts",
+          "type": "registry:file",
+          "target": "src/ui/data-grid/columns/chip-fit.ts"
+        },
+        {
+          "path": "src/ui/data-grid/columns/chip-fit.test.ts",
+          "type": "registry:file",
+          "target": "src/ui/data-grid/columns/chip-fit.test.ts"
+        },
+        {
+          "path": "src/ui/data-grid/columns/tones.ts",
+          "type": "registry:file",
+          "target": "src/ui/data-grid/columns/tones.ts"
+        },
+        {
+          "path": "src/ui/data-grid/columns/tones.test.ts",
+          "type": "registry:file",
+          "target": "src/ui/data-grid/columns/tones.test.ts"
+        }
+      ]
+    },
+    {
+      "name": "app-shell",
+      "type": "registry:component",
+      "title": "App shell",
+      "description": "The frame: a sidebar that collapses and remembers it, a mobile sheet, an h-14 header with the palette, and slots for the wordmark, header items and sidebar footer.",
+      "dependencies": ["lucide-react@^0.510.0", "@tanstack/react-router@^1.132.47"],
+      "registryDependencies": [
+        "@koderi/nav",
+        "@koderi/command-palette",
+        "@koderi/use-persisted",
+        "@koderi/tooltip",
+        "@koderi/sheet",
+        "@koderi/button",
+        "@koderi/utils"
+      ],
+      "files": [
+        {
+          "path": "src/ui/layout/app-shell.tsx",
+          "type": "registry:file",
+          "target": "src/ui/layout/app-shell.tsx"
+        }
+      ]
+    },
+    {
+      "name": "starter",
+      "type": "registry:item",
+      "title": "Starter UI",
+      "description": "Every item in this registry: the theme, the primitives, the page frames and the shell.",
+      "registryDependencies": [
+        "@koderi/theme",
+        "@koderi/utils",
+        "@koderi/field-control",
+        "@koderi/button",
+        "@koderi/badge",
+        "@koderi/card",
+        "@koderi/dialog",
+        "@koderi/sheet",
+        "@koderi/dropdown-menu",
+        "@koderi/tabs",
+        "@koderi/tooltip",
+        "@koderi/input",
+        "@koderi/textarea",
+        "@koderi/select",
+        "@koderi/label",
+        "@koderi/switch",
+        "@koderi/popover",
+        "@koderi/checkbox",
+        "@koderi/separator",
+        "@koderi/scroll-area",
+        "@koderi/skeleton",
+        "@koderi/table",
+        "@koderi/toast",
+        "@koderi/status",
+        "@koderi/page-shell",
+        "@koderi/page-header",
+        "@koderi/confirm-dialog",
+        "@koderi/list-filter-bar",
+        "@koderi/detail-shell",
+        "@koderi/settings-section",
+        "@koderi/form",
+        "@koderi/charts",
+        "@koderi/use-persisted",
+        "@koderi/nav",
+        "@koderi/command-palette",
+        "@koderi/tree",
+        "@koderi/data-grid",
+        "@koderi/app-shell"
+      ]
+    }
+  ]
+}
