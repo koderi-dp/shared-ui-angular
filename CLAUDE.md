@@ -40,6 +40,7 @@ consumes it through tsconfig paths, exactly as a consumer would.
 - The app is zoneless: render from signals, not from mutated fields.
 
 - Unit-test `include` paths resolve from the app's `sourceRoot`, hence `../projects/ui/**/*.spec.ts`.
+- `projects/ui/LICENSE` and `projects/ui/README.md` are copies of the root files; a test keeps them identical, so edit the root ones and copy.
 - The theme's `@source "./"` is what makes Tailwind generate the library's classes, so a consumer needs no `@source` line.
 
 ## Releasing
