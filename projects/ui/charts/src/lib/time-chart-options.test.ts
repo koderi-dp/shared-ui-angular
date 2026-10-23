@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
-import type { ChartRow, ChartSeries } from "@/ui/chart-types";
+import type { ChartRow, ChartSeries } from "./chart-types";
 import { timeTicks } from "@koderi-dp/ui";
 import {
   buildTimeChartOption,
   hasChartData,
   tooltipPosition,
   type TimeChartTheme,
-} from "@/ui/time-chart-options";
+} from "./time-chart-options";
 
 const theme: TimeChartTheme = {
   text: "#8b909c",

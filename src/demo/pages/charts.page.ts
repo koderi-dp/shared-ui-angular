@@ -14,9 +14,7 @@ import {
   KoTabsList,
   KoTabsTrigger,
 } from "@koderi-dp/ui";
-import { KoSparkline } from "@/ui/sparkline.component";
-import { KoStateTimeline } from "@/ui/state-timeline.component";
-import { KoTimeChart } from "@/ui/time-chart.component";
+import { KoSparkline, KoStateTimeline, KoTimeChart } from "@koderi-dp/ui/charts";
 import { chartRows, TIMELINE_STEP_MS, timelineRows } from "@/demo/data";
 
 const TIMELINE_ROWS = timelineRows();

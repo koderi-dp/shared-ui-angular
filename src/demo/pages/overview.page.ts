@@ -36,9 +36,7 @@ import {
   formatDuration,
 } from "@koderi-dp/ui";
 import { injectCommands } from "@koderi-dp/ui/layout";
-import { KoSparkline } from "@/ui/sparkline.component";
-import { KoStateTimeline } from "@/ui/state-timeline.component";
-import { KoTimeChart } from "@/ui/time-chart.component";
+import { KoSparkline, KoStateTimeline, KoTimeChart } from "@koderi-dp/ui/charts";
 
 const TIMELINE_ROWS = timelineRows();
 

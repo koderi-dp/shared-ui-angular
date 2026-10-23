@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, provideZonelessChangeDetection } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
-import { KoStateTimeline } from "@/ui/state-timeline.component";
-import { KoTimeChart } from "@/ui/time-chart.component";
+import { KoStateTimeline } from "./state-timeline.component";
+import { KoTimeChart } from "./time-chart.component";
 
 @Component({
   selector: "ko-charts-host",

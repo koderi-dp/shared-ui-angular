@@ -1,6 +1,6 @@
 import type { EChartsCoreOption } from "echarts/core";
 import { clockTime, timeTicks } from "@koderi-dp/ui";
-import type { ChartRow, ChartSeries } from "@/ui/chart-types";
+import type { ChartRow, ChartSeries } from "./chart-types";
 
 /** Resolved theme colours, read from the CSS variables by the component so this stays pure. */
 export type TimeChartTheme = {

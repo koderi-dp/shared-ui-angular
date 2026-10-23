@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from "@angular/core";
 import { clockTime, cn } from "@koderi-dp/ui";
-import { DEFAULT_TIMELINE_STATES, type TimelineState } from "@/ui/chart-types";
+import { DEFAULT_TIMELINE_STATES, type TimelineState } from "./chart-types";
 
 type Block = { state: string; start: number; end: number };
 type TimelineRow = { id: string; name: string; states: (string | null)[] };

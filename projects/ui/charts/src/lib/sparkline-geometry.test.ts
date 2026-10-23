@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { sparklineSegments } from "@/ui/sparkline-geometry";
+import { sparklineSegments } from "./sparkline-geometry";
 
 describe("sparklineSegments", () => {
   it("draws one run for unbroken values", () => {
