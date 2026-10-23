@@ -13,7 +13,7 @@ type TimelineRow = { id: string; name: string; states: (string | null)[] };
 @Component({
   selector: "ko-state-timeline",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { "[class]": "classes()" },
+  host: { "[attr.title]": "null", "[class]": "classes()" },
   template: `
     <div class="mb-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
       <h3 class="text-sm font-medium">{{ title() }}</h3>

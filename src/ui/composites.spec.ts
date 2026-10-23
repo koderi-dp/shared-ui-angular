@@ -6,13 +6,36 @@ import {
 } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { KoDetailShell } from "@/ui/detail-shell.component";
+import { KoSelectionToolbar } from "@/ui/list-filter-bar.component";
 import { KoSettingsSaveFooter } from "@/ui/settings-section.component";
+import { KoStateTimeline } from "@/ui/state-timeline.component";
+import { KoTimeChart } from "@/ui/time-chart.component";
 
 @Component({
   selector: "ko-composites-host",
-  imports: [KoSettingsSaveFooter, KoDetailShell],
+  imports: [KoSettingsSaveFooter, KoDetailShell, KoStateTimeline, KoTimeChart, KoSelectionToolbar],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
+    <ko-state-timeline
+      id="timeline"
+      title="Encoder"
+      [rows]="[]"
+      [from]="0"
+      [to]="1000"
+      [stepMs]="100"
+    />
+    <ko-time-chart
+      id="chart"
+      title="Bitrate"
+      icon=""
+      [rows]="[]"
+      [series]="[]"
+      [from]="0"
+      [to]="1000"
+      [format]="fmt"
+      fill
+    />
+    <ko-selection-toolbar id="toolbar" [count]="1" class="extra-class" />
     <ko-settings-save-footer
       id="footer"
       dirty
@@ -34,6 +57,7 @@ import { KoSettingsSaveFooter } from "@/ui/settings-section.component";
   `,
 })
 class HostComponent {
+  readonly fmt = (value: number) => String(value);
   readonly optIn = signal(false);
   readonly cancelled = signal(false);
   readonly refreshed = signal(false);
@@ -68,6 +92,13 @@ describe("opt-in footer and shell actions", () => {
     await fixture.whenStable();
     find("#shell button", "Refresh")!.click();
     expect(host.refreshed()).toBe(true);
+  });
+
+  it("keeps the title off the chart and timeline hosts, and merges a toolbar class", async () => {
+    const { root } = await setup();
+    expect(root.querySelector("#timeline")!.hasAttribute("title")).toBe(false);
+    expect(root.querySelector("#chart")!.hasAttribute("title")).toBe(false);
+    expect(root.querySelector("#toolbar")!.classList.contains("extra-class")).toBe(true);
   });
 
   it("renders a tab count of 0 but none when the count is absent", async () => {

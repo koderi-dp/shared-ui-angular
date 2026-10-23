@@ -106,6 +106,7 @@ export class KoSelectionToolbar {
   readonly count = input.required<number>();
   /** Keep layout height when count is 0 (e.g. fixed footer). */
   readonly alwaysVisible = input(false, { transform: booleanAttribute });
+  readonly class = input<string>("");
   readonly clear = output<void>();
 
   protected readonly x = lucideX;
@@ -115,6 +116,7 @@ export class KoSelectionToolbar {
       "flex flex-wrap items-center gap-2 rounded-xl border border-border bg-secondary/40 px-3 py-2",
       this.alwaysVisible() && empty && "opacity-60",
       !this.alwaysVisible() && empty && "hidden",
+      this.class(),
     );
   });
 }

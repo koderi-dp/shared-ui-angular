@@ -1,5 +1,6 @@
 import {
   afterNextRender,
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   computed,
@@ -30,7 +31,7 @@ echarts.use([LineChart, GridComponent, TooltipComponent, MarkLineComponent, Canv
   imports: [NgIcon, NgxEchartsDirective],
   providers: [provideEchartsCore({ echarts })],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { "[class]": "classes()" },
+  host: { "[attr.title]": "null", "[class]": "classes()" },
   template: `
     <div class="mb-3 flex items-start gap-2">
       <span class="mt-0.5 shrink-0 text-muted-foreground">
@@ -89,7 +90,7 @@ export class KoTimeChart {
   readonly reference = input<{ value: number; label: string }[]>();
   readonly emptyLabel = input<string>("No data");
   /** Layout only: the plot grows to the height its grid row gives the panel, and is never shorter than the fixed size. */
-  readonly fill = input<boolean>(false);
+  readonly fill = input(false, { transform: booleanAttribute });
   readonly class = input<string>("");
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
