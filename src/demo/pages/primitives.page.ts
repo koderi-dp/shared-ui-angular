@@ -342,7 +342,7 @@ type Mode = "single" | "bulk";
                 </div>
               </ng-template>
             </ko-dialog>
-            <ko-sheet #sheet [(open)]="sheetOpen" side="right">
+            <ko-sheet #sheet [(open)]="sheetOpen" side="right" width="20rem">
               <ng-template koSheetContent>
                 <div class="p-5">
                   <ko-sheet-title>Filters</ko-sheet-title>

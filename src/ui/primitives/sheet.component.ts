@@ -83,6 +83,8 @@ export class KoSheetTrigger {
 export class KoSheet {
   readonly open = model(false);
   readonly side = input<"left" | "right">("right");
+  /** The panel's width, set through the overlay config (the CDK pane ignores `w-*`). */
+  readonly width = input("18rem");
 
   protected readonly close = lucideX;
   protected readonly content = contentChild(KoSheetContent);
@@ -108,7 +110,7 @@ export class KoSheet {
       role: "dialog",
       ariaModal: true,
       viewContainerRef: this.viewContainerRef,
-      width: "18rem",
+      width: this.width(),
       height: "100%",
       positionStrategy: left ? position.left("0") : position.right("0"),
       panelClass: [

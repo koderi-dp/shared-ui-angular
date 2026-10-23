@@ -60,7 +60,7 @@ import {
     </ko-dialog>
 
     <button id="open-sheet" [koSheetTrigger]="sheet">Open sheet</button>
-    <ko-sheet #sheet [(open)]="sheetOpen" side="left">
+    <ko-sheet #sheet [(open)]="sheetOpen" side="left" [width]="sheetWidth()">
       <ng-template koSheetContent>
         <ko-sheet-title>Navigation</ko-sheet-title>
         <ko-sheet-description>Where to go.</ko-sheet-description>
@@ -73,6 +73,7 @@ class HostComponent {
   readonly dialogOpen = signal(false);
   readonly sheetOpen = signal(false);
   readonly locked = signal(false);
+  readonly sheetWidth = signal("18rem");
 }
 
 @Component({
@@ -278,6 +279,13 @@ describe("KoDialog and KoSheet", () => {
       const pane = panel()!.closest<HTMLElement>(".cdk-overlay-pane")!;
       expect(pane.style.width).toBe("18rem");
       expect(pane.style.height).toBe("100%");
+    });
+
+    it("takes the sheet width from the width input", async () => {
+      host.sheetWidth.set("20rem");
+      host.sheetOpen.set(true);
+      await settle();
+      expect(panel()!.closest<HTMLElement>(".cdk-overlay-pane")!.style.width).toBe("20rem");
     });
 
     it("sizes a service dialog inline", async () => {
