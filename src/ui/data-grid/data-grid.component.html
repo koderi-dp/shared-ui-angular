@@ -1,0 +1,177 @@
+@if (loading()) {
+  <div [class]="class()">
+    <div class="flex items-center justify-center gap-2 py-6 text-sm text-muted-foreground">
+      <ng-icon aria-hidden="true" size="1rem" class="animate-spin" [svg]="spinner" />
+      Loading…
+    </div>
+  </div>
+} @else if (emptyAlone()) {
+  <div [class]="class()">
+    <ng-container [ngTemplateOutlet]="empty()?.template ?? null" />
+  </div>
+} @else if (showCards()) {
+  <div [class]="class()">
+    @if (classNames()?.mobileList; as mobileList) {
+      <div [class]="mobileList">
+        <ng-container [ngTemplateOutlet]="cards" />
+      </div>
+    } @else {
+      <ng-container [ngTemplateOutlet]="cards" />
+    }
+  </div>
+} @else if (needsWrapper()) {
+  <!-- Only add a scroll container when something needs one; a plain auto-layout table with no class renders bare. -->
+  <div [class]="wrapperClass()">
+    <ng-container [ngTemplateOutlet]="tableView" />
+  </div>
+} @else {
+  <ng-container [ngTemplateOutlet]="tableView" />
+}
+
+<ng-template #cards>
+  @for (row of sortedRows(); track row.id) {
+    <ng-container
+      [ngTemplateOutlet]="mobileCard()?.template ?? null"
+      [ngTemplateOutletContext]="{ $implicit: row.original }"
+    />
+  }
+</ng-template>
+
+<ng-template #tableView>
+  <table
+    [class]="classNames()?.table ?? ''"
+    [style.width.px]="fixed() ? totalWidth() : null"
+    [style.table-layout]="fixed() ? 'fixed' : null"
+  >
+    @if (fixed()) {
+      <colgroup>
+        @for (header of headers(); track header.id) {
+          <col [style.width.px]="header.size" />
+        }
+      </colgroup>
+    }
+    <thead [class]="classNames()?.thead ?? ''">
+      <tr [class]="classNames()?.headerRow ?? ''">
+        @for (header of headers(); track header.id) {
+          @if (header.select) {
+            <th [class]="header.className" [style.left.px]="header.left">
+              <ko-checkbox
+                #all
+                ariaLabel="Select all rows"
+                class="align-middle"
+                [disabled]="rows().length === 0"
+                [checked]="headerChecked()"
+                (checkedChange)="onToggleAll(all)"
+              />
+            </th>
+          } @else {
+            <th
+              [class]="header.className"
+              [style.left.px]="header.left"
+              [attr.aria-sort]="header.ariaSort"
+            >
+              @if (header.sortable) {
+                <button
+                  type="button"
+                  [class]="
+                    header.column.align === 'right'
+                      ? 'inline-flex cursor-pointer flex-row-reverse items-center gap-1 hover:text-foreground'
+                      : 'inline-flex cursor-pointer items-center gap-1 hover:text-foreground'
+                  "
+                  (click)="header.toggleSort?.($event)"
+                >
+                  <ng-container
+                    [ngTemplateOutlet]="headerContent"
+                    [ngTemplateOutletContext]="{ $implicit: header }"
+                  />
+                  @if (header.sorted === "asc") {
+                    <ng-icon aria-hidden="true" size="0.75rem" [svg]="arrowUp" />
+                  } @else if (header.sorted === "desc") {
+                    <ng-icon aria-hidden="true" size="0.75rem" [svg]="arrowDown" />
+                  }
+                </button>
+              } @else {
+                <ng-container
+                  [ngTemplateOutlet]="headerContent"
+                  [ngTemplateOutletContext]="{ $implicit: header }"
+                />
+              }
+              @if (header.showHandle) {
+                <ko-resize-handle
+                  [width]="header.size"
+                  [minSize]="header.minSize"
+                  [maxSize]="header.maxSize"
+                  [label]="header.label"
+                  (widthChange)="setWidth(header.column.id, $event)"
+                  (widthReset)="resetWidth(header.column.id)"
+                />
+              }
+            </th>
+          }
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of bodyRows(); track row.id) {
+        <tr
+          [class]="row.className"
+          [attr.data-selected]="row.selected ? 'true' : null"
+          (click)="onRowClick(row.original, $event)"
+          (dblclick)="onRowDoubleClick(row.original, $event)"
+          (contextmenu)="onRowContextMenu(row.original, $event)"
+        >
+          @for (cell of row.cells; track cell.id) {
+            @if (cell.select) {
+              <td
+                data-grid-select
+                [class]="cell.className"
+                [style.left.px]="cell.left"
+                (click)="onSelectCellClick(row, box, $event)"
+                (keydown)="onSelectCellKeydown(row, box, $event)"
+                (mousedown)="preventShiftSelect($event)"
+              >
+                <ko-checkbox
+                  #box
+                  class="align-middle"
+                  [ariaLabel]="rowLabel(row)"
+                  [checked]="row.selected"
+                />
+              </td>
+            } @else {
+              <td [class]="cell.className" [style.left.px]="cell.left" [attr.title]="cell.title">
+                <ng-template [flexRender]="cell.cell" [flexRenderProps]="row.original" let-value>{{
+                  value
+                }}</ng-template>
+              </td>
+            }
+          }
+        </tr>
+        @if (row.detail) {
+          <tr [class]="classNames()?.detailRow ?? ''">
+            <td [attr.colspan]="headers().length" [class]="classNames()?.detailCell ?? ''">
+              <ng-container
+                [ngTemplateOutlet]="rowDetail()?.template ?? null"
+                [ngTemplateOutletContext]="{ $implicit: row.original }"
+              />
+            </td>
+          </tr>
+        }
+      }
+      @if (emptyInBody()) {
+        <tr [class]="classNames()?.emptyRow ?? ''">
+          <td [attr.colspan]="headers().length" [class]="classNames()?.emptyCell ?? ''">
+            <ng-container [ngTemplateOutlet]="empty()?.template ?? null" />
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</ng-template>
+
+<ng-template #headerContent let-header>
+  @if (header.text !== null) {
+    {{ header.text }}
+  } @else {
+    <ng-container [ngTemplateOutlet]="header.template" />
+  }
+</ng-template>

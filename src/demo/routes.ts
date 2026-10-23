@@ -26,4 +26,8 @@ export const routes: Routes = [
     path: "tree",
     loadComponent: () => import("@/demo/pages/tree.page").then((m) => m.KoTreePage),
   },
+  {
+    path: "data-grid",
+    loadComponent: () => import("@/demo/pages/data-grid.page").then((m) => m.KoDataGridPage),
+  },
 ];
