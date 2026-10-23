@@ -9,11 +9,14 @@ import {
   KoCardHeader,
   KoCardTitle,
 } from "@/ui/primitives/card.component";
+import { KoCheckbox } from "@/ui/primitives/checkbox.component";
 import { KoInput } from "@/ui/primitives/input.directive";
 import { KoLabel } from "@/ui/primitives/label.directive";
 import { KoScrollArea } from "@/ui/primitives/scroll-area.directive";
+import { KoSelect } from "@/ui/primitives/select.component";
 import { KoSeparator } from "@/ui/primitives/separator.component";
 import { KoSkeleton } from "@/ui/primitives/skeleton.component";
+import { KoSwitch } from "@/ui/primitives/switch.component";
 import { KoTable, KoTableBody, KoTableCell, KoTableRow } from "@/ui/primitives/table.directive";
 import { KoTextarea } from "@/ui/primitives/textarea.directive";
 
@@ -31,6 +34,9 @@ import { KoTextarea } from "@/ui/primitives/textarea.directive";
     KoCardContent,
     KoInput,
     KoTextarea,
+    KoCheckbox,
+    KoSwitch,
+    KoSelect,
     KoLabel,
     KoSeparator,
     KoSkeleton,
@@ -117,6 +123,17 @@ import { KoTextarea } from "@/ui/primitives/textarea.directive";
               placeholder="Anything the next person should know"
             ></textarea>
           </div>
+          <div class="grid gap-1.5">
+            <label koLabel for="region">Region</label>
+            <ko-select id="region" placeholder="Pick a region" [options]="regions" />
+          </div>
+          <div class="flex items-center gap-2 text-sm">
+            <ko-checkbox ariaLabel="Select row" />
+            <ko-checkbox ariaLabel="Select all" checked="indeterminate" />
+            <ko-checkbox ariaLabel="Disabled" [checked]="true" [disabled]="true" />
+            <ko-switch ariaLabel="Enabled" [checked]="true" />
+            <ko-switch ariaLabel="Disabled switch" [disabled]="true" />
+          </div>
         </ko-card-content>
       </ko-card>
 
@@ -172,6 +189,10 @@ export class KoPrimitivesPage {
     "danger",
     "solid",
   ] as const;
+  protected readonly regions = [
+    { value: "eu", label: "Europe" },
+    { value: "us", label: "United States" },
+  ];
   protected readonly lines = [
     "Login",
     "Item created",
