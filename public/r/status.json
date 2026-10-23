@@ -2,7 +2,8 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "status",
   "title": "Status",
-  "description": "A state word to a tone and a label, drawn as StatusDot and StatusBadge. Colour never carries the meaning alone.",
+  "description": "A state word to a tone and a label, drawn as a status dot and a status badge. Colour never carries the meaning alone.",
+  "dependencies": [],
   "devDependencies": [
     "vitest@^4.1.11"
   ],
@@ -24,10 +25,10 @@
       "target": "src/ui/status-text.test.ts"
     },
     {
-      "path": "src/ui/status.tsx",
-      "content": "import { Badge } from \"@/ui/primitives/badge\";\nimport { statusLabel, statusTone } from \"@/ui/status-text\";\nimport { cn } from \"@/ui/utils\";\n\nexport function StatusDot({ state, className }: { state: string; className?: string }) {\n  const tone = statusTone(state);\n  return (\n    <span\n      aria-hidden\n      className={cn(\n        \"inline-block size-1.5 shrink-0 rounded-full\",\n        tone === \"live\" && \"bg-online\",\n        tone === \"warn\" && \"bg-degraded\",\n        tone === \"danger\" && \"bg-danger status-pulse\",\n        tone === \"outline\" && \"bg-offline\",\n        className,\n      )}\n    />\n  );\n}\n\n/** Status is always text plus colour: the dot is decoration and the word is the name. */\nexport function StatusBadge({ state }: { state: string }) {\n  return (\n    <Badge variant={statusTone(state)} className=\"gap-1.5 whitespace-nowrap\">\n      <StatusDot state={state} />\n      {statusLabel(state)}\n    </Badge>\n  );\n}\n",
+      "path": "src/ui/status.component.ts",
+      "content": "import { ChangeDetectionStrategy, Component, computed, input } from \"@angular/core\";\nimport { KoBadge } from \"@/ui/primitives/badge.component\";\nimport { statusLabel, statusTone } from \"@/ui/status-text\";\nimport { cn } from \"@/ui/utils\";\n\n/** A small coloured dot for a state word. Decoration only: the word next to it is the name. */\n@Component({\n  selector: \"ko-status-dot\",\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  host: { \"aria-hidden\": \"true\", \"[class]\": \"classes()\" },\n  template: \"\",\n})\nexport class KoStatusDot {\n  readonly state = input.required<string>();\n  readonly class = input<string>(\"\");\n\n  protected readonly classes = computed(() => {\n    const tone = statusTone(this.state());\n    return cn(\n      \"inline-block size-1.5 shrink-0 rounded-full\",\n      tone === \"live\" && \"bg-online\",\n      tone === \"warn\" && \"bg-degraded\",\n      tone === \"danger\" && \"bg-danger status-pulse\",\n      tone === \"outline\" && \"bg-offline\",\n      this.class(),\n    );\n  });\n}\n\n/** Status is always text plus colour: the dot is decoration and the word is the name. */\n@Component({\n  selector: \"ko-status-badge\",\n  imports: [KoBadge, KoStatusDot],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  host: { class: \"contents\" },\n  template: `\n    <ko-badge [variant]=\"tone()\" class=\"gap-1.5 whitespace-nowrap\">\n      <ko-status-dot [state]=\"state()\" />\n      {{ label() }}\n    </ko-badge>\n  `,\n})\nexport class KoStatusBadge {\n  readonly state = input.required<string>();\n\n  protected readonly tone = computed(() => statusTone(this.state()));\n  protected readonly label = computed(() => statusLabel(this.state()));\n}\n",
       "type": "registry:file",
-      "target": "src/ui/status.tsx"
+      "target": "src/ui/status.component.ts"
     }
   ],
   "type": "registry:component"

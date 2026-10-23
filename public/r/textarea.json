@@ -2,17 +2,27 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "textarea",
   "title": "Textarea",
-  "description": "A multi-line input on the same surface as Input.",
+  "description": "A multi-line input directive on the same surface as the input.",
+  "dependencies": [
+    "@angular/forms@^22.2.0"
+  ],
   "registryDependencies": [
     "@koderi/utils",
-    "@koderi/field-control"
+    "@koderi/field-control",
+    "@koderi/input"
   ],
   "files": [
     {
-      "path": "src/ui/primitives/textarea.tsx",
-      "content": "import * as React from \"react\";\nimport { cn } from \"@/ui/utils\";\nimport { fieldControlClass, fieldFocusClass } from \"@/ui/primitives/field-control\";\n\nconst Textarea = React.forwardRef<HTMLTextAreaElement, React.ComponentProps<\"textarea\">>(\n  ({ className, ...props }, ref) => (\n    <textarea\n      className={cn(\n        \"flex min-h-24 w-full px-3 py-2 text-sm placeholder:text-muted-foreground/70\",\n        fieldControlClass,\n        fieldFocusClass,\n        className,\n      )}\n      ref={ref}\n      {...props}\n    />\n  ),\n);\nTextarea.displayName = \"Textarea\";\n\nexport { Textarea };\n",
+      "path": "src/ui/primitives/textarea.directive.ts",
+      "content": "// Adapted from Zard UI 1.1.1 (MIT) — https://github.com/zard-ui/zardui\nimport { computed, Directive, input } from \"@angular/core\";\nimport { fieldControlClass, fieldFocusClass } from \"@/ui/primitives/field-control\";\nimport { cn } from \"@/ui/utils\";\n\n/** Classes only: the element stays a native `<textarea>`, so `ngModel` and `formControl` just work. */\n@Directive({ selector: \"textarea[koTextarea]\", host: { \"[class]\": \"classes()\" } })\nexport class KoTextarea {\n  readonly class = input<string>(\"\");\n  protected readonly classes = computed(() =>\n    cn(\n      \"flex min-h-24 w-full px-3 py-2 text-sm placeholder:text-muted-foreground/70\",\n      fieldControlClass,\n      fieldFocusClass,\n      this.class(),\n    ),\n  );\n}\n",
       "type": "registry:file",
-      "target": "src/ui/primitives/textarea.tsx"
+      "target": "src/ui/primitives/textarea.directive.ts"
+    },
+    {
+      "path": "src/ui/primitives/input.spec.ts",
+      "content": "import { ChangeDetectionStrategy, Component, provideZonelessChangeDetection } from \"@angular/core\";\nimport { TestBed } from \"@angular/core/testing\";\nimport { FormControl, ReactiveFormsModule } from \"@angular/forms\";\nimport { KoInput } from \"@/ui/primitives/input.directive\";\nimport { KoTextarea } from \"@/ui/primitives/textarea.directive\";\n\n@Component({\n  selector: \"ko-input-host\",\n  imports: [KoInput, KoTextarea, ReactiveFormsModule],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <input koInput [formControl]=\"input\" />\n    <textarea koTextarea [formControl]=\"area\"></textarea>\n  `,\n})\nclass HostComponent {\n  readonly input = new FormControl(\"\", { nonNullable: true });\n  readonly area = new FormControl(\"\", { nonNullable: true });\n}\n\ndescribe(\"koInput and koTextarea\", () => {\n  let host: HostComponent;\n  let input: HTMLInputElement;\n  let area: HTMLTextAreaElement;\n  let stable: () => Promise<void>;\n\n  beforeEach(async () => {\n    TestBed.configureTestingModule({ providers: [provideZonelessChangeDetection()] });\n    const fixture = TestBed.createComponent(HostComponent);\n    await fixture.whenStable();\n    host = fixture.componentInstance;\n    input = fixture.nativeElement.querySelector(\"input\");\n    area = fixture.nativeElement.querySelector(\"textarea\");\n    stable = () => fixture.whenStable();\n  });\n\n  it(\"writes a control value into the element\", () => {\n    host.input.setValue(\"a\");\n    expect(input.value).toBe(\"a\");\n    host.area.setValue(\"z\");\n    expect(area.value).toBe(\"z\");\n  });\n\n  it(\"reads typing back into the control\", () => {\n    input.value = \"b\";\n    input.dispatchEvent(new Event(\"input\"));\n    expect(host.input.value).toBe(\"b\");\n    area.value = \"y\";\n    area.dispatchEvent(new Event(\"input\"));\n    expect(host.area.value).toBe(\"y\");\n  });\n\n  it(\"disables the element with the control\", async () => {\n    host.input.disable();\n    host.area.disable();\n    await stable();\n    expect(input.hasAttribute(\"disabled\")).toBe(true);\n    expect(area.hasAttribute(\"disabled\")).toBe(true);\n  });\n\n  it(\"applies the field classes\", () => {\n    expect(input.className).toContain(\"bg-inset\");\n    expect(area.className).toContain(\"min-h-24\");\n  });\n});\n",
+      "type": "registry:file",
+      "target": "src/ui/primitives/input.spec.ts"
     }
   ],
   "type": "registry:ui"

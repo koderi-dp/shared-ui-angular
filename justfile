@@ -14,13 +14,16 @@ build:
 test:
     npm test
 
+typecheck:
+    npm run typecheck
+
 lint:
     npm run lint
 
 format:
     npm run format
 
-check: build test lint
+check: typecheck build test lint
     npm run format:check
 
 registry:build:

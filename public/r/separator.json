@@ -3,18 +3,16 @@
   "name": "separator",
   "title": "Separator",
   "description": "A one-pixel rule, horizontal or vertical.",
-  "dependencies": [
-    "@radix-ui/react-separator@^1.1.8"
-  ],
+  "dependencies": [],
   "registryDependencies": [
     "@koderi/utils"
   ],
   "files": [
     {
-      "path": "src/ui/primitives/separator.tsx",
-      "content": "import * as React from \"react\";\nimport * as SeparatorPrimitive from \"@radix-ui/react-separator\";\nimport { cn } from \"@/ui/utils\";\n\nconst Separator = React.forwardRef<\n  React.ComponentRef<typeof SeparatorPrimitive.Root>,\n  React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root>\n>(({ className, orientation = \"horizontal\", decorative = true, ...props }, ref) => (\n  <SeparatorPrimitive.Root\n    ref={ref}\n    decorative={decorative}\n    orientation={orientation}\n    className={cn(\n      \"shrink-0 bg-border\",\n      orientation === \"horizontal\" ? \"h-px w-full\" : \"h-full w-px\",\n      className,\n    )}\n    {...props}\n  />\n));\nSeparator.displayName = SeparatorPrimitive.Root.displayName;\n\nexport { Separator };\n",
+      "path": "src/ui/primitives/separator.component.ts",
+      "content": "// Adapted from Zard UI 1.1.1 (MIT) — https://github.com/zard-ui/zardui\nimport { ChangeDetectionStrategy, Component, computed, input } from \"@angular/core\";\nimport { cn } from \"@/ui/utils\";\n\n@Component({\n  selector: \"ko-separator\",\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  host: {\n    role: \"separator\",\n    \"[attr.aria-orientation]\": \"orientation()\",\n    \"[class]\": \"classes()\",\n  },\n  template: \"\",\n})\nexport class KoSeparator {\n  readonly orientation = input<\"horizontal\" | \"vertical\">(\"horizontal\");\n  readonly class = input<string>(\"\");\n  protected readonly classes = computed(() =>\n    cn(\n      \"block shrink-0 bg-border\",\n      this.orientation() === \"horizontal\" ? \"h-px w-full\" : \"h-full w-px\",\n      this.class(),\n    ),\n  );\n}\n",
       "type": "registry:file",
-      "target": "src/ui/primitives/separator.tsx"
+      "target": "src/ui/primitives/separator.component.ts"
     }
   ],
   "type": "registry:ui"

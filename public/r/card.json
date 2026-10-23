@@ -3,15 +3,16 @@
   "name": "card",
   "title": "Card",
   "description": "Card, CardHeader, CardTitle, CardDescription and CardContent.",
+  "dependencies": [],
   "registryDependencies": [
     "@koderi/utils"
   ],
   "files": [
     {
-      "path": "src/ui/primitives/card.tsx",
-      "content": "import * as React from \"react\";\nimport { cn } from \"@/ui/utils\";\n\nconst Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(\n  ({ className, ...props }, ref) => (\n    <div\n      ref={ref}\n      className={cn(\n        \"rounded-xl bg-card text-card-foreground shadow-[var(--shadow-border)]\",\n        className,\n      )}\n      {...props}\n    />\n  ),\n);\nCard.displayName = \"Card\";\n\nfunction CardHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {\n  return <div className={cn(\"flex flex-col gap-1 p-5 pb-3\", className)} {...props} />;\n}\n\nfunction CardTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {\n  return <h3 className={cn(\"text-sm font-medium tracking-tight\", className)} {...props} />;\n}\n\nfunction CardDescription({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {\n  return <p className={cn(\"text-sm text-muted-foreground\", className)} {...props} />;\n}\n\nfunction CardContent({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {\n  return <div className={cn(\"p-5 pt-0\", className)} {...props} />;\n}\n\nexport { Card, CardHeader, CardTitle, CardDescription, CardContent };\n",
+      "path": "src/ui/primitives/card.component.ts",
+      "content": "// Adapted from Zard UI 1.1.1 (MIT) — https://github.com/zard-ui/zardui\nimport { ChangeDetectionStrategy, Component, computed, input } from \"@angular/core\";\nimport { cn } from \"@/ui/utils\";\n\n@Component({\n  selector: \"ko-card\",\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  host: { \"[class]\": \"classes()\" },\n  template: `<ng-content />`,\n})\nexport class KoCard {\n  readonly class = input<string>(\"\");\n  protected readonly classes = computed(() =>\n    cn(\"block rounded-xl bg-card text-card-foreground shadow-[var(--shadow-border)]\", this.class()),\n  );\n}\n\n@Component({\n  selector: \"ko-card-header\",\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  host: { \"[class]\": \"classes()\" },\n  template: `<ng-content />`,\n})\nexport class KoCardHeader {\n  readonly class = input<string>(\"\");\n  protected readonly classes = computed(() => cn(\"flex flex-col gap-1 p-5 pb-3\", this.class()));\n}\n\n@Component({\n  selector: \"ko-card-title\",\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  host: { role: \"heading\", \"aria-level\": \"3\", \"[class]\": \"classes()\" },\n  template: `<ng-content />`,\n})\nexport class KoCardTitle {\n  readonly class = input<string>(\"\");\n  protected readonly classes = computed(() =>\n    cn(\"block text-sm font-medium tracking-tight\", this.class()),\n  );\n}\n\n@Component({\n  selector: \"ko-card-description\",\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  host: { \"[class]\": \"classes()\" },\n  template: `<ng-content />`,\n})\nexport class KoCardDescription {\n  readonly class = input<string>(\"\");\n  protected readonly classes = computed(() =>\n    cn(\"block text-sm text-muted-foreground\", this.class()),\n  );\n}\n\n@Component({\n  selector: \"ko-card-content\",\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  host: { \"[class]\": \"classes()\" },\n  template: `<ng-content />`,\n})\nexport class KoCardContent {\n  readonly class = input<string>(\"\");\n  protected readonly classes = computed(() => cn(\"block p-5 pt-0\", this.class()));\n}\n",
       "type": "registry:file",
-      "target": "src/ui/primitives/card.tsx"
+      "target": "src/ui/primitives/card.component.ts"
     }
   ],
   "type": "registry:ui"

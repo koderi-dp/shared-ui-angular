@@ -3,15 +3,16 @@
   "name": "skeleton",
   "title": "Skeleton",
   "description": "The placeholder that stands in while data loads.",
+  "dependencies": [],
   "registryDependencies": [
     "@koderi/utils"
   ],
   "files": [
     {
-      "path": "src/ui/primitives/skeleton.tsx",
-      "content": "import { cn } from \"@/ui/utils\";\n\nfunction Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {\n  return <div className={cn(\"animate-pulse rounded-md bg-secondary\", className)} {...props} />;\n}\n\nexport { Skeleton };\n",
+      "path": "src/ui/primitives/skeleton.component.ts",
+      "content": "// Adapted from Zard UI 1.1.1 (MIT) — https://github.com/zard-ui/zardui\nimport { ChangeDetectionStrategy, Component, computed, input } from \"@angular/core\";\nimport { cn } from \"@/ui/utils\";\n\n@Component({\n  selector: \"ko-skeleton\",\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  host: { \"aria-hidden\": \"true\", \"[class]\": \"classes()\" },\n  template: \"\",\n})\nexport class KoSkeleton {\n  readonly class = input<string>(\"\");\n  protected readonly classes = computed(() =>\n    cn(\"block animate-pulse rounded-md bg-secondary\", this.class()),\n  );\n}\n",
       "type": "registry:file",
-      "target": "src/ui/primitives/skeleton.tsx"
+      "target": "src/ui/primitives/skeleton.component.ts"
     }
   ],
   "type": "registry:ui"

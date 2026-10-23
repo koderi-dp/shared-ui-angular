@@ -3,6 +3,8 @@
   "name": "field-control",
   "title": "Field control classes",
   "description": "The inset field surface and the focus lift every input, select and textarea share.",
+  "dependencies": [],
+  "registryDependencies": [],
   "files": [
     {
       "path": "src/ui/primitives/field-control.ts",

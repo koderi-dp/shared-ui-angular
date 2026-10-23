@@ -5,13 +5,7 @@ import tseslint from 'typescript-eslint'
 /** Flat ESLint config: typescript-eslint plus angular-eslint for code and templates. */
 export default tseslint.config(
   {
-    ignores: [
-      'dist/**',
-      'node_modules/**',
-      'public/**',
-      'reference/**',
-      '.angular/**',
-    ],
+    ignores: ['dist/**', 'node_modules/**', 'public/**', '.angular/**'],
   },
   {
     files: ['**/*.ts'],
