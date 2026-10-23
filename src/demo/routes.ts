@@ -22,4 +22,8 @@ export const routes: Routes = [
     path: "blocks",
     loadComponent: () => import("@/demo/pages/blocks.page").then((m) => m.KoBlocksPage),
   },
+  {
+    path: "tree",
+    loadComponent: () => import("@/demo/pages/tree.page").then((m) => m.KoTreePage),
+  },
 ];

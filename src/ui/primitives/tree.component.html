@@ -1,0 +1,10 @@
+@for (row of rows(); track row.item.getId()) {
+  <div [koTreeItemProps]="row.props" [class]="row.classes" [style.padding-left.px]="row.padding">
+    @if (itemTemplate(); as tpl) {
+      <ng-container
+        *ngTemplateOutlet="tpl.template; context: { $implicit: row.item }; injector: row.injector"
+      />
+    }
+  </div>
+}
+<ko-tree-drag-line />
