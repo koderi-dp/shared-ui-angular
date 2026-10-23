@@ -180,11 +180,19 @@ git push origin v0.2.0
 ```
 
 `.github/workflows/release.yml` takes the version from the tag, publishes to npm with
-provenance and creates the GitHub release. `0.1.0` is the one release made by hand: run
-`npm login`, `npm run build:lib`, `node scripts/set-version.mjs v0.1.0`, then
-`npm publish --access public` from `dist/ui`. After that, add the trusted publisher on
-npmjs.com (repo `koderi-dp/shared-ui-angular`, workflow `release.yml`). Later tags need no
-token.
+provenance and creates the GitHub release. It publishes through npm trusted publishing, so no
+token is stored anywhere.
+
+The first release (`0.1.0`) needs a token once, because trusted publishing is set up on the
+package's npm page and that page exists only after the first publish:
+
+1. On npmjs.com, create a granular access token: read and write on packages, scoped to
+   `@koderi-dp`, expiring in 1 day, with "bypass two-factor authentication" on.
+2. Add it to this repo as the Actions secret `NPM_TOKEN`.
+3. Push the tag: `git tag v0.1.0 && git push origin v0.1.0`.
+4. Once `@koderi-dp/ui` is on npm: on its npmjs.com settings, add the trusted publisher (repo
+   `koderi-dp/shared-ui-angular`, workflow `release.yml`), then delete the `NPM_TOKEN` secret
+   and revoke the token. Without the secret, the workflow uses trusted publishing.
 
 Every push to `main` deploys the showcase to GitHub Pages (`.github/workflows/pages.yml`).
 

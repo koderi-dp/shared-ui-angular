@@ -48,6 +48,7 @@ consumes it through tsconfig paths, exactly as a consumer would.
 Tag `vX.Y.Z` on `main` and push the tag; `release.yml` checks, builds, stamps the version
 from the tag, publishes to npm with provenance and creates the GitHub release.
 
-`0.1.0` is published once by hand: `npm login`, `npm run build:lib`,
-`node scripts/set-version.mjs v0.1.0`, `cd dist/ui && npm publish --access public`. After that,
-configure the trusted publisher on npmjs.com (repo `koderi-dp/shared-ui-angular`, workflow `release.yml`).
+Publishing uses npm trusted publishing. Only `0.1.0` uses a token: a short-lived `NPM_TOKEN`
+repo secret, which `release.yml` uses when present. After that release, configure the trusted
+publisher on npmjs.com (repo `koderi-dp/shared-ui-angular`, workflow `release.yml`) and delete
+the secret. Never add the token back for later releases.

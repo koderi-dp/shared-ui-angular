@@ -1,5 +1,10 @@
-# Publishes @koderi-dp/ui to npm (trusted publishing, no token) and attaches the tarball to a
-# GitHub release when a v* tag is pushed. The version comes from the tag.
+# Publishes @koderi-dp/ui to npm and attaches the tarball to a GitHub release when a v* tag is
+# pushed. The version comes from the tag.
+#
+# Publishing uses npm trusted publishing (no token). The one exception is the first release:
+# trusted publishing is set up on the package's npm page, which only exists after a publish, so
+# 0.1.0 goes out with a short-lived NPM_TOKEN secret. Delete the secret once the trusted
+# publisher is configured; without it this workflow falls back to trusted publishing.
 name: Release
 
 on:
@@ -36,10 +41,18 @@ jobs:
         run: |
           if [[ "$GITHUB_REF_NAME" == *-* ]]; then echo "PRERELEASE=true" >> "$GITHUB_ENV"; fi
       - run: npx publint dist/ui
-      # Trusted publishing needs npm >= 11.5; Node 24 may bundle an older one.
-      - run: npm i -g npm@^11.5.1
-      - run: npm publish --provenance --access public ${{ env.PRERELEASE == 'true' && '--tag next' || '' }}
+      # Trusted publishing needs npm >= 11.5.1, and >= 11.21 to set a dist-tag (`next`).
+      - run: npm i -g npm@^11.21.0
+      - name: Publish to npm
         working-directory: dist/ui
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -n "$NPM_TOKEN" ]; then
+            echo "Publishing with the NPM_TOKEN secret (first release only)."
+            npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
+          fi
+          npm publish --provenance --access public ${{ env.PRERELEASE == 'true' && '--tag next' || '' }}
       - run: npm pack ./dist/ui
       - run: gh release create "$GITHUB_REF_NAME" koderi-dp-ui-*.tgz --generate-notes ${{ env.PRERELEASE == 'true' && '--prerelease' || '' }}
         env:
