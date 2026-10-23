@@ -197,7 +197,8 @@ There is nothing to register.
 - The number input keeps the typed text while editing and clamps to `min` on blur.
 - Charts are drawn by ECharts, styled to match Recharts' crosshair, hover dot and tooltip. The
   x-axis gets the same tick list, but ECharts thins overlapping labels differently from
-  Recharts' `minTickGap`, so a narrow chart can show a different subset.
+  Recharts' `minTickGap`, so a narrow chart can show a different subset. The y-axis uses
+  round steps (0, 50, 100, …) where Recharts split the range into five equal ticks.
 
 ## Developing
 
