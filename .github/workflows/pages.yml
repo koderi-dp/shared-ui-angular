@@ -1,4 +1,5 @@
-# Deploys the showcase (and public/r, the built registry) to GitHub Pages on every push to main.
+# Checks the repo, then deploys the Angular showcase (and public/r, the built registry) to
+# GitHub Pages on every push to main.
 name: Deploy showcase
 
 on:
@@ -16,7 +17,24 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm test
+      # public/r is committed: fail if it is stale against registry.json and src/ui.
+      - run: npm run registry:build && git diff --exit-code -- public/r
+
   deploy:
+    needs: check
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -25,11 +43,12 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
       - run: npm ci
-      - run: npx ng build --base-href /shared-ui-angular/
-      # Pages has no SPA fallback: serve the app for deep links like /shared-ui-angular/tree.
+      # Project pages live under /<repo>/, so the base href follows the repository name.
+      - run: npx ng build --base-href "/${{ github.event.repository.name }}/"
+      # Pages has no SPA fallback: serve the app for deep links like /<repo>/tree.
       - run: cp dist/browser/index.html dist/browser/404.html
       - uses: actions/upload-pages-artifact@v3
         with:
