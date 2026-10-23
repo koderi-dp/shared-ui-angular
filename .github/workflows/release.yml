@@ -1,0 +1,38 @@
+# Publishes @koderi-dp/ui to npm (trusted publishing, no token) and attaches the tarball to a
+# GitHub release when a v* tag is pushed. The version comes from the tag.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm test
+      - run: npm run build:lib
+      - run: node scripts/set-version.mjs "$GITHUB_REF_NAME"
+      - run: npx publint dist/ui
+      # Trusted publishing needs npm >= 11.5; Node 24 may bundle an older one.
+      - run: npm i -g npm@latest
+      - run: npm publish --provenance --access public
+        working-directory: dist/ui
+      - run: npm pack ./dist/ui
+      - run: gh release create "$GITHUB_REF_NAME" koderi-dp-ui-*.tgz --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}

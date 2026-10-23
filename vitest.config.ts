@@ -17,7 +17,7 @@ export default defineConfig({
   oxc: { decorator: { legacy: true } },
   test: {
     environment: "node",
-    include: ["projects/ui/**/*.test.ts", "src/**/*.test.ts"],
+    include: ["projects/ui/**/*.test.ts", "src/**/*.test.ts", "scripts/**/*.test.ts"],
     restoreMocks: true,
     setupFiles: ["@angular/compiler"],
   },
