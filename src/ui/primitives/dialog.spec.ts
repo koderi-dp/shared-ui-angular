@@ -98,6 +98,10 @@ describe("KoDialog and KoSheet", () => {
     fixture.detectChanges();
     await fixture.whenStable();
   };
+  const exited = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    await settle();
+  };
   const el = (selector: string) => document.querySelector<HTMLElement>(selector);
   const panel = () => el('[role="dialog"]');
   const press = (target: Element, key: string, init: KeyboardEventInit = {}) =>
@@ -168,6 +172,7 @@ describe("KoDialog and KoSheet", () => {
       await settle();
       press(panel()!, "Escape");
       await settle();
+      await exited();
       expect(panel()).toBeNull();
       expect(host.dialogOpen()).toBe(false);
       expect(document.activeElement).toBe(trigger);
@@ -178,6 +183,7 @@ describe("KoDialog and KoSheet", () => {
       await settle();
       el(".cdk-overlay-backdrop")!.click();
       await settle();
+      await exited();
       expect(panel()).toBeNull();
       expect(host.dialogOpen()).toBe(false);
     });
@@ -193,6 +199,7 @@ describe("KoDialog and KoSheet", () => {
       expect(host.dialogOpen()).toBe(true);
       el("#cancel")!.click();
       await settle();
+      await exited();
       expect(panel()).toBeNull();
       expect(host.dialogOpen()).toBe(false);
     });
@@ -209,6 +216,7 @@ describe("KoDialog and KoSheet", () => {
       await settle();
       press(panel()!, "Escape");
       await settle();
+      await exited();
       expect(panel()).toBeNull();
     });
 
@@ -224,6 +232,7 @@ describe("KoDialog and KoSheet", () => {
       expect(panel()).not.toBeNull();
       ref.close();
       await settle();
+      await exited();
       expect(panel()).toBeNull();
     });
 
@@ -233,12 +242,14 @@ describe("KoDialog and KoSheet", () => {
       expect(panel()).not.toBeNull();
       host.dialogOpen.set(false);
       await settle();
+      await exited();
       expect(panel()).toBeNull();
 
       host.dialogOpen.set(true);
       await settle();
       el("#cancel")!.click();
       await settle();
+      await exited();
       expect(panel()).toBeNull();
       expect(host.dialogOpen()).toBe(false);
     });
@@ -257,7 +268,8 @@ describe("KoDialog and KoSheet", () => {
       host.dialogOpen.set(true);
       await settle();
       press(panel()!, "Escape");
-      await settle();
+      await exited();
+      expect(host.dialogOpen()).toBe(false);
       host.dialogOpen.set(true);
       await settle();
       expect(document.querySelectorAll('[role="dialog"]').length).toBe(1);
@@ -312,6 +324,7 @@ describe("KoDialog and KoSheet", () => {
 
       press(panel()!, "Escape");
       await settle();
+      await exited();
       expect(panel()).toBeNull();
       expect(host.sheetOpen()).toBe(false);
       expect(document.activeElement).toBe(trigger);
@@ -323,8 +336,146 @@ describe("KoDialog and KoSheet", () => {
       expect(panel()!.closest(".cdk-overlay-pane")!.className).toContain("slide-in-from-left");
       el(".cdk-overlay-backdrop")!.click();
       await settle();
+      await exited();
       expect(panel()).toBeNull();
       expect(host.sheetOpen()).toBe(false);
+    });
+  });
+
+  describe("exit animation", () => {
+    // jsdom fires no animationend, so these run through the timeout fallback (duration + margin).
+    const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+    const pane = () => el(".cdk-overlay-pane")!;
+
+    it("keeps the dialog attached with exit classes until the fallback elapses", async () => {
+      host.dialogOpen.set(true);
+      await settle();
+      press(panel()!, "Escape");
+      await settle();
+      expect(pane().className).toContain("animate-out");
+      expect(pane().className).toContain("fade-out-0");
+      expect(pane().className).toContain("zoom-out-95");
+      expect(pane().className).not.toContain("animate-in");
+      expect(el(".cdk-overlay-backdrop")!.className).toContain("animate-out");
+      expect(host.dialogOpen()).toBe(true);
+      await sleep(100);
+      expect(panel()).not.toBeNull();
+      expect(host.dialogOpen()).toBe(true);
+      await exited();
+      expect(panel()).toBeNull();
+      expect(host.dialogOpen()).toBe(false);
+    });
+
+    it("closes early on animationend from the panel, not from a child", async () => {
+      host.dialogOpen.set(true);
+      await settle();
+      press(panel()!, "Escape");
+      el("#field")!.dispatchEvent(new Event("animationend", { bubbles: true }));
+      expect(panel()).not.toBeNull();
+      pane().dispatchEvent(new Event("animationend"));
+      await settle();
+      expect(panel()).toBeNull();
+      expect(host.dialogOpen()).toBe(false);
+    });
+
+    it("animates every close path, including koDialogClose and open.set(false)", async () => {
+      host.dialogOpen.set(true);
+      await settle();
+      el("#cancel")!.click();
+      await settle();
+      expect(pane().className).toContain("animate-out");
+      expect(host.dialogOpen()).toBe(true);
+      await exited();
+      expect(panel()).toBeNull();
+
+      host.dialogOpen.set(true);
+      await settle();
+      host.dialogOpen.set(false);
+      await settle();
+      expect(panel()).not.toBeNull();
+      expect(pane().className).toContain("animate-out");
+      await exited();
+      expect(panel()).toBeNull();
+    });
+
+    it("slides a sheet out towards its side", async () => {
+      host.sheetOpen.set(true);
+      await settle();
+      press(panel()!, "Escape");
+      await settle();
+      expect(pane().className).toContain("slide-out-to-left");
+      expect(panel()).not.toBeNull();
+      await exited();
+      expect(panel()).toBeNull();
+      expect(host.sheetOpen()).toBe(false);
+    });
+
+    it("keeps the close result on the service path and emits closed after the wait", async () => {
+      const ref = TestBed.inject(KoDialogService).open<ServiceContentComponent, unknown, string>(
+        ServiceContentComponent,
+        { ariaLabel: "x" },
+      );
+      const results: (string | undefined)[] = [];
+      ref.closed.subscribe((result) => results.push(result));
+      await settle();
+      ref.close("saved");
+      await settle();
+      expect(pane().className).toContain("animate-out");
+      expect(results).toEqual([]);
+      await sleep(100);
+      expect(panel()).not.toBeNull();
+      await exited();
+      expect(results).toEqual(["saved"]);
+      expect(panel()).toBeNull();
+    });
+
+    it("ignores a second close during the wait", async () => {
+      const ref = TestBed.inject(KoDialogService).open<ServiceContentComponent, unknown, string>(
+        ServiceContentComponent,
+        { ariaLabel: "x" },
+      );
+      const results: (string | undefined)[] = [];
+      ref.closed.subscribe((result) => results.push(result));
+      await settle();
+      ref.close("first");
+      expect(() => ref.close("second")).not.toThrow();
+      press(panel()!, "Escape");
+      el(".cdk-overlay-backdrop")!.click();
+      await exited();
+      expect(results).toEqual(["first"]);
+      expect(panel()).toBeNull();
+    });
+
+    it("cancels the pending close when reopened during the wait", async () => {
+      host.dialogOpen.set(true);
+      await settle();
+      host.dialogOpen.set(false);
+      await settle();
+      expect(pane().className).toContain("animate-out");
+      host.dialogOpen.set(true);
+      await settle();
+      expect(pane().className).not.toContain("animate-out");
+      expect(pane().className).toContain("animate-in");
+      await exited();
+      expect(document.querySelectorAll('[role="dialog"]').length).toBe(1);
+      expect(host.dialogOpen()).toBe(true);
+    });
+
+    it("skips the wait when the user prefers reduced motion", async () => {
+      const original = window.matchMedia;
+      window.matchMedia = ((query: string) => ({
+        matches: query.includes("prefers-reduced-motion"),
+      })) as typeof window.matchMedia;
+      try {
+        host.dialogOpen.set(true);
+        await settle();
+        press(panel()!, "Escape");
+        await settle();
+        expect(panel()).toBeNull();
+        expect(host.dialogOpen()).toBe(false);
+      } finally {
+        window.matchMedia = original;
+      }
     });
   });
 
@@ -341,6 +492,7 @@ describe("KoDialog and KoSheet", () => {
       expect(panel()!.getAttribute("aria-labelledby")).toBe(el("ko-dialog-title")!.id);
       el("#service-close")!.click();
       await settle();
+      await exited();
       expect(closed).toBe(true);
       expect(panel()).toBeNull();
     });

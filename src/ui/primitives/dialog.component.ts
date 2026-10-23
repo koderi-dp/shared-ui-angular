@@ -27,6 +27,7 @@ import {
   KO_DIALOG_PANEL_CLASS,
   KO_DIALOG_SIZE,
 } from "@/ui/primitives/dialog.service";
+import { animateExit, type KoExitController } from "@/ui/primitives/dialog-exit";
 import { linkToPanel } from "@/ui/primitives/dialog-panel";
 import { cn } from "@/ui/utils";
 
@@ -48,7 +49,7 @@ export class KoDialogClose {
   private readonly ref = inject(DialogRef, { optional: true });
 
   protected close(): void {
-    if (this.dialog) this.dialog.open.set(false);
+    if (this.dialog) this.dialog.requestClose();
     else this.ref?.close();
   }
 }
@@ -68,7 +69,7 @@ export class KoDialogTrigger {
 
 /**
  * A modal dialog. `[(open)]` works both ways: Escape, a backdrop click and `koDialogClose` write
- * `false` back. The content goes in `<ng-template koDialogContent>`.
+ * `false` back once the exit animation has played. The content goes in `<ng-template koDialogContent>`.
  */
 @Component({
   selector: "ko-dialog",
@@ -111,6 +112,7 @@ export class KoDialog {
   private readonly dialog = inject(Dialog);
   private readonly viewContainerRef = inject(ViewContainerRef);
   private ref?: DialogRef<unknown, unknown>;
+  private exit?: KoExitController;
 
   constructor() {
     effect(() => {
@@ -123,11 +125,24 @@ export class KoDialog {
       const disableClose = this.disableClose();
       if (this.ref) this.ref.disableClose = disableClose;
     });
-    inject(DestroyRef).onDestroy(() => this.ref?.close());
+    inject(DestroyRef).onDestroy(() => (this.exit ? this.exit.closeNow() : this.ref?.close()));
+  }
+
+  /**
+   * Closes through the exit animation; `open` flips to false once the dialog is really gone.
+   * Used by `koDialogClose`.
+   */
+  requestClose(): void {
+    if (this.ref) this.ref.close();
+    else this.open.set(false);
   }
 
   private show(): void {
-    if (this.ref) return;
+    if (this.ref) {
+      // Reopened during the exit animation: cancel the pending close and keep this dialog.
+      this.exit?.cancel();
+      return;
+    }
     const ref = this.dialog.open(this.shell(), {
       role: "dialog",
       ariaModal: true,
@@ -139,8 +154,9 @@ export class KoDialog {
       backdropClass: KO_DIALOG_BACKDROP_CLASS,
     });
     this.ref = ref;
+    this.exit = animateExit(ref, "dialog");
     ref.closed.subscribe(() => {
-      if (this.ref === ref) this.ref = undefined;
+      if (this.ref === ref) this.ref = this.exit = undefined;
       this.open.set(false);
     });
   }

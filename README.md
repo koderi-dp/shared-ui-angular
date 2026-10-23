@@ -192,7 +192,6 @@ There is nothing to register.
 
 ### Known differences from the React originals
 
-- Dialogs and sheets have no exit animation.
 - The number input keeps the typed text while editing and clamps to `min` on blur.
 - Chart tooltips are ECharts', not Recharts'.
 - Tables clip, rather than scroll, on a very narrow viewport unless wrapped in a `koScrollArea`.

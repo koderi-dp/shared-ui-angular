@@ -64,6 +64,12 @@ async function settle(fixture: ComponentFixture<unknown>) {
   fixture.detectChanges();
 }
 
+/** Waits out the exit animation's timeout fallback (jsdom fires no `animationend`). */
+async function exited(fixture: ComponentFixture<unknown>) {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  await settle(fixture);
+}
+
 function clearOverlays() {
   document.querySelectorAll(".cdk-overlay-container").forEach((node) => node.replaceChildren());
 }
@@ -159,6 +165,7 @@ describe("KoCommandPalette", () => {
     press(input(), "Enter");
     await settle(fixture);
     expect(host.ran()).toEqual(["theme"]);
+    await exited(fixture);
     expect(host.open()).toBe(false);
     expect(el('[role="dialog"]')).toBeNull();
   });
@@ -173,6 +180,7 @@ describe("KoCommandPalette", () => {
     await settle(fixture);
     expect(router.url).toBe("/settings");
     expect(host.ran()).toEqual([]);
+    await exited(fixture);
     expect(host.open()).toBe(false);
   });
 
@@ -189,6 +197,7 @@ describe("KoCommandPalette", () => {
     await settle(fixture);
     press(input(), "Escape");
     await settle(fixture);
+    await exited(fixture);
     expect(host.open()).toBe(false);
     expect(el('[role="dialog"]')).toBeNull();
     host.open.set(true);
@@ -201,6 +210,7 @@ describe("KoCommandPalette", () => {
     all('[role="option"]')[0].click();
     await settle(fixture);
     expect(host.ran()).toEqual(["new"]);
+    await exited(fixture);
     expect(host.open()).toBe(false);
   });
 });
@@ -352,7 +362,7 @@ describe("KoAppShell", () => {
     await settle(fixture);
     expect(el('input[role="combobox"]')).not.toBeNull();
     press(document.body, "k", { ctrlKey: true });
-    await settle(fixture);
+    await exited(fixture);
     expect(el('input[role="combobox"]')).toBeNull();
   });
 
@@ -401,6 +411,7 @@ describe("KoAppShell", () => {
     )!;
     link.click();
     await settle(fixture);
+    await exited(fixture);
     expect(el('[role="dialog"]')).toBeNull();
     expect(TestBed.inject(Router).url).toBe("/grid");
   });

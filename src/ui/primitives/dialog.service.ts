@@ -1,6 +1,7 @@
 // Adapted from Zard UI 1.1.1 (MIT) — https://github.com/zard-ui/zardui
 import { Dialog, type DialogRef } from "@angular/cdk/dialog";
 import { inject, Injectable, type Type } from "@angular/core";
+import { animateExit } from "@/ui/primitives/dialog-exit";
 
 /** Panel classes from the React `DialogContent`; padding is added where the panel has no wrapper. */
 export const KO_DIALOG_PANEL_CLASS = [
@@ -32,7 +33,8 @@ export interface KoDialogConfig<D = unknown> {
 
 /**
  * Opens a component in the dialog overlay: focus trap, Escape, backdrop click and focus return
- * come from the CDK. Put `ko-dialog-title` in the component, or pass `ariaLabel`.
+ * come from the CDK, and `ref.close()` plays the exit animation before `closed` emits. Put
+ * `ko-dialog-title` in the component, or pass `ariaLabel`.
  */
 @Injectable({ providedIn: "root" })
 export class KoDialogService {
@@ -42,7 +44,7 @@ export class KoDialogService {
     component: Type<C>,
     config: KoDialogConfig<D> = {},
   ): DialogRef<R, C> {
-    return this.dialog.open<R, D, C>(component, {
+    const ref = this.dialog.open<R, D, C>(component, {
       data: config.data,
       ariaLabel: config.ariaLabel,
       disableClose: config.disableClose,
@@ -52,5 +54,7 @@ export class KoDialogService {
       panelClass: [...KO_DIALOG_PANEL_CLASS, "p-5"],
       backdropClass: KO_DIALOG_BACKDROP_CLASS,
     });
+    animateExit(ref, "dialog");
+    return ref;
   }
 }

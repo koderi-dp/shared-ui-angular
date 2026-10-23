@@ -43,6 +43,10 @@ describe("KoConfirmDialog", () => {
     fixture.detectChanges();
     await fixture.whenStable();
   };
+  const exited = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    await settle();
+  };
   const buttons = () =>
     Array.from(document.querySelectorAll<HTMLButtonElement>('[role="dialog"] button'));
   const button = (text: string) => buttons().find((node) => node.textContent?.trim() === text)!;
@@ -78,6 +82,7 @@ describe("KoConfirmDialog", () => {
   it("sets open to false on cancel", async () => {
     button("Cancel").click();
     await settle();
+    await exited();
     expect(host.open()).toBe(false);
     expect(document.querySelector('[role="dialog"]')).toBeNull();
   });
@@ -107,6 +112,7 @@ describe("KoConfirmDialog", () => {
     await fixture.whenStable();
     escape();
     await settle();
+    await exited();
     expect(host.open()).toBe(false);
     expect(document.querySelector('[role="dialog"]')).toBeNull();
   });
