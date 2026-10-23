@@ -17,25 +17,37 @@ import { cn } from "@/ui/utils";
   selector: "ko-switch",
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => KoSwitch), multi: true }],
-  host: {
-    role: "switch",
-    "[class]": "classes()",
-    "[attr.tabindex]": "inactive() ? -1 : 0",
-    "[attr.aria-checked]": "checked()",
-    "[attr.aria-label]": "ariaLabel() ?? null",
-    "[attr.aria-disabled]": "inactive() ? 'true' : null",
-    "[attr.data-state]": "checked() ? 'checked' : 'unchecked'",
-    "[attr.data-disabled]": "inactive() ? '' : null",
-    "(click)": "toggle()",
-    "(keydown)": "onKeydown($event)",
-    "(blur)": "onTouched()",
-  },
-  template: `<span [class]="thumbClasses()"></span>`,
+  host: { class: "contents", "[attr.id]": "null" },
+  template: `
+    <button
+      type="button"
+      role="switch"
+      [id]="id() ?? null"
+      [class]="classes()"
+      [disabled]="inactive()"
+      [attr.aria-checked]="checked()"
+      [attr.aria-label]="ariaLabel() ?? null"
+      [attr.aria-invalid]="ariaInvalid() ?? null"
+      [attr.aria-describedby]="ariaDescribedby() ?? null"
+      [attr.data-state]="checked() ? 'checked' : 'unchecked'"
+      [attr.data-disabled]="inactive() ? '' : null"
+      (click)="toggle()"
+      (keydown)="onKeydown($event)"
+      (keyup)="onKeyup($event)"
+      (blur)="onTouched()"
+    >
+      <span [class]="thumbClasses()"></span>
+    </button>
+  `,
 })
 export class KoSwitch implements ControlValueAccessor {
   readonly checked = model(false);
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly ariaLabel = input<string>();
+  /** Lands on the inner button, so a `<label for>` reaches it; the host never keeps the `id`. */
+  readonly id = input<string>();
+  readonly ariaInvalid = input<boolean | "true" | "false">();
+  readonly ariaDescribedby = input<string>();
   readonly class = input<string>("");
 
   private readonly formDisabled = signal(false);
@@ -81,5 +93,10 @@ export class KoSwitch implements ControlValueAccessor {
     if (event.key !== " " && event.key !== "Enter") return;
     event.preventDefault();
     this.toggle();
+  }
+
+  /** The keydown already toggled; stop the native keyup click from toggling twice. */
+  protected onKeyup(event: KeyboardEvent): void {
+    if (event.key === " ") event.preventDefault();
   }
 }

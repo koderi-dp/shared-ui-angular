@@ -10,10 +10,22 @@ import { KoSwitch } from "@/ui/primitives/switch.component";
   imports: [ReactiveFormsModule, KoCheckbox, KoSwitch, KoSelect],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ko-checkbox id="check" ariaLabel="Select row" [formControl]="check" />
+    <label id="check-label" for="check">Row</label>
+    <label id="switch-label" for="switch">Enabled flag</label>
+    <label id="select-label" for="select">Region</label>
+    <ko-checkbox id="check" [formControl]="check" />
     <ko-checkbox id="mixed" ariaLabel="Select all" checked="indeterminate" />
-    <ko-switch id="switch" ariaLabel="Enabled" [formControl]="toggle" />
-    <ko-select id="select" placeholder="Pick a region" [options]="options" [formControl]="region" />
+    <ko-switch id="switch" [formControl]="toggle" />
+    <ko-select
+      id="select"
+      name="region"
+      [required]="true"
+      ariaInvalid="true"
+      ariaDescribedby="region-help"
+      placeholder="Pick a region"
+      [options]="options"
+      [formControl]="region"
+    />
   `,
 })
 class HostComponent {
@@ -78,7 +90,7 @@ describe("form controls", () => {
       press(el("check"), " ");
       await settle();
       expect(host.check.value).toBe(false);
-      expect(el("check").getAttribute("aria-disabled")).toBe("true");
+      expect((el("check") as HTMLButtonElement).disabled).toBe(true);
     });
   });
 
@@ -106,12 +118,12 @@ describe("form controls", () => {
       press(el("switch"), " ");
       await settle();
       expect(host.toggle.value).toBe(false);
-      expect(el("switch").getAttribute("aria-disabled")).toBe("true");
+      expect((el("switch") as HTMLButtonElement).disabled).toBe(true);
     });
   });
 
   describe("KoSelect", () => {
-    const native = () => root.querySelector<HTMLSelectElement>("#select select")!;
+    const native = () => el("select") as HTMLSelectElement;
 
     it("shows the placeholder, then the option set by setValue", async () => {
       expect(native().selectedOptions[0].textContent?.trim()).toBe("Pick a region");
@@ -132,6 +144,52 @@ describe("form controls", () => {
       host.region.disable();
       await settle();
       expect(native().disabled).toBe(true);
+    });
+  });
+
+  describe("labels and forwarded attributes", () => {
+    const labelOf = (id: string) =>
+      (root.querySelector(`#${id}`) as HTMLButtonElement | HTMLSelectElement).labels;
+
+    it("keeps exactly one element per id, never on the host", () => {
+      for (const id of ["check", "switch", "select"]) {
+        expect(document.querySelectorAll(`#${id}`)).toHaveLength(1);
+        expect(el(id).tagName).not.toMatch(/^KO-/);
+      }
+    });
+
+    it("names each control through its label", () => {
+      for (const [id, text] of [
+        ["check", "Row"],
+        ["switch", "Enabled flag"],
+        ["select", "Region"],
+      ]) {
+        const labels = labelOf(id)!;
+        expect(labels).toHaveLength(1);
+        expect(labels[0].textContent).toBe(text);
+      }
+    });
+
+    it("toggles a checkbox and a switch by clicking their label", async () => {
+      el("check-label").click();
+      el("switch-label").click();
+      await settle();
+      expect(host.check.value).toBe(true);
+      expect(host.toggle.value).toBe(true);
+    });
+
+    // jsdom does not move focus on a label click, so assert the association a browser acts on.
+    it("points the label at the native select, which a label click focuses in a browser", () => {
+      expect((el("select-label") as HTMLLabelElement).control).toBe(el("select"));
+    });
+
+    it("forwards name, required, aria-invalid and aria-describedby to the native select", () => {
+      const select = el("select");
+      expect(select.tagName).toBe("SELECT");
+      expect(select.getAttribute("name")).toBe("region");
+      expect((select as HTMLSelectElement).required).toBe(true);
+      expect(select.getAttribute("aria-invalid")).toBe("true");
+      expect(select.getAttribute("aria-describedby")).toBe("region-help");
     });
   });
 });

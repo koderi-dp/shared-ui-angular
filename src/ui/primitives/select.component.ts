@@ -29,9 +29,14 @@ export interface KoSelectOption {
   selector: "ko-select",
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => KoSelect), multi: true }],
-  host: { class: "contents" },
+  host: { class: "contents", "[attr.id]": "null" },
   template: `
     <select
+      [id]="id() ?? null"
+      [attr.name]="name() ?? null"
+      [required]="required()"
+      [attr.aria-invalid]="ariaInvalid() ?? null"
+      [attr.aria-describedby]="ariaDescribedby() ?? null"
       [class]="classes()"
       [style.background-image]="chevron"
       [style.background-repeat]="'no-repeat'"
@@ -60,6 +65,12 @@ export class KoSelect implements ControlValueAccessor {
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly fieldSize = input<"default" | "sm">("default");
   readonly ariaLabel = input<string>();
+  /** Forwarded to the native select, so `<label for>` works; the host never keeps the `id`. */
+  readonly id = input<string>();
+  readonly name = input<string>();
+  readonly required = input(false, { transform: booleanAttribute });
+  readonly ariaInvalid = input<boolean | "true" | "false">();
+  readonly ariaDescribedby = input<string>();
   readonly class = input<string>("");
 
   protected readonly chevron = CHEVRON;

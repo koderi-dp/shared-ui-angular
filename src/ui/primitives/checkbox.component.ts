@@ -27,34 +27,44 @@ export type KoCheckedState = boolean | "indeterminate";
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => KoCheckbox), multi: true },
   ],
-  host: {
-    role: "checkbox",
-    "[class]": "classes()",
-    "[attr.tabindex]": "inactive() ? -1 : 0",
-    "[attr.aria-checked]": "ariaChecked()",
-    "[attr.aria-label]": "ariaLabel() ?? null",
-    "[attr.aria-disabled]": "inactive() ? 'true' : null",
-    "[attr.data-state]": "state()",
-    "[attr.data-disabled]": "inactive() ? '' : null",
-    "(click)": "toggle()",
-    "(keydown)": "onKeydown($event)",
-    "(blur)": "onTouched()",
-  },
+  host: { class: "contents", "[attr.id]": "null" },
   template: `
-    @if (checked() !== false) {
-      <ng-icon
-        aria-hidden="true"
-        size="0.75rem"
-        strokeWidth="3"
-        [svg]="checked() === 'indeterminate' ? minus : check"
-      />
-    }
+    <button
+      type="button"
+      role="checkbox"
+      [id]="id() ?? null"
+      [class]="classes()"
+      [disabled]="inactive()"
+      [attr.aria-checked]="ariaChecked()"
+      [attr.aria-label]="ariaLabel() ?? null"
+      [attr.aria-invalid]="ariaInvalid() ?? null"
+      [attr.aria-describedby]="ariaDescribedby() ?? null"
+      [attr.data-state]="state()"
+      [attr.data-disabled]="inactive() ? '' : null"
+      (click)="toggle()"
+      (keydown)="onKeydown($event)"
+      (keyup)="onKeyup($event)"
+      (blur)="onTouched()"
+    >
+      @if (checked() !== false) {
+        <ng-icon
+          aria-hidden="true"
+          size="0.75rem"
+          strokeWidth="3"
+          [svg]="checked() === 'indeterminate' ? minus : check"
+        />
+      }
+    </button>
   `,
 })
 export class KoCheckbox implements ControlValueAccessor {
   readonly checked = model<KoCheckedState>(false);
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly ariaLabel = input<string>();
+  /** Lands on the inner button, so a `<label for>` reaches it; the host never keeps the `id`. */
+  readonly id = input<string>();
+  readonly ariaInvalid = input<boolean | "true" | "false">();
+  readonly ariaDescribedby = input<string>();
   readonly class = input<string>("");
 
   protected readonly check = lucideCheck;
@@ -101,8 +111,14 @@ export class KoCheckbox implements ControlValueAccessor {
   }
 
   protected onKeydown(event: KeyboardEvent): void {
+    if (event.key === "Enter") event.preventDefault();
     if (event.key !== " ") return;
     event.preventDefault();
     this.toggle();
+  }
+
+  /** The keydown already toggled; stop the native keyup click from toggling twice. */
+  protected onKeyup(event: KeyboardEvent): void {
+    if (event.key === " ") event.preventDefault();
   }
 }
