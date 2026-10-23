@@ -7,8 +7,10 @@ import { KoToaster } from "@/ui/toaster.component";
   imports: [RouterOutlet, KoToaster],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <h1 class="p-6 text-lg font-semibold">shared-ui</h1>
-    <router-outlet />
+    <main class="h-dvh overflow-y-auto">
+      <h1 class="p-6 text-lg font-semibold">shared-ui</h1>
+      <router-outlet />
+    </main>
     <ko-toaster />
   `,
 })

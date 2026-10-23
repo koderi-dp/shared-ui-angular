@@ -20,8 +20,16 @@ import {
   KoDialogTitle,
   KoDialogTrigger,
 } from "@/ui/primitives/dialog.component";
+import {
+  KoDropdownItem,
+  KoDropdownLabel,
+  KoDropdownMenu,
+  KoDropdownSeparator,
+  KoDropdownTrigger,
+} from "@/ui/primitives/dropdown-menu.component";
 import { KoInput } from "@/ui/primitives/input.directive";
 import { KoLabel } from "@/ui/primitives/label.directive";
+import { KoPopover, KoPopoverContent, KoPopoverTrigger } from "@/ui/primitives/popover.component";
 import { KoScrollArea } from "@/ui/primitives/scroll-area.directive";
 import { KoSelect } from "@/ui/primitives/select.component";
 import { KoSeparator } from "@/ui/primitives/separator.component";
@@ -35,7 +43,9 @@ import {
 import { KoSkeleton } from "@/ui/primitives/skeleton.component";
 import { KoSwitch } from "@/ui/primitives/switch.component";
 import { KoTable, KoTableBody, KoTableCell, KoTableRow } from "@/ui/primitives/table.directive";
+import { KoTabs, KoTabsContent, KoTabsList, KoTabsTrigger } from "@/ui/primitives/tabs.component";
 import { KoTextarea } from "@/ui/primitives/textarea.directive";
+import { KoTooltip } from "@/ui/primitives/tooltip.directive";
 
 /** Every primitive in the registry, on one page, so a change can be seen in the browser. */
 @Component({
@@ -69,6 +79,19 @@ import { KoTextarea } from "@/ui/primitives/textarea.directive";
     KoSheetTitle,
     KoSheetDescription,
     KoSheetTrigger,
+    KoPopover,
+    KoPopoverTrigger,
+    KoPopoverContent,
+    KoTooltip,
+    KoDropdownTrigger,
+    KoDropdownMenu,
+    KoDropdownItem,
+    KoDropdownLabel,
+    KoDropdownSeparator,
+    KoTabs,
+    KoTabsList,
+    KoTabsTrigger,
+    KoTabsContent,
     KoSkeleton,
     KoScrollArea,
     KoTable,
@@ -231,10 +254,63 @@ import { KoTextarea } from "@/ui/primitives/textarea.directive";
           </ko-sheet>
         </ko-card-content>
       </ko-card>
+
+      <ko-card>
+        <ko-card-header>
+          <ko-card-title>Popover, tooltip and menu</ko-card-title>
+          <ko-card-description>Anchored overlays; Escape closes and refocuses.</ko-card-description>
+        </ko-card-header>
+        <ko-card-content class="flex flex-wrap items-center gap-2">
+          <button koButton variant="outline" [koPopoverTrigger]="popover">Popover</button>
+          <ko-popover #popover [(open)]="popoverOpen">
+            <ng-template koPopoverContent>
+              <p class="p-2 text-sm">Three more tags: api, edge, beta.</p>
+            </ng-template>
+          </ko-popover>
+          <button koButton variant="outline" koTooltip="Shown after 300ms" koTooltipSide="bottom">
+            Tooltip
+          </button>
+          <button koButton variant="outline" [koDropdownTrigger]="menu">Menu</button>
+          <ng-template #menu>
+            <ko-dropdown-menu>
+              <ko-dropdown-label>Connection</ko-dropdown-label>
+              <button koDropdownItem (triggered)="lastAction.set('Edit')">Edit</button>
+              <button koDropdownItem (triggered)="lastAction.set('Duplicate')">Duplicate</button>
+              <ko-dropdown-separator />
+              <button koDropdownItem variant="destructive" (triggered)="lastAction.set('Delete')">
+                Delete
+              </button>
+            </ko-dropdown-menu>
+          </ng-template>
+          <span class="text-xs text-muted-foreground">Last action: {{ lastAction() }}</span>
+        </ko-card-content>
+      </ko-card>
+
+      <ko-card>
+        <ko-card-header>
+          <ko-card-title>Tabs</ko-card-title>
+          <ko-card-description>Arrow keys move between tabs and activate them.</ko-card-description>
+        </ko-card-header>
+        <ko-card-content>
+          <ko-tabs [(value)]="tab">
+            <ko-tabs-list>
+              <button koTabsTrigger value="overview">Overview</button>
+              <button koTabsTrigger value="activity">Activity</button>
+              <button koTabsTrigger value="settings">Settings</button>
+            </ko-tabs-list>
+            <ko-tabs-content value="overview">Overview panel.</ko-tabs-content>
+            <ko-tabs-content value="activity">Activity panel.</ko-tabs-content>
+            <ko-tabs-content value="settings">Settings panel.</ko-tabs-content>
+          </ko-tabs>
+        </ko-card-content>
+      </ko-card>
     </div>
   `,
 })
 export class KoPrimitivesPage {
+  protected readonly popoverOpen = signal(false);
+  protected readonly lastAction = signal("none");
+  protected readonly tab = signal("overview");
   protected readonly dialogOpen = signal(false);
   protected readonly sheetOpen = signal(false);
   protected readonly variants = [
