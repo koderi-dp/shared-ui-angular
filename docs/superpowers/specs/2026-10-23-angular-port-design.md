@@ -143,6 +143,7 @@ and renders.
    targets into an Angular app. If it does not, write a small `koderi add` script that reads
    the same `public/r/*.json`. The consumer ends up with the same files either way, so nothing
    else in this design depends on the result.
+   Spike result (2026-10-23): shadcn add works for Angular files — explicit `target`s install the .ts and .html byte-identical and add clsx; needs `"tsx": true` in components.json (false rewrites .ts to .js) and `./src/*` (not `src/*`) in tsconfig paths.
 2. Scaffold the Angular workspace; carry over the logic files with green tests.
 3. Theme and primitives.
 4. Composites: status, page-shell, page-header, detail-shell, settings-section,
