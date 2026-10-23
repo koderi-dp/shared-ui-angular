@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { ChartRow, ChartSeries } from "@/ui/charts";
-import { buildTimeChartOption, type TimeChartTheme } from "@/ui/time-chart-options";
+import type { ChartRow, ChartSeries } from "@/ui/chart-types";
+import { buildTimeChartOption, hasChartData, type TimeChartTheme } from "@/ui/time-chart-options";
 
 const theme: TimeChartTheme = {
   text: "#8b909c",
@@ -62,9 +62,8 @@ describe("buildTimeChartOption", () => {
     expect(option.series.map((s) => s.data)).toEqual([[], []]);
   });
 
-  it("fills under every line only when asked", () => {
+  it("draws no area under the lines", () => {
     expect(build().series.some((s) => s.areaStyle)).toBe(false);
-    expect(build({ fill: true }).series.every((s) => s.areaStyle)).toBe(true);
   });
 
   it("turns a reference into a markLine at its value", () => {
@@ -77,5 +76,25 @@ describe("buildTimeChartOption", () => {
     const { xAxis } = build();
     expect(xAxis.type).toBe("time");
     expect([xAxis.min, xAxis.max]).toEqual([1000, 3000]);
+  });
+});
+
+describe("hasChartData", () => {
+  it("is false for empty rows", () => {
+    expect(hasChartData([], series)).toBe(false);
+  });
+
+  it("is false when every value is null or missing", () => {
+    expect(hasChartData([{ t: 1, cpu: null, mem: null }, { t: 2 } as ChartRow], series)).toBe(
+      false,
+    );
+  });
+
+  it("is true with one non-null value, including zero", () => {
+    expect(hasChartData([{ t: 1, cpu: null, mem: 0 }], series)).toBe(true);
+  });
+
+  it("ignores keys that are not a series", () => {
+    expect(hasChartData([{ t: 1, other: 5 }], series)).toBe(false);
   });
 });

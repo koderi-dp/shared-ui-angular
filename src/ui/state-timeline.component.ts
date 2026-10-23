@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from "@angular/core";
 import { clockTime } from "@/ui/chart-format";
-import { DEFAULT_TIMELINE_STATES, type TimelineState } from "@/ui/charts";
+import { DEFAULT_TIMELINE_STATES, type TimelineState } from "@/ui/chart-types";
 import { cn } from "@/ui/utils";
 
 type Block = { state: string; start: number; end: number };

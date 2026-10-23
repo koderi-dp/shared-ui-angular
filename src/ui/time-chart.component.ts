@@ -14,8 +14,8 @@ import { GridComponent, MarkLineComponent, TooltipComponent } from "echarts/comp
 import * as echarts from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import { NgxEchartsDirective, provideEchartsCore } from "ngx-echarts";
-import type { ChartRow, ChartSeries } from "@/ui/charts";
-import { buildTimeChartOption, type TimeChartTheme } from "@/ui/time-chart-options";
+import type { ChartRow, ChartSeries } from "@/ui/chart-types";
+import { buildTimeChartOption, hasChartData, type TimeChartTheme } from "@/ui/time-chart-options";
 import { cn } from "@/ui/utils";
 
 echarts.use([LineChart, GridComponent, TooltipComponent, MarkLineComponent, CanvasRenderer]);
@@ -88,7 +88,7 @@ export class KoTimeChart {
   /** Dashed horizontal lines for what a value is meant to be, such as the encoder target. */
   readonly reference = input<{ value: number; label: string }[]>();
   readonly emptyLabel = input<string>("No data");
-  /** The plot grows to the height its grid row gives the panel, and is never shorter than the fixed size. */
+  /** Layout only: the plot grows to the height its grid row gives the panel, and is never shorter than the fixed size. */
   readonly fill = input<boolean>(false);
   readonly class = input<string>("");
 
@@ -118,9 +118,7 @@ export class KoTimeChart {
     });
   });
 
-  protected readonly hasData = computed(() =>
-    this.rows().some((row) => this.series().some((item) => row[item.id] != null)),
-  );
+  protected readonly hasData = computed(() => hasChartData(this.rows(), this.series()));
 
   /** Null until the browser has resolved the theme colours, so nothing is built on the server. */
   protected readonly option = computed(() => {
@@ -134,7 +132,6 @@ export class KoTimeChart {
       format: this.format(),
       formatAxis: this.formatAxis(),
       reference: this.reference(),
-      fill: this.fill(),
       theme,
     });
   });

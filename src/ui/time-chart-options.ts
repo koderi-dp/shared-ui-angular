@@ -1,6 +1,6 @@
 import type { EChartsCoreOption } from "echarts/core";
 import { clockTime, timeTicks } from "@/ui/chart-format";
-import type { ChartRow, ChartSeries } from "@/ui/charts";
+import type { ChartRow, ChartSeries } from "@/ui/chart-types";
 
 /** Resolved theme colours, read from the CSS variables by the component so this stays pure. */
 export type TimeChartTheme = {
@@ -19,7 +19,6 @@ export type TimeChartInput = {
   format: (v: number) => string;
   formatAxis?: (v: number) => string;
   reference?: { value: number; label: string }[];
-  fill?: boolean;
   theme: TimeChartTheme;
 };
 
@@ -50,12 +49,17 @@ function tooltipHtml(
   );
 }
 
+/** Whether any series has a non-null value in any row; otherwise the chart shows its empty label. */
+export function hasChartData(rows: ChartRow[], series: ChartSeries[]): boolean {
+  return rows.some((row) => series.some((item) => row[item.id] != null));
+}
+
 /**
  * The ECharts option for a time chart. A null value (or a missing key) stays null in the
  * data and the line is not connected across it: that is a gap, not a zero.
  */
 export function buildTimeChartOption(input: TimeChartInput): EChartsCoreOption {
-  const { rows, series, from, to, format, reference = [], fill = false, theme } = input;
+  const { rows, series, from, to, format, reference = [], theme } = input;
   const formatAxis = input.formatAxis ?? format;
   const axis = timeTicks(from, to);
   const refMax = reference.length ? Math.max(...reference.map((line) => line.value)) : null;
@@ -71,7 +75,6 @@ export function buildTimeChartOption(input: TimeChartInput): EChartsCoreOption {
     animation: false,
     lineStyle: { color: item.color, width: 2 },
     itemStyle: { color: item.color, borderColor: theme.tooltipBg, borderWidth: 2 },
-    ...(fill ? { areaStyle: { color: item.color, opacity: 0.12 } } : {}),
     ...(index === 0 && reference.length
       ? {
           markLine: {

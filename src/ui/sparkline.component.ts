@@ -1,29 +1,16 @@
 import { ChangeDetectionStrategy, Component, computed, input } from "@angular/core";
+import { sparklineSegments } from "@/ui/sparkline-geometry";
 import { cn } from "@/ui/utils";
 
 const WIDTH = 72;
 const HEIGHT = 20;
 
-/** Point lists for the runs between nulls; a null value breaks the line. */
+/** Point lists for the runs between nulls; a lone point is drawn as a zero-length stroke. */
 function segments(values: (number | null)[]): string[] {
-  const present = values.filter((value): value is number => value != null);
-  const max = Math.max(...present, 1);
-  const step = WIDTH / Math.max(1, values.length - 1);
-  const runs: string[][] = [];
-  let drawing = false;
-  values.forEach((value, index) => {
-    if (value == null) {
-      drawing = false;
-      return;
-    }
-    const x = (index * step).toFixed(1);
-    const y = (HEIGHT - 2 - (value / max) * (HEIGHT - 4)).toFixed(1);
-    if (!drawing) runs.push([]);
-    runs[runs.length - 1].push(`${x},${y}`);
-    drawing = true;
+  return sparklineSegments(values, WIDTH, HEIGHT).map((run) => {
+    const points = run.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`);
+    return points.length === 1 ? `${points[0]} ${points[0]}` : points.join(" ");
   });
-  // A lone point between gaps has no length; draw it as a zero-length stroke so it still shows.
-  return runs.map((run) => (run.length === 1 ? `${run[0]} ${run[0]}` : run.join(" ")));
 }
 
 /**
