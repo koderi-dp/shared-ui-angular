@@ -52,6 +52,13 @@ Zard components we need are vendored.
 Framework-free files carry over with their tests unchanged: `utils`, `chart-format`,
 `column-widths`, `chip-fit`, `progress-level`, `tones`, `grid-layout`, `command-search`,
 `nav`, `status-text`, `tree-controller`, `tree-select`, `field-control`, `button-variants`.
+Three edits are allowed: `tree-controller` loses its React hook (`useTreeController`), `nav`'s
+`icon` becomes a `string`, and `button.test.ts` keeps only its non-rendering test.
+
+Icons: wherever React took a `LucideIcon` (nav items, commands, brand, detail actions,
+settings sections), Angular takes the SVG string `@ng-icons/lucide` exports
+(`lucideActivity`), rendered with `<ng-icon [svg]="icon" />`. Consumers pass icons the same
+way React consumers pass components, and nothing needs registering.
 
 ## Items and files
 
@@ -61,7 +68,8 @@ Framework-free files carry over with their tests unchanged: `utils`, `chart-form
 - A `.tsx` becomes one `*.component.ts` with an inline template and styles. Big templates
   (data grid, app shell, command palette, tree) get a sibling `.html`.
 - House rule, replacing the `.tsx` rule: a `*.component.ts` exports only its component or
-  directive; logic lives in a plain `.ts` with its `*.test.ts` beside it.
+  directive; logic lives in a plain `.ts` with its `name.test.ts` (Vitest, node) beside it.
+  Tests that need Angular's TestBed are `name.spec.ts` (Angular unit-test builder, jsdom).
 - Examples:
   - `button` → `primitives/button.component.ts` (`KoButton`, `KoIconButton`) +
     `button-variants.ts` + `button.test.ts`.
@@ -69,7 +77,7 @@ Framework-free files carry over with their tests unchanged: `utils`, `chart-form
     `state-timeline.component.ts`, `chart-format.ts` + test.
   - `data-grid` → same folder; `column-factories.ts` returns TanStack column defs;
     status, progress and tags cells are small components rendered via `flexRender`.
-  - `use-persisted` → `persisted.ts` + `persisted.test.ts` (new test).
+  - `use-persisted` → `persisted.ts` + `persisted.spec.ts` (new test).
 
 ### Primitive API style
 
@@ -79,8 +87,9 @@ Framework-free files carry over with their tests unchanged: `utils`, `chart-form
 - Compound primitives (dialog, sheet, dropdown-menu, popover, tooltip, tabs, select) follow
   Zard's shape: a trigger directive, a content template rendered through a CDK overlay, and a
   service for opening from code (`KoDialog.open(...)`, which also backs `confirm-dialog`).
-- `input`, `select`, `checkbox`, `switch` and `textarea` implement `ControlValueAccessor`;
-  `form` becomes field/label/error helpers on top of reactive forms.
+- `select`, `checkbox` and `switch` implement `ControlValueAccessor`. `input` and
+  `textarea` are directives on the native element, so Angular's built-in value accessor
+  already covers them. `form` becomes field/label/error helpers on top of reactive forms.
 
 ### Aliases
 
