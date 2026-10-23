@@ -24,28 +24,52 @@ export type TimeChartInput = {
 
 const escapeHtml = (text: string) => text.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
-/** Crosshair tooltip content: the time, then one row per series with a value. */
+/** Gap in px between the pointer and the tooltip box, as Recharts places it. */
+const TOOLTIP_OFFSET = 10;
+
+/**
+ * Recharts' placement: the box sits 10px right of and below the pointer, flips to the left when it
+ * would pass the chart's right edge, and is kept inside the chart.
+ */
+export function tooltipPosition(
+  point: number[],
+  _params: unknown,
+  _dom: unknown,
+  _rect: unknown,
+  size: { contentSize: number[]; viewSize: number[] },
+): [number, number] {
+  const [width, height] = size.contentSize;
+  const [viewWidth, viewHeight] = size.viewSize;
+  const right = point[0] + TOOLTIP_OFFSET;
+  const x = right + width > viewWidth ? point[0] - TOOLTIP_OFFSET - width : right;
+  const y = point[1] + TOOLTIP_OFFSET;
+  return [
+    Math.max(0, Math.min(x, viewWidth - width)),
+    Math.max(0, Math.min(y, viewHeight - height)),
+  ];
+}
+
+/** Crosshair tooltip content, the React `ChartTooltip` markup: the time, then a row per series. */
 function tooltipHtml(
   ts: number,
   entries: { series: ChartSeries; value: number }[],
   format: (v: number) => string,
-  theme: TimeChartTheme,
 ): string {
   if (entries.length === 0) return "";
   const lines = entries
     .map(
       ({ series, value }) =>
-        `<div style="display:flex;align-items:center;gap:8px">` +
-        `<span style="width:8px;height:8px;flex:none;border-radius:2px;background:${escapeHtml(series.color)}"></span>` +
-        `<span style="flex:1;color:${theme.tooltipMuted}">${escapeHtml(series.name)}</span>` +
-        `<span style="font-family:var(--font-mono);font-variant-numeric:tabular-nums">${escapeHtml(format(value))}</span>` +
+        `<div class="flex items-center gap-2">` +
+        `<span class="size-2 shrink-0 rounded-sm" style="background-color:${escapeHtml(series.color)}" aria-hidden="true"></span>` +
+        `<span class="min-w-0 flex-1 truncate text-muted-foreground">${escapeHtml(series.name)}</span>` +
+        `<span class="font-mono tabular-nums">${escapeHtml(format(value))}</span>` +
         `</div>`,
     )
     .join("");
   return (
-    `<div style="font-size:12px;color:${theme.tooltipText}">` +
-    `<div style="margin-bottom:4px;font-family:var(--font-mono);font-size:11px;color:${theme.tooltipMuted}">${clockTime(ts)}</div>` +
-    `<div style="display:grid;gap:4px">${lines}</div></div>`
+    `<div class="rounded-md bg-popover px-2.5 py-2 text-xs shadow-[var(--shadow-elevated)]">` +
+    `<div class="mb-1 font-mono text-[11px] text-muted-foreground">${clockTime(ts)}</div>` +
+    `<div class="grid gap-1">${lines}</div></div>`
   );
 }
 
@@ -70,11 +94,14 @@ export function buildTimeChartOption(input: TimeChartInput): EChartsCoreOption {
     type: "line" as const,
     data: rows.map((row) => [row.t, row[item.id] ?? null] as [number, number | null]),
     connectNulls: false,
+    // The hover dot (Recharts activeDot r=4): hidden at rest, shown by the axis tooltip.
     showSymbol: false,
+    symbol: "circle",
     symbolSize: 8,
+    emphasis: { scale: false },
     animation: false,
     lineStyle: { color: item.color, width: 2 },
-    itemStyle: { color: item.color, borderColor: theme.tooltipBg, borderWidth: 2 },
+    itemStyle: { color: item.color, borderColor: "#12141a", borderWidth: 2 },
     ...(index === 0 && reference.length
       ? {
           markLine: {
@@ -113,7 +140,6 @@ export function buildTimeChartOption(input: TimeChartInput): EChartsCoreOption {
         customValues: axis.ticks,
         formatter: (value: number) => clockTime(value, axis.withSeconds),
       },
-      axisPointer: { lineStyle: { color: theme.text, opacity: 0.5 } },
     },
     yAxis: {
       type: "value",
@@ -127,11 +153,19 @@ export function buildTimeChartOption(input: TimeChartInput): EChartsCoreOption {
     },
     tooltip: {
       trigger: "axis",
-      backgroundColor: theme.tooltipBg,
+      // The box is drawn by the formatter; ECharts' own chrome is switched off.
+      backgroundColor: "transparent",
       borderWidth: 0,
-      padding: [8, 10],
-      extraCssText: "border-radius:6px;box-shadow:var(--shadow-elevated);",
-      axisPointer: { type: "line", lineStyle: { color: theme.text, opacity: 0.5 } },
+      padding: 0,
+      confine: true,
+      transitionDuration: 0,
+      textStyle: { color: theme.tooltipText },
+      extraCssText: "box-shadow: none;",
+      position: tooltipPosition,
+      axisPointer: {
+        type: "line",
+        lineStyle: { color: "rgb(236 238 242 / 25%)", width: 1, type: "solid" },
+      },
       formatter: (params: unknown) => {
         const list = (Array.isArray(params) ? params : [params]) as {
           seriesId?: string;
@@ -143,7 +177,7 @@ export function buildTimeChartOption(input: TimeChartInput): EChartsCoreOption {
           const value = hit?.value?.[1];
           return value == null ? [] : [{ series: item, value }];
         });
-        return tooltipHtml(list[0].value[0], entries, format, theme);
+        return tooltipHtml(list[0].value[0], entries, format);
       },
     },
     series: lines,

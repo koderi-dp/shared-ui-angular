@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 import type { ChartRow, ChartSeries } from "@/ui/chart-types";
-import { buildTimeChartOption, hasChartData, type TimeChartTheme } from "@/ui/time-chart-options";
+import {
+  buildTimeChartOption,
+  hasChartData,
+  tooltipPosition,
+  type TimeChartTheme,
+} from "@/ui/time-chart-options";
 
 const theme: TimeChartTheme = {
   text: "#8b909c",
@@ -96,5 +101,48 @@ describe("hasChartData", () => {
 
   it("ignores keys that are not a series", () => {
     expect(hasChartData([{ t: 1, other: 5 }], series)).toBe(false);
+  });
+});
+
+describe("chart hover styling", () => {
+  type Tip = {
+    confine: boolean;
+    transitionDuration: number;
+    padding: number;
+    position: typeof tooltipPosition;
+    axisPointer: { type: string; lineStyle: { color: string; width: number; type: string } };
+  };
+  const tip = () => (build() as unknown as { tooltip: Tip }).tooltip;
+
+  it("draws a 1px solid crosshair in the React colour", () => {
+    expect(tip().axisPointer).toEqual({
+      type: "line",
+      lineStyle: { color: "rgb(236 238 242 / 25%)", width: 1, type: "solid" },
+    });
+  });
+
+  it("gives each series an r=4 hover dot with a dark border that does not scale", () => {
+    for (const s of build().series as unknown as {
+      symbol: string;
+      symbolSize: number;
+      itemStyle: { borderColor: string; borderWidth: number };
+      emphasis: { scale: boolean };
+    }[]) {
+      expect(s.symbol).toBe("circle");
+      expect(s.symbolSize).toBe(8);
+      expect(s.itemStyle).toMatchObject({ borderColor: "#12141a", borderWidth: 2 });
+      expect(s.emphasis.scale).toBe(false);
+    }
+  });
+
+  it("keeps the tooltip instant, confined and unframed", () => {
+    expect(tip()).toMatchObject({ confine: true, transitionDuration: 0, padding: 0 });
+  });
+
+  it("places the tooltip 10px right of the pointer and flips left near the edge", () => {
+    const size = { contentSize: [100, 50], viewSize: [400, 200] };
+    expect(tip().position([100, 40], null, null, null, size)).toEqual([110, 50]);
+    expect(tip().position([300, 40], null, null, null, size)).toEqual([190, 50]);
+    expect(tip().position([100, 190], null, null, null, size)).toEqual([110, 150]);
   });
 });
