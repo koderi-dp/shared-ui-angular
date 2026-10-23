@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, input } from "@angular/core
 import { Router } from "@angular/router";
 import { NgIcon } from "@ng-icons/core";
 import { lucideCircleUser, lucideLogOut, lucideSettings, lucideUser } from "@ng-icons/lucide";
-import { headerChipClass } from "@/ui/layout/nav";
+import { headerChipClass } from "@koderi-dp/ui/layout";
 import {
   notify,
   KoDropdownItem,

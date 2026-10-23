@@ -8,8 +8,7 @@ import {
   lucideSettings,
   lucideTable2,
 } from "@ng-icons/lucide";
-import type { Brand } from "@/ui/layout/app-shell.component";
-import type { NavConfig } from "@/ui/layout/nav";
+import type { Brand, NavConfig } from "@koderi-dp/ui/layout";
 
 /** The showcase is an app like any other: it gets its nav and brand the same way. */
 export const demoNav: NavConfig = {

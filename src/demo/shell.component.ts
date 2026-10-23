@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { KoAccountFooter, KoHeaderStatus, KoUserMenu } from "@/demo/header.component";
 import { demoBrand, demoFullHeight, demoNav } from "@/demo/nav";
-import { KoAppShell, KoSidebarFooter } from "@/ui/layout/app-shell.component";
+import { KoAppShell, KoSidebarFooter } from "@koderi-dp/ui/layout";
 
 /** The layout route: everything under it is drawn inside the app shell. */
 @Component({

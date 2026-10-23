@@ -15,9 +15,9 @@ import {
 import { Router } from "@angular/router";
 import { NgIcon } from "@ng-icons/core";
 import { lucideCornerDownLeft, lucideSearch } from "@ng-icons/lucide";
-import { paletteGroups, type PaletteOption } from "@/ui/layout/command-palette";
-import type { Command } from "@/ui/layout/command-registry";
-import type { NavConfig } from "@/ui/layout/nav";
+import { paletteGroups, type PaletteOption } from "./command-palette";
+import type { Command } from "./command-registry";
+import type { NavConfig } from "./nav";
 import { KoDialog, KoDialogContent, KoDialogDescription, KoDialogTitle, cn } from "@koderi-dp/ui";
 
 let nextId = 0;

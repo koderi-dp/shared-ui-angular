@@ -21,10 +21,10 @@ import { NavigationEnd, Router, RouterLink } from "@angular/router";
 import { NgIcon } from "@ng-icons/core";
 import { lucideMenu, lucidePanelLeft, lucidePanelLeftClose, lucideSearch } from "@ng-icons/lucide";
 import { filter, map } from "rxjs";
-import { isMacPlatform, isPaletteShortcut, shortcutLabel, urlPath } from "@/ui/layout/app-shell";
-import { KoCommandPalette } from "@/ui/layout/command-palette.component";
-import { KoCommandRegistry } from "@/ui/layout/command-registry";
-import { isNavActive, type NavConfig } from "@/ui/layout/nav";
+import { isMacPlatform, isPaletteShortcut, shortcutLabel, urlPath } from "./app-shell";
+import { KoCommandPalette } from "./command-palette.component";
+import { KoCommandRegistry } from "./command-registry";
+import { isNavActive, type NavConfig } from "./nav";
 import {
   persisted,
   KoIconButton,

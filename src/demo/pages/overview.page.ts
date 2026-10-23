@@ -35,7 +35,7 @@ import {
   formatBytes,
   formatDuration,
 } from "@koderi-dp/ui";
-import { injectCommands } from "@/ui/layout/command-registry";
+import { injectCommands } from "@koderi-dp/ui/layout";
 import { KoSparkline } from "@/ui/sparkline.component";
 import { KoStateTimeline } from "@/ui/state-timeline.component";
 import { KoTimeChart } from "@/ui/time-chart.component";

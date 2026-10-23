@@ -7,10 +7,10 @@ import {
 import { TestBed, type ComponentFixture } from "@angular/core/testing";
 import { provideRouter, Router, RouterOutlet } from "@angular/router";
 import { lucideBoxes, lucideHouse, lucideSettings, lucideTable2 } from "@ng-icons/lucide";
-import { KoAppShell, KoSidebarFooter, type Brand } from "@/ui/layout/app-shell.component";
-import { KoCommandPalette } from "@/ui/layout/command-palette.component";
-import { injectCommands, KoCommandRegistry, type Command } from "@/ui/layout/command-registry";
-import type { NavConfig } from "@/ui/layout/nav";
+import { KoAppShell, KoSidebarFooter, type Brand } from "./app-shell.component";
+import { KoCommandPalette } from "./command-palette.component";
+import { injectCommands, KoCommandRegistry, type Command } from "./command-registry";
+import type { NavConfig } from "./nav";
 
 const nav: NavConfig = {
   primary: [
