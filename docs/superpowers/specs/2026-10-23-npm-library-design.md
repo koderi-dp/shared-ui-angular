@@ -1,10 +1,10 @@
-# @koderi/ui as an npm library — design
+# @koderi-dp/ui as an npm library — design
 
 Date: 2026-10-23
 
 ## Goal
 
-Distribute shared-ui-angular the normal Angular way: an npm package, `@koderi/ui`, installed
+Distribute shared-ui-angular the normal Angular way: an npm package, `@koderi-dp/ui`, installed
 with `npm i` and imported like any library, versioned with semver, published to npmjs.org from
 CI on a `v*` tag. The shadcn registry goes away. Components, tests and the dark theme stay as
 they are; only the packaging, the repo layout and the docs change.
@@ -16,23 +16,23 @@ want the shared look and the fixes, not a copy of the source.
 
 | Question | Decision                                                                         |
 | -------- | -------------------------------------------------------------------------------- |
-| Package  | `@koderi/ui` on npmjs.org, public, first version `0.1.0`                         |
+| Package  | `@koderi-dp/ui` on npmjs.org, public, first version `0.1.0`                      |
 | Shape    | One package, five entry points; heavy dependencies are optional peers            |
 | Build    | ng-packagr (`ng build ui`) to `dist/ui`, Angular Package Format                  |
 | Layout   | Library at `projects/ui`; the showcase app stays at the root                     |
-| Theme    | Shipped as `@koderi/ui/theme.css`; the consumer owns `@import "tailwindcss"`     |
+| Theme    | Shipped as `@koderi-dp/ui/theme.css`; the consumer owns `@import "tailwindcss"`  |
 | Release  | GitHub Actions on tag `v*`, npm trusted publishing (no token); `0.1.0` is manual |
 | Registry | Removed entirely                                                                 |
 
 ## Entry points
 
-| Import path            | Contents                                                                                                                                                                                                                                                       | Peer dependencies it adds                                                                                                                  |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `@koderi/ui`           | primitives (button … tooltip, dialog, sheet, tabs, table), composites (status, page-shell, page-header, form, list-filter-bar, settings-section, detail-shell, confirm-dialog), `cn` and formatters, `notify` + `KoToaster`, `persisted`, chart-format helpers | `@angular/cdk`, `@angular/forms`, `@ng-icons/core`, `@ng-icons/lucide`, `ngx-sonner`, `class-variance-authority`, `clsx`, `tailwind-merge` |
-| `@koderi/ui/layout`    | `KoAppShell`, `KoCommandPalette`, `injectCommands`, `NavConfig`, `Brand`, `nav.ts`, `command-search.ts`                                                                                                                                                        | `@angular/router`                                                                                                                          |
-| `@koderi/ui/data-grid` | `KoDataGrid`, `KoKeyValueTable`, column factories, cell components, `grid-layout`, `column-widths`                                                                                                                                                             | `@tanstack/angular-table` (optional)                                                                                                       |
-| `@koderi/ui/charts`    | `KoTimeChart`, `KoSparkline`, `KoStateTimeline`, `buildTimeChartOption`, chart types                                                                                                                                                                           | `echarts`, `ngx-echarts` (optional)                                                                                                        |
-| `@koderi/ui/tree`      | `KoTree` and its directives, `injectTreeController`, `tree-controller`, `tree-select`, `tree-focus`                                                                                                                                                            | `@headless-tree/core` (optional)                                                                                                           |
+| Import path               | Contents                                                                                                                                                                                                                                                       | Peer dependencies it adds                                                                                                                  |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `@koderi-dp/ui`           | primitives (button … tooltip, dialog, sheet, tabs, table), composites (status, page-shell, page-header, form, list-filter-bar, settings-section, detail-shell, confirm-dialog), `cn` and formatters, `notify` + `KoToaster`, `persisted`, chart-format helpers | `@angular/cdk`, `@angular/forms`, `@ng-icons/core`, `@ng-icons/lucide`, `ngx-sonner`, `class-variance-authority`, `clsx`, `tailwind-merge` |
+| `@koderi-dp/ui/layout`    | `KoAppShell`, `KoCommandPalette`, `injectCommands`, `NavConfig`, `Brand`, `nav.ts`, `command-search.ts`                                                                                                                                                        | `@angular/router`                                                                                                                          |
+| `@koderi-dp/ui/data-grid` | `KoDataGrid`, `KoKeyValueTable`, column factories, cell components, `grid-layout`, `column-widths`                                                                                                                                                             | `@tanstack/angular-table` (optional)                                                                                                       |
+| `@koderi-dp/ui/charts`    | `KoTimeChart`, `KoSparkline`, `KoStateTimeline`, `buildTimeChartOption`, chart types                                                                                                                                                                           | `echarts`, `ngx-echarts` (optional)                                                                                                        |
+| `@koderi-dp/ui/tree`      | `KoTree` and its directives, `injectTreeController`, `tree-controller`, `tree-select`, `tree-focus`                                                                                                                                                            | `@headless-tree/core` (optional)                                                                                                           |
 
 - Angular packages (`core`, `common`, `forms`, `router`, `platform-browser`, `cdk`) are peers
   at `^22.2.0`; `rxjs` at `^7.8.0`.
@@ -56,8 +56,8 @@ want the shared look and the fixes, not a copy of the source.
 
   ```css
   @import "tailwindcss";
-  @import "@koderi/ui/theme.css";
-  @source "../node_modules/@koderi/ui";
+  @import "@koderi-dp/ui/theme.css";
+  @source "../node_modules/@koderi-dp/ui";
   ```
 
   The `@source` line makes Tailwind generate the classes used in the library's templates.
@@ -74,8 +74,8 @@ want the shared look and the fixes, not a copy of the source.
 - `src/ui/**` moves there with `git mv`, so history survives: primitives and composites under
   `projects/ui/src/lib/`, the rest under their entry's `src/lib/`.
 - Inside an entry point, imports are relative. Across entry points they use the package path
-  (`@koderi/ui`), never a relative path that crosses an entry boundary.
-- The root `tsconfig.json` maps `@koderi/ui` and `@koderi/ui/*` to the library source, so the
+  (`@koderi-dp/ui`), never a relative path that crosses an entry boundary.
+- The root `tsconfig.json` maps `@koderi-dp/ui` and `@koderi-dp/ui/*` to the library source, so the
   showcase and the tests compile against source with live reload.
 - The `@/*` → `./src/*` alias stays for the showcase app only (`@/demo/...`); nothing under
   `projects/ui` uses it, so the published package has no alias to resolve.
@@ -102,7 +102,7 @@ want the shared look and the fixes, not a copy of the source.
   3. `npm publish --provenance --access public` from `dist/ui`, with `id-token: write`, using
      npm trusted publishing (no `NPM_TOKEN`);
   4. create a GitHub Release for the tag with the `npm pack` tarball attached.
-- One-time setup, by the owner: create the `koderi` org on npmjs.com; publish `0.1.0` once
+- One-time setup, by the owner: the npm user `koderi-dp` owns the `@koderi-dp` scope, so no org is needed; publish `0.1.0` once
   from a logged-in machine (`npm publish --access public` from `dist/ui`); then on the package's
   npm settings add `koderi-dp/shared-ui-angular` + `release.yml` as a trusted publisher. CI
   publishes from `0.1.1`.
@@ -117,9 +117,9 @@ dev dependency, the `registry:build` and `registry:serve` scripts and justfile r
 
 ## Docs
 
-- `README.md` "Using it": `npm i @koderi/ui` plus the peers for the entries used, a table of
+- `README.md` "Using it": `npm i @koderi-dp/ui` plus the peers for the entries used, a table of
   entry point → packages to install, the three-line stylesheet, `provideRouter` and
-  `<ko-toaster />`, the first-app example importing from `@koderi/ui` and `@koderi/ui/layout`,
+  `<ko-toaster />`, the first-app example importing from `@koderi-dp/ui` and `@koderi-dp/ui/layout`,
   a check step. "Known differences" and "Credits" stay. The registry sections go.
 - `CLAUDE.md`: the library layout, "`public-api.ts` is the API", the overlay/host gotchas,
   the commands (`build:lib`), and the release procedure.
@@ -133,7 +133,7 @@ dev dependency, the `registry:build` and `registry:serve` scripts and justfile r
 - Scratch app A, a fresh `ng new`: install the `npm pack` tarball and all peers, the
   three-line stylesheet, the README's first app; `ng build` succeeds and `ng serve` shows the
   shell, the Save toast and Ctrl+K.
-- Scratch app B: install the tarball with only the `@koderi/ui` and `@koderi/ui/layout` peers
+- Scratch app B: install the tarball with only the `@koderi-dp/ui` and `@koderi-dp/ui/layout` peers
   (no echarts, ngx-echarts, @tanstack/angular-table, @headless-tree/core); `ng build` succeeds.
   This proves the optional peers are optional.
 - The showcase deploys and matches the live React site as before.
@@ -143,10 +143,10 @@ dev dependency, the `registry:build` and `registry:serve` scripts and justfile r
 Each gets a small spike at the start of the plan:
 
 1. ng-packagr copies `theme.css` and exposes `./theme.css` in `exports`, and a consumer's
-   Tailwind resolves `@import "@koderi/ui/theme.css"` and applies its `@theme` block.
+   Tailwind resolves `@import "@koderi-dp/ui/theme.css"` and applies its `@theme` block.
 2. `@angular/build:unit-test` on the app target runs specs from `projects/ui` through
    `include`.
-3. Cross-entry imports (`@koderi/ui/data-grid` → `@koderi/ui`) resolve to source in tests and
+3. Cross-entry imports (`@koderi-dp/ui/data-grid` → `@koderi-dp/ui`) resolve to source in tests and
    the dev server, and to the package in `ng build ui`.
 
 ## Out of scope
