@@ -15,25 +15,25 @@ import {
   lucideFolderTree,
   lucideGripVertical,
 } from "@ng-icons/lucide";
-import { KoPageHeader } from "@/ui/page-header.component";
-import { KoPageShell } from "@/ui/page-shell.component";
 import {
+  KoPageHeader,
+  KoPageShell,
   KoCard,
   KoCardContent,
   KoCardDescription,
   KoCardHeader,
   KoCardTitle,
-} from "@/ui/primitives/card.component";
-import { KoLabel } from "@/ui/primitives/label.directive";
-import { KoSwitch } from "@/ui/primitives/switch.component";
-import { injectTreeController } from "@/ui/primitives/tree-adapter";
+  KoLabel,
+  KoSwitch,
+} from "@koderi-dp/ui";
 import {
+  injectTreeController,
   KoTree,
   KoTreeDragHandle,
   KoTreeItem,
   KoTreeItemLabel,
-} from "@/ui/primitives/tree.component";
-import { TREE_ROOT } from "@/ui/tree-controller";
+  TREE_ROOT,
+} from "@koderi-dp/ui/tree";
 import { isAncestor, moveNodes } from "@/demo/file-tree";
 
 type Node = { id: string; parentId: string | null; name: string; kind: "root" | "folder" | "file" };

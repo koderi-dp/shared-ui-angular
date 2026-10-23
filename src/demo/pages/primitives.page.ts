@@ -22,53 +22,53 @@ import {
   KoField,
   KoNumberInput,
   KoSwitchField,
-} from "@/ui/form.component";
-import { notify } from "@/ui/notify";
-import { KoPageHeader } from "@/ui/page-header.component";
-import { KoPageShell } from "@/ui/page-shell.component";
-import { KoBadge } from "@/ui/primitives/badge.component";
-import { KoButton, KoIconButton } from "@/ui/primitives/button.component";
-import {
+  notify,
+  KoPageHeader,
+  KoPageShell,
+  KoBadge,
+  KoButton,
+  KoIconButton,
   KoCard,
   KoCardContent,
   KoCardDescription,
   KoCardHeader,
   KoCardTitle,
-} from "@/ui/primitives/card.component";
-import {
   KoDialog,
   KoDialogContent,
   KoDialogDescription,
   KoDialogHeader,
   KoDialogTitle,
   KoDialogTrigger,
-} from "@/ui/primitives/dialog.component";
-import {
   KoDropdownItem,
   KoDropdownLabel,
   KoDropdownMenu,
   KoDropdownSeparator,
   KoDropdownTrigger,
-} from "@/ui/primitives/dropdown-menu.component";
-import { KoInput } from "@/ui/primitives/input.directive";
-import { KoLabel } from "@/ui/primitives/label.directive";
-import { KoScrollArea } from "@/ui/primitives/scroll-area.directive";
-import { KoSelect } from "@/ui/primitives/select.component";
-import { KoSeparator } from "@/ui/primitives/separator.component";
-import {
+  KoInput,
+  KoLabel,
+  KoScrollArea,
+  KoSelect,
+  KoSeparator,
   KoSheet,
   KoSheetContent,
   KoSheetDescription,
   KoSheetTitle,
   KoSheetTrigger,
-} from "@/ui/primitives/sheet.component";
-import { KoSkeleton } from "@/ui/primitives/skeleton.component";
-import { KoSwitch } from "@/ui/primitives/switch.component";
-import { KoTable, KoTableBody, KoTableCell, KoTableRow } from "@/ui/primitives/table.component";
-import { KoTabs, KoTabsContent, KoTabsList, KoTabsTrigger } from "@/ui/primitives/tabs.component";
-import { KoTextarea } from "@/ui/primitives/textarea.directive";
-import { KoTooltip } from "@/ui/primitives/tooltip.directive";
-import { KoStatusBadge, KoStatusDot } from "@/ui/status.component";
+  KoSkeleton,
+  KoSwitch,
+  KoTable,
+  KoTableBody,
+  KoTableCell,
+  KoTableRow,
+  KoTabs,
+  KoTabsContent,
+  KoTabsList,
+  KoTabsTrigger,
+  KoTextarea,
+  KoTooltip,
+  KoStatusBadge,
+  KoStatusDot,
+} from "@koderi-dp/ui";
 
 type Mode = "single" | "bulk";
 

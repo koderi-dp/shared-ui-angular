@@ -1,22 +1,24 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from "@angular/core";
 import { lucideDownload, lucidePlus, lucideTrash2 } from "@ng-icons/lucide";
-import { KoConfirmDialog } from "@/ui/confirm-dialog.component";
-import { KoListFilterBar, KoSelectionToolbar } from "@/ui/list-filter-bar.component";
-import { notify } from "@/ui/notify";
-import { KoPageHeader } from "@/ui/page-header.component";
-import { KoPageShell } from "@/ui/page-shell.component";
-import { KoButton } from "@/ui/primitives/button.component";
-import { KoCheckbox, type KoCheckedState } from "@/ui/primitives/checkbox.component";
 import {
+  KoConfirmDialog,
+  KoListFilterBar,
+  KoSelectionToolbar,
+  notify,
+  KoPageHeader,
+  KoPageShell,
+  KoButton,
+  KoCheckbox,
+  type KoCheckedState,
   KoTable,
   KoTableBody,
   KoTableCell,
   KoTableHead,
   KoTableHeader,
   KoTableRow,
-} from "@/ui/primitives/table.component";
-import { KoStatusBadge } from "@/ui/status.component";
-import { formatBytes } from "@/ui/utils";
+  KoStatusBadge,
+  formatBytes,
+} from "@koderi-dp/ui";
 import { demoItems } from "@/demo/data";
 
 /** The furniture around a list page: header, filter bar, selection toolbar, confirm step. */

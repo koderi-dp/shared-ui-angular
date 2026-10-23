@@ -1,44 +1,37 @@
 # shared-ui
 
-The shared UI for the koderi starters, published as a shadcn registry. `src/ui/**` is the
-real Angular code the showcase runs and the source of every registry item; `registry.json`
-lists the items and points at those same files.
+`@koderi-dp/ui`, the shared Angular UI library for the koderi starters, and the showcase app
+that runs every component. The library lives in `projects/ui`; the showcase in `src/demo`
+consumes it through tsconfig paths, exactly as a consumer would.
 
 ## Commands
 
-- `npm run dev` — `ng serve`, the showcase app (every item on one set of pages).
-- `npm run build` — `ng build`, the showcase.
+- `npm run dev` — `ng serve`, the showcase app (every component on one set of pages).
+- `npm run build` — `ng build`, the showcase, into `dist/showcase`.
+- `npm run build:lib` — `ng build ui`, the library, into `dist/ui`.
 - `npm test` — Vitest in node for `*.test.ts`, then `ng test --no-watch` for the TestBed `*.spec.ts`.
-- `npm run typecheck` — `tsc` over `src` with the strict settings.
+- `npm run typecheck` — `tsc` over `src`, `projects/ui` and `scripts` tests with the strict settings.
 - `npm run lint` — ESLint, zero warnings.
 - `npm run format` / `npm run format:check` — Prettier.
-- `npm run registry:build` — `shadcn build`, writes `public/r/*.json` from `registry.json`.
-- `npm run registry:serve` — serve `public/r` at `http://localhost:5181/r/{name}.json`.
 
 ## Layout
 
-- `src/ui/` — the registry source. `primitives/` are the shadcn/new-york set; the rest are
-  the page frames, charts, status, form controls and the app shell. No `.tsx`: components are
-  standalone Angular components with signals, `*.component.ts` plus an optional `.html`.
-- `src/ui/layout/` — the app shell, command palette and nav.
-- `src/demo/` — the showcase app only. Nothing here ships in the registry.
-- `registry.json` — the source of truth for the registry. `public/r/*.json` is built from it
-  and committed.
+- `projects/ui/src/` — the primary entry point (`@koderi-dp/ui`): primitives, page frames, status, form controls.
+- `projects/ui/<entry>/src/lib/` — a secondary entry point (`layout`, `data-grid`, `charts`, `tree`), published as `@koderi-dp/ui/<entry>`.
+- `projects/ui/theme.css` — the Tailwind theme, shipped as `@koderi-dp/ui/theme.css`.
+- `src/demo/` — the showcase app only. Nothing here is published.
+- `scripts/` — `set-version.mjs` stamps the release version into `dist/ui/package.json`.
 
 ## Rules
 
+- `public-api.ts` of each entry point (`src/public-api.ts`) is the API: whatever it does not export is private.
+- Inside an entry, import with relative paths. Across entries, import `@koderi-dp/ui`
+  (never a sibling's files), so each entry builds on the published surface.
 - A `*.component.ts` / `*.directive.ts` exports components and directives, plus the tokens and
   constants tied to them (`KO_TREE_ITEM`, `KO_TOOLTIP_DELAY`). Logic lives in a plain `.ts`
   with its test beside it (`name.test.ts`, run by Vitest in node). TestBed tests are
   `name.spec.ts`. This is why `button-variants.ts` is separate from `button.component.ts`.
-- Every registry item declares its npm `dependencies` and its `registryDependencies`.
-  `registryDependencies` must be namespaced `@koderi/<name>` — the CLI resolves bare names
-  against shadcn's own registry. List `@angular/*` only beyond `core`/`common`.
-- Every file under `src/ui` belongs to exactly one item, and each file's `target` equals its
-  `path` (the CLI needs an explicit target to place `.ts`/`.html` files).
-- A consumer's `components.json` needs `"tsx": true` (else the CLI transpiles `.ts` to
-  `.js`) and its tsconfig needs `"paths": { "@/*": ["./src/*"] }` (keep the `./`).
-- When a file changes, run `npm run registry:build` and commit the rebuilt `public/r/*.json`.
+- The version in `projects/ui/package.json` is not authoritative; the published version comes from the git tag.
 
 ## Overlay and host gotchas
 
@@ -46,10 +39,15 @@ lists the items and points at those same files.
 - Never size `.cdk-overlay-pane` with Tailwind (the CDK injects unlayered CSS that wins); use the overlay config or an inner element.
 - The app is zoneless: render from signals, not from mutated fields.
 
-## Adding an item
+- Unit-test `include` paths resolve from the app's `sourceRoot`, hence `../projects/ui/**/*.spec.ts`.
+- `projects/ui/LICENSE` and `projects/ui/README.md` are copies of the root files; a test keeps them identical, so edit the root ones and copy.
+- The theme's `@source "./"` is what makes Tailwind generate the library's classes, so a consumer needs no `@source` line.
 
-1. Add the code under `src/ui/` (and its `.test.ts` / `.spec.ts`).
-2. Add an entry to `registry.json` with `name`, `type`, `title`, `description`,
-   `dependencies`, `registryDependencies` and `files` (each file has a `target`).
-3. Run `npm run registry:build`, then `npm run lint`, `npm test` and `npm run build`.
-4. Verify in a scratch Angular app: `npx shadcn add @koderi/<name>`, then `ng build`.
+## Releasing
+
+Tag `vX.Y.Z` on `main` and push the tag; `release.yml` checks, builds, stamps the version
+from the tag, publishes to npm with provenance and creates the GitHub release.
+
+`0.1.0` is published once by hand: `npm login`, `npm run build:lib`,
+`node scripts/set-version.mjs v0.1.0`, `cd dist/ui && npm publish --access public`. After that,
+configure the trusted publisher on npmjs.com (repo `koderi-dp/shared-ui-angular`, workflow `release.yml`).

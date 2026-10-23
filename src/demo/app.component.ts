@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
-import { KoToaster } from "@/ui/toaster.component";
+import { KoToaster } from "@koderi-dp/ui";
 
 /** Providers and one-off mounts, above the shell so login-style pages could use them too. */
 @Component({

@@ -31,11 +31,51 @@ export default tseslint.config(
   },
   // `button[koButton]` is a component on a native element, so it takes an attribute selector.
   {
-    files: ['src/ui/primitives/button.component.ts'],
+    files: ['projects/ui/src/lib/primitives/button.component.ts'],
     rules: {
       '@angular-eslint/component-selector': [
         'error',
         { type: ['element', 'attribute'], prefix: 'ko', style: 'camelCase' },
+      ],
+    },
+  },
+  // Inside the library, imports are relative within an entry point and `@koderi-dp/ui` across
+  // entry points. The `@/*` alias belongs to the showcase and does not exist for consumers.
+  {
+    files: ['projects/ui/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              regex: '^@/',
+              message: 'Use a relative import or @koderi-dp/ui.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  // The primary entry point must never import itself or a secondary entry point: circular.
+  {
+    files: ['projects/ui/src/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              regex: '^@/',
+              message: 'Use a relative import.',
+            },
+            {
+              regex: '^@koderi-dp/ui(/|$)',
+              message:
+                'The primary entry point must not import itself or a secondary entry point.',
+            },
+          ],
+        },
       ],
     },
   },

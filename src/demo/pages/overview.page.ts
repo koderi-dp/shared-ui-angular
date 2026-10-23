@@ -9,30 +9,34 @@ import {
   TIMELINE_STEP_MS,
   timelineRows,
 } from "@/demo/data";
-import { seriesColor } from "@/ui/chart-format";
-import { KoConfirmDialog } from "@/ui/confirm-dialog.component";
-import { injectCommands } from "@/ui/layout/command-registry";
-import { KoListFilterBar } from "@/ui/list-filter-bar.component";
-import { notify } from "@/ui/notify";
-import { KoPageHeader } from "@/ui/page-header.component";
-import { KoPageShell } from "@/ui/page-shell.component";
-import { persisted } from "@/ui/persisted";
-import { KoButton, KoIconButton } from "@/ui/primitives/button.component";
-import { KoCard, KoCardContent, KoCardHeader, KoCardTitle } from "@/ui/primitives/card.component";
-import { KoSwitch } from "@/ui/primitives/switch.component";
 import {
+  seriesColor,
+  KoConfirmDialog,
+  KoListFilterBar,
+  notify,
+  KoPageHeader,
+  KoPageShell,
+  persisted,
+  KoButton,
+  KoIconButton,
+  KoCard,
+  KoCardContent,
+  KoCardHeader,
+  KoCardTitle,
+  KoSwitch,
   KoTable,
   KoTableBody,
   KoTableCell,
   KoTableHead,
   KoTableHeader,
   KoTableRow,
-} from "@/ui/primitives/table.component";
-import { KoSparkline } from "@/ui/sparkline.component";
-import { KoStateTimeline } from "@/ui/state-timeline.component";
-import { KoStatusBadge } from "@/ui/status.component";
-import { KoTimeChart } from "@/ui/time-chart.component";
-import { cn, formatBytes, formatDuration } from "@/ui/utils";
+  KoStatusBadge,
+  cn,
+  formatBytes,
+  formatDuration,
+} from "@koderi-dp/ui";
+import { injectCommands } from "@koderi-dp/ui/layout";
+import { KoSparkline, KoStateTimeline, KoTimeChart } from "@koderi-dp/ui/charts";
 
 const TIMELINE_ROWS = timelineRows();
 

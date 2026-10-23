@@ -1,4 +1,4 @@
-import type { ChartRow, TimelineState } from "@/ui/charts";
+import type { ChartRow, TimelineState } from "@koderi-dp/ui/charts";
 
 /** Everything on the showcase pages is made up here; nothing in this file ships in the registry. */
 

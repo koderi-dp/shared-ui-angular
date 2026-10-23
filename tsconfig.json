@@ -11,7 +11,9 @@
     "importHelpers": true,
     "noEmit": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@koderi-dp/ui": ["./projects/ui/src/public-api.ts"],
+      "@koderi-dp/ui/*": ["./projects/ui/*/src/public-api.ts"]
     },
     "strict": true,
     "noImplicitOverride": true,

@@ -1,0 +1,46 @@
+# Publishes @koderi-dp/ui to npm (trusted publishing, no token) and attaches the tarball to a
+# GitHub release when a v* tag is pushed. The version comes from the tag.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Require the tag to be on main
+        run: |
+          git fetch origin main
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/main || { echo "Tag is not on main"; exit 1; }
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm test
+      - run: npm run build:lib
+      - run: node scripts/set-version.mjs "$GITHUB_REF_NAME"
+      - name: Detect a prerelease
+        run: |
+          if [[ "$GITHUB_REF_NAME" == *-* ]]; then echo "PRERELEASE=true" >> "$GITHUB_ENV"; fi
+      - run: npx publint dist/ui
+      # Trusted publishing needs npm >= 11.5; Node 24 may bundle an older one.
+      - run: npm i -g npm@^11.5.1
+      - run: npm publish --provenance --access public ${{ env.PRERELEASE == 'true' && '--tag next' || '' }}
+        working-directory: dist/ui
+      - run: npm pack ./dist/ui
+      - run: gh release create "$GITHUB_REF_NAME" koderi-dp-ui-*.tgz --generate-notes ${{ env.PRERELEASE == 'true' && '--prerelease' || '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}

@@ -14,16 +14,16 @@ import {
   type StatusTone,
   statusColumn,
   tagsColumn,
-} from "@/ui/data-grid";
-import { KoPageHeader } from "@/ui/page-header.component";
-import { KoPageShell } from "@/ui/page-shell.component";
+} from "@koderi-dp/ui/data-grid";
 import {
+  KoPageHeader,
+  KoPageShell,
   KoCard,
   KoCardContent,
   KoCardDescription,
   KoCardHeader,
   KoCardTitle,
-} from "@/ui/primitives/card.component";
+} from "@koderi-dp/ui";
 
 type Guest = {
   vmid: number;
