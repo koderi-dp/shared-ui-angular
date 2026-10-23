@@ -30,4 +30,8 @@ export const routes: Routes = [
     path: "data-grid",
     loadComponent: () => import("@/demo/pages/data-grid.page").then((m) => m.KoDataGridPage),
   },
+  {
+    path: "charts",
+    loadComponent: () => import("@/demo/pages/charts.page").then((m) => m.KoChartsPage),
+  },
 ];
