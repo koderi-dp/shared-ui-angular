@@ -108,10 +108,10 @@ export class KoSheet {
       role: "dialog",
       ariaModal: true,
       viewContainerRef: this.viewContainerRef,
+      width: "18rem",
       height: "100%",
       positionStrategy: left ? position.left("0") : position.right("0"),
       panelClass: [
-        "w-72",
         "bg-card",
         "shadow-[var(--shadow-elevated)]",
         "duration-300",

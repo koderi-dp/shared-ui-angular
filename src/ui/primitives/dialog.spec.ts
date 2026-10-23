@@ -203,7 +203,7 @@ describe("KoDialog and KoSheet", () => {
         (button) => button.textContent?.trim() === "Close",
       )!;
       expect(close.className).toContain("absolute right-3 top-3");
-      expect(panel()!.closest(".cdk-overlay-pane")!.className).toContain("max-w-lg");
+      expect(panel()!.closest(".cdk-overlay-pane")!.className).toContain("rounded-xl");
     });
 
     it("can reopen after closing", async () => {
@@ -217,21 +217,31 @@ describe("KoDialog and KoSheet", () => {
     });
   });
 
-  describe("overlay CSS", () => {
-    it("imports the CDK stylesheet into a layer below Tailwind utilities", () => {
-      const css = readFileSync("src/styles.css", "utf8");
-      expect(css).toMatch(/@import\s+"@angular\/cdk\/overlay-prebuilt\.css"\s+layer\(\w+\)/);
+  describe("overlay sizing", () => {
+    it("sizes the dialog pane inline, since the CDK's unlayered max-width beats utilities", async () => {
+      host.dialogOpen.set(true);
+      await settle();
+      const pane = panel()!.closest<HTMLElement>(".cdk-overlay-pane")!;
+      expect(pane.style.maxWidth).toBe("32rem");
+      expect(pane.style.width).toContain("calc(100% - 2rem)");
     });
 
-    it("sets no inline max-width on the pane, so the panel classes decide", async () => {
-      host.dialogOpen.set(true);
+    it("sizes the sheet pane inline", async () => {
       host.sheetOpen.set(true);
       await settle();
-      const panes = document.querySelectorAll<HTMLElement>(".cdk-overlay-pane");
-      expect(panes.length).toBe(2);
-      panes.forEach((pane) => expect(pane.style.maxWidth).toBe(""));
-      const sheetPane = Array.from(panes).find((pane) => pane.className.includes("w-72"))!;
-      expect(sheetPane.style.height).toBe("100%");
+      const pane = panel()!.closest<HTMLElement>(".cdk-overlay-pane")!;
+      expect(pane.style.width).toBe("18rem");
+      expect(pane.style.height).toBe("100%");
+    });
+
+    it("sizes a service dialog inline", async () => {
+      TestBed.inject(KoDialogService).open(ServiceContentComponent, { ariaLabel: "x" });
+      await settle();
+      expect(panel()!.closest<HTMLElement>(".cdk-overlay-pane")!.style.maxWidth).toBe("32rem");
+    });
+
+    it("no longer imports the CDK stylesheet; the CDK injects its own structural CSS", () => {
+      expect(readFileSync("src/styles.css", "utf8")).not.toContain("overlay-prebuilt");
     });
   });
 

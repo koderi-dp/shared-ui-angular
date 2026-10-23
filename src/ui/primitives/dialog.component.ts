@@ -21,7 +21,11 @@ import {
 } from "@angular/core";
 import { NgIcon } from "@ng-icons/core";
 import { lucideX } from "@ng-icons/lucide";
-import { KO_DIALOG_BACKDROP_CLASS, KO_DIALOG_PANEL_CLASS } from "@/ui/primitives/dialog.service";
+import {
+  KO_DIALOG_BACKDROP_CLASS,
+  KO_DIALOG_PANEL_CLASS,
+  KO_DIALOG_SIZE,
+} from "@/ui/primitives/dialog.service";
 import { cn } from "@/ui/utils";
 
 let nextId = 0;
@@ -116,6 +120,7 @@ export class KoDialog {
     const ref = this.dialog.open(this.shell(), {
       role: "dialog",
       ariaModal: true,
+      ...KO_DIALOG_SIZE,
       viewContainerRef: this.viewContainerRef,
       panelClass: KO_DIALOG_PANEL_CLASS,
       backdropClass: KO_DIALOG_BACKDROP_CLASS,
