@@ -1,9 +1,11 @@
+/// <reference types="node" />
 import {
   ChangeDetectionStrategy,
   Component,
   provideZonelessChangeDetection,
   signal,
 } from "@angular/core";
+import { readFileSync } from "node:fs";
 import { TestBed, type ComponentFixture } from "@angular/core/testing";
 import {
   KoDialog,
@@ -212,6 +214,24 @@ describe("KoDialog and KoSheet", () => {
       host.dialogOpen.set(true);
       await settle();
       expect(document.querySelectorAll('[role="dialog"]').length).toBe(1);
+    });
+  });
+
+  describe("overlay CSS", () => {
+    it("imports the CDK stylesheet into a layer below Tailwind utilities", () => {
+      const css = readFileSync("src/styles.css", "utf8");
+      expect(css).toMatch(/@import\s+"@angular\/cdk\/overlay-prebuilt\.css"\s+layer\(\w+\)/);
+    });
+
+    it("sets no inline max-width on the pane, so the panel classes decide", async () => {
+      host.dialogOpen.set(true);
+      host.sheetOpen.set(true);
+      await settle();
+      const panes = document.querySelectorAll<HTMLElement>(".cdk-overlay-pane");
+      expect(panes.length).toBe(2);
+      panes.forEach((pane) => expect(pane.style.maxWidth).toBe(""));
+      const sheetPane = Array.from(panes).find((pane) => pane.className.includes("w-72"))!;
+      expect(sheetPane.style.height).toBe("100%");
     });
   });
 
