@@ -26,7 +26,7 @@ import {
   type TreeElementProps,
 } from "@/ui/primitives/tree-props";
 import { selectOnClick } from "@/ui/primitives/tree-select";
-import { cn } from "@/ui/utils";
+import { cn } from "@koderi-dp/ui";
 
 /** The item of the row an item template is rendered in. */
 export const KO_TREE_ITEM = new InjectionToken<ItemInstance<unknown>>("KoTreeItem");

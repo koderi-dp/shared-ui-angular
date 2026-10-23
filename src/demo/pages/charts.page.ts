@@ -1,13 +1,22 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from "@angular/core";
 import { lucideActivity, lucideTimer, lucideTrendingUp } from "@ng-icons/lucide";
-import { RANGES, seriesColor, type RangeId } from "@/ui/chart-format";
+import {
+  RANGES,
+  seriesColor,
+  type RangeId,
+  KoPageHeader,
+  KoPageShell,
+  KoCard,
+  KoCardContent,
+  KoCardHeader,
+  KoCardTitle,
+  KoTabs,
+  KoTabsList,
+  KoTabsTrigger,
+} from "@koderi-dp/ui";
 import { KoSparkline } from "@/ui/sparkline.component";
 import { KoStateTimeline } from "@/ui/state-timeline.component";
 import { KoTimeChart } from "@/ui/time-chart.component";
-import { KoPageHeader } from "@/ui/page-header.component";
-import { KoPageShell } from "@/ui/page-shell.component";
-import { KoCard, KoCardContent, KoCardHeader, KoCardTitle } from "@/ui/primitives/card.component";
-import { KoTabs, KoTabsList, KoTabsTrigger } from "@/ui/primitives/tabs.component";
 import { chartRows, TIMELINE_STEP_MS, timelineRows } from "@/demo/data";
 
 const TIMELINE_ROWS = timelineRows();

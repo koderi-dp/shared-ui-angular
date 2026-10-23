@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from "@angular/core";
-import { KoBadge } from "@/ui/primitives/badge.component";
-import { cn } from "@/ui/utils";
+import { KoBadge, cn } from "@koderi-dp/ui";
 import { BADGE_VARIANT, DOT_CLASS, TEXT_CLASS, type StatusTone } from "./tones";
 
 /** A status as a badge in its tone's variant; the label is the projected content. */

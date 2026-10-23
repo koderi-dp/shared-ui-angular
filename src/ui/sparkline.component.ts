@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from "@angular/core";
 import { sparklineSegments } from "@/ui/sparkline-geometry";
-import { cn } from "@/ui/utils";
+import { cn } from "@koderi-dp/ui";
 
 const WIDTH = 72;
 const HEIGHT = 20;

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from "@angular/core";
-import { cn } from "@/ui/utils";
+import { cn } from "@koderi-dp/ui";
 
 export type KeyValueColumn = {
   id: string;

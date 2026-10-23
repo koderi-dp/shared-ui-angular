@@ -15,17 +15,17 @@ import {
   lucideFolderTree,
   lucideGripVertical,
 } from "@ng-icons/lucide";
-import { KoPageHeader } from "@/ui/page-header.component";
-import { KoPageShell } from "@/ui/page-shell.component";
 import {
+  KoPageHeader,
+  KoPageShell,
   KoCard,
   KoCardContent,
   KoCardDescription,
   KoCardHeader,
   KoCardTitle,
-} from "@/ui/primitives/card.component";
-import { KoLabel } from "@/ui/primitives/label.directive";
-import { KoSwitch } from "@/ui/primitives/switch.component";
+  KoLabel,
+  KoSwitch,
+} from "@koderi-dp/ui";
 import { injectTreeController } from "@/ui/primitives/tree-adapter";
 import {
   KoTree,

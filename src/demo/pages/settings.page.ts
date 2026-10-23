@@ -1,16 +1,19 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { lucideBell, lucideDatabase, lucideSlidersHorizontal } from "@ng-icons/lucide";
-import { KoDisclosure, KoField, KoNumberInput, KoSwitchField } from "@/ui/form.component";
-import { notify } from "@/ui/notify";
-import { KoPageHeader } from "@/ui/page-header.component";
-import { KoPageShell } from "@/ui/page-shell.component";
-import { KoInput } from "@/ui/primitives/input.directive";
 import {
+  KoDisclosure,
+  KoField,
+  KoNumberInput,
+  KoSwitchField,
+  notify,
+  KoPageHeader,
+  KoPageShell,
+  KoInput,
   KoSettingsSaveFooter,
   KoSettingsSectionLayout,
   type SettingsSectionDefinition,
-} from "@/ui/settings-section.component";
+} from "@koderi-dp/ui";
 
 type SectionId = "general" | "notifications" | "storage";
 

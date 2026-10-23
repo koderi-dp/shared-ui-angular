@@ -1,0 +1,57 @@
+{
+  "name": "@koderi-dp/ui",
+  "version": "0.1.0",
+  "description": "Angular UI components for the koderi starters: primitives, page frames, app shell, data grid, charts and tree.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koderi-dp/shared-ui-angular.git"
+  },
+  "homepage": "https://github.com/koderi-dp/shared-ui-angular#readme",
+  "sideEffects": false,
+  "exports": {
+    "./theme.css": {
+      "default": "./theme.css"
+    }
+  },
+  "peerDependencies": {
+    "@angular/cdk": "^22.2.0",
+    "@angular/common": "^22.2.0",
+    "@angular/core": "^22.2.0",
+    "@angular/forms": "^22.2.0",
+    "@angular/platform-browser": "^22.2.0",
+    "@angular/router": "^22.2.0",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "@headless-tree/core": "^1.8.0",
+    "@ng-icons/core": "^36.1.0",
+    "@ng-icons/lucide": "^36.1.0",
+    "@tanstack/angular-table": "^9.3.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "echarts": "^6.1.0",
+    "ngx-echarts": "^22.0.0",
+    "ngx-sonner": "^3.1.0",
+    "rxjs": "^7.8.0",
+    "tailwind-merge": "^3.7.0",
+    "tailwindcss": "^4.1.0",
+    "tw-animate-css": "^1.4.0"
+  },
+  "peerDependenciesMeta": {
+    "@headless-tree/core": {
+      "optional": true
+    },
+    "@tanstack/angular-table": {
+      "optional": true
+    },
+    "echarts": {
+      "optional": true
+    },
+    "ngx-echarts": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "tslib": "^2.8.1"
+  }
+}

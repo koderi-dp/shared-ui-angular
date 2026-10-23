@@ -45,8 +45,7 @@ import {
 } from "@/ui/data-grid/grid-layout";
 import { KoResizeHandle } from "@/ui/data-grid/resize-handle.component";
 import type { CellContent, DataGridClassNames, DataGridColumn } from "@/ui/data-grid/types";
-import { KoCheckbox, type KoCheckedState } from "@/ui/primitives/checkbox.component";
-import { cn } from "@/ui/utils";
+import { KoCheckbox, type KoCheckedState, cn } from "@koderi-dp/ui";
 
 const DEFAULT_MIN = 48;
 const DEFAULT_MAX = 800;

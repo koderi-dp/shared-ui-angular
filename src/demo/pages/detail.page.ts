@@ -19,13 +19,16 @@ import {
   KoDetailShell,
   KoOverviewPanel,
   KoOverviewRow,
-} from "@/ui/detail-shell.component";
-import { KoField, KoNumberInput, KoSwitchField } from "@/ui/form.component";
-import { notify } from "@/ui/notify";
-import { KoButton } from "@/ui/primitives/button.component";
-import { KoStatusBadge } from "@/ui/status.component";
-import { statusLabel } from "@/ui/status-text";
-import { formatBytes, formatDuration } from "@/ui/utils";
+  KoField,
+  KoNumberInput,
+  KoSwitchField,
+  notify,
+  KoButton,
+  KoStatusBadge,
+  statusLabel,
+  formatBytes,
+  formatDuration,
+} from "@koderi-dp/ui";
 import { demoItems } from "@/demo/data";
 
 type TabId = "overview" | "settings" | "jobs";

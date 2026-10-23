@@ -17,7 +17,7 @@ import { CanvasRenderer } from "echarts/renderers";
 import { NgxEchartsDirective, provideEchartsCore } from "ngx-echarts";
 import type { ChartRow, ChartSeries } from "@/ui/chart-types";
 import { buildTimeChartOption, hasChartData, type TimeChartTheme } from "@/ui/time-chart-options";
-import { cn } from "@/ui/utils";
+import { cn } from "@koderi-dp/ui";
 
 echarts.use([LineChart, GridComponent, TooltipComponent, MarkLineComponent, CanvasRenderer]);
 

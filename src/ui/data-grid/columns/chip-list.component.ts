@@ -10,8 +10,7 @@ import {
   signal,
   viewChild,
 } from "@angular/core";
-import { KoPopover, KoPopoverContent, KoPopoverTrigger } from "@/ui/primitives/popover.component";
-import { cn } from "@/ui/utils";
+import { KoPopover, KoPopoverContent, KoPopoverTrigger, cn } from "@koderi-dp/ui";
 import { fitChipCount, moreTagsLabel } from "./chip-fit";
 
 export type ChipColor = { bg: string; fg: string };

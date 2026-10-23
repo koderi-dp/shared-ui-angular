@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from "@angular/core";
-import { cn } from "@/ui/utils";
+import { cn } from "@koderi-dp/ui";
 import { metricBarLabelClass, usageBarFillClass, type ProgressVariant } from "./progress-level";
 
 /** A usage bar with its label centred on it. `title` lands on the host (the bar's wrapper). */

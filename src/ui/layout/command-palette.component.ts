@@ -18,13 +18,7 @@ import { lucideCornerDownLeft, lucideSearch } from "@ng-icons/lucide";
 import { paletteGroups, type PaletteOption } from "@/ui/layout/command-palette";
 import type { Command } from "@/ui/layout/command-registry";
 import type { NavConfig } from "@/ui/layout/nav";
-import {
-  KoDialog,
-  KoDialogContent,
-  KoDialogDescription,
-  KoDialogTitle,
-} from "@/ui/primitives/dialog.component";
-import { cn } from "@/ui/utils";
+import { KoDialog, KoDialogContent, KoDialogDescription, KoDialogTitle, cn } from "@koderi-dp/ui";
 
 let nextId = 0;
 

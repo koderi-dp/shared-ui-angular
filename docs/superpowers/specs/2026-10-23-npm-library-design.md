@@ -178,7 +178,10 @@ Tailwind 4.3.3, Node 24, npm 12).
   "./theme.css": { "default": "./theme.css" },
   "./package.json": { "default": "./package.json" },
   ".": { "types": "./types/koderi-dp-ui.d.ts", "default": "./fesm2022/koderi-dp-ui.mjs" },
-  "./extra": { "types": "./types/koderi-dp-ui-extra.d.ts", "default": "./fesm2022/koderi-dp-ui-extra.mjs" }
+  "./extra": {
+    "types": "./types/koderi-dp-ui-extra.d.ts",
+    "default": "./fesm2022/koderi-dp-ui-extra.mjs"
+  }
 }
 ```
 

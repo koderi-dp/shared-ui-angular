@@ -3,16 +3,16 @@ import { Router } from "@angular/router";
 import { NgIcon } from "@ng-icons/core";
 import { lucideCircleUser, lucideLogOut, lucideSettings, lucideUser } from "@ng-icons/lucide";
 import { headerChipClass } from "@/ui/layout/nav";
-import { notify } from "@/ui/notify";
 import {
+  notify,
   KoDropdownItem,
   KoDropdownLabel,
   KoDropdownMenu,
   KoDropdownSeparator,
   KoDropdownTrigger,
-} from "@/ui/primitives/dropdown-menu.component";
-import { KoStatusDot } from "@/ui/status.component";
-import { cn } from "@/ui/utils";
+  KoStatusDot,
+  cn,
+} from "@koderi-dp/ui";
 
 /** The chip the shell takes as `koHeaderEnd`: a dot, a word, and never more than that. */
 @Component({

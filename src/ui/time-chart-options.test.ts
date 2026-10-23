@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { ChartRow, ChartSeries } from "@/ui/chart-types";
-import { timeTicks } from "@/ui/chart-format";
+import { timeTicks } from "@koderi-dp/ui";
 import {
   buildTimeChartOption,
   hasChartData,

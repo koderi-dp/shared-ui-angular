@@ -25,16 +25,16 @@ import { isMacPlatform, isPaletteShortcut, shortcutLabel, urlPath } from "@/ui/l
 import { KoCommandPalette } from "@/ui/layout/command-palette.component";
 import { KoCommandRegistry } from "@/ui/layout/command-registry";
 import { isNavActive, type NavConfig } from "@/ui/layout/nav";
-import { persisted } from "@/ui/persisted";
-import { KoIconButton } from "@/ui/primitives/button.component";
 import {
+  persisted,
+  KoIconButton,
   KoSheet,
   KoSheetContent,
   KoSheetDescription,
   KoSheetTitle,
-} from "@/ui/primitives/sheet.component";
-import { KoTooltip } from "@/ui/primitives/tooltip.directive";
-import { cn } from "@/ui/utils";
+  KoTooltip,
+  cn,
+} from "@koderi-dp/ui";
 
 export type Brand = {
   name: string;
